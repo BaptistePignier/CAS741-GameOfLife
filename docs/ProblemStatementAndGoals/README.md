@@ -2,4 +2,5 @@
 
 The folders and files for this folder are as follows:
 
-Describe ...
+- Makefile : generate the pdf and clean the useless generated files
+- ProblemStatement.tex : source
