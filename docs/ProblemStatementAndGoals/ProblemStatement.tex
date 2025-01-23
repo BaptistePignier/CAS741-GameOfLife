@@ -28,17 +28,23 @@ The problem is to define the framework of the simulation and to highlight its li
 
 \subsection{Inputs and Outputs}
 
-The inputs are many numerical parameters that define how the simulation's evolutions. Each parameter is set before the simulation and their values define the rules of the simulation.
+The inputs are many numerical parameters that define how the simulation's evolutions. The radius of the circle which defines the neighborhood of a cell or the sensitivity of a 
+cell to the overcrowding of its neighborhood are examples of numerical parameters.  Each parameter is set before the simulation and their values define the rules of the simulation.
 The output is a succession of environmental state in which we can appreciate the successive applications of the rules of evolutions.
+Production is a statement of state of the environment in which we can assess the successive applications of the rules of evolution. 
+These states will be displayed graphically in a graphic window.
 
 \subsection{Stakeholders}
 
-This project is supervised by Dr Spencer Smith and is intended for anyone interested in cellular automaton simulation.
+This project is intended for anyone interested in cellular automaton simulation.
+This project is not intended to be a research tool for cellular automata because 
+it will be much less complete than other already existing projects
 
 \subsection{Environment}
 
 The software requires a large amount of hardware resources to calculate the successive applications of the rules as well as the display of the result.
 The display of the result will be delegated to optimized graphics libraries. Thus, the graphics implementation is not part of the software design. 
+The operating systems supported will be those supported by the graphic librarie used, which will be chosen to support as many operating systems as possible
 
 \section{Goals}
 
