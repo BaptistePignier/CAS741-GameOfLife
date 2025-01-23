@@ -245,26 +245,11 @@ which heat is transferred in
   PS & Physical System Description\\
   R & Requirement\\
   SRS & Software Requirements Specification\\
-  \progname{} & \plt{put an expanded version of your program name here (as appropriate)}\\
+  \progname & \\
   TM & Theoretical Model\\
   \bottomrule
 \end{tabular}\\
 
-\plt{Add any other abbreviations or acronyms that you add}
-
-\subsection{Mathematical Notation}
-
-\plt{This section is optional, but should be included for projects that make use
-  of notation to convey mathematical information.  For instance, if typographic
-  conventions (like bold face font) are used to distinguish matrices, this
-  should be stated here.  If symbols are used to show mathematical operations,
-  these should be summarized here.  In some cases the easiest way to summarize
-  the notation is to point to a text or other source that explains the
-  notation.}
-
-\plt{This section was added to the template because some students use very
-  domain specific notation.  This notation will not be readily understandable to
-  people outside of your domain.  It should be explained.}
 
 \newpage
 
@@ -342,6 +327,10 @@ a paragraph or two that describes the problem, followed by a ``roadmap''
 paragraph.  A roadmap orients the reader by telling them what sub-sections to
 expect in the Introduction section.}
 
+Conway's Game of Life is the result of applying simple rules of evolution.
+It allows the observation of an emerging phenomenon called cellular automaton.
+These cellular automata can be made more complex by making the rules of evolution more complex to observe more complex structure.
+
 \subsection{Purpose of Document}
 
 \plt{This section summarizes the purpose of the SRS document.  It does not focus
@@ -353,6 +342,10 @@ expect in the Introduction section.}
   section will be similar between projects.  The purpose of the document is the
   purpose of the SRS, including communication, planning for the design stage,
   etc.}
+
+The purpose of this Software Requirements Specification (SRS) document is to define the functional and non-functional requirements of the 
+project in a clear and structured manner. This document serves as a communication tool between stakeholders, including clients, developers, 
+and project managers, to ensure a shared understanding of the project's scope and objectives.
 
 \subsection{Scope of Requirements} 
 
@@ -373,6 +366,10 @@ expect in the Introduction section.}
 
 \plt{The scope section is relevant for later determining typical values of inputs. The scope should make it clear what inputs are reasonable to expect. This is a distinction between scope and context (context is a later section).  Scope affects the inputs while context affects how the software will be used.}
 
+This project is limited to two-dimensional cell simulation. 
+The relationships between cells will be determined by a finite number of numerical parameters, 
+which necessarily implies an approximation of reality.
+
 \subsection{Characteristics of Intended Reader} \label{sec_IntendedReader}
 
 \plt{This section summarizes the skills and knowledge of the readers of the
@@ -390,12 +387,20 @@ expect in the Introduction section.}
   instance, is high school physics adequate, or should the reader have had a
   graduate course on advanced quantum mechanics?}
 
+Reviewers of this document should have undergraduate mathematical knowledge as well as a 
+good understanding of the physical approximations that will be implemented.
+
 \subsection{Organization of Document}
 
 \plt{This section provides a roadmap of the SRS document.  It will help the
   reader orient themselves.  It will provide direction that will help them
   select which sections they want to read, and in what order.  This section will
   be similar between project.}
+
+This document is structured as follows. Section 3 covers general information about the project. 
+Section 4 explains this information in detail. Section 5 covers the project requirements. 
+Section 6 lists the likely changes and Section 7 lists the unlikely changes. 
+Section 8 presents the requirements traceability. Section 9 presents the project development plan.
 
 \section{General System Description}
 
