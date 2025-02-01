@@ -6,9 +6,12 @@ TEX=pdflatex
 BIBTEX=bibtex
 BUILDTEX=$(TEX) $(PROJECT).tex
 
-all:
+all: clean-all build clean
+
+
+build:
 	$(BUILDTEX)
-	$(BIBTEX) $(PROJECT)
+	# $(BIBTEX) $(PROJECT)
 	$(BUILDTEX)
 	$(BUILDTEX)
 
