@@ -285,11 +285,11 @@ easier to correctly understand the requirements:
 
 \item The grid : A cell grid as small as possible to simulate a continuous space, such as a computer screen with pixel. The dimensions of this grid are as large as desired.
 
-\item Neighborhood : Area around a cell, consisting of the cells in that area. This area is delimited by a neighborhood function
+\item Neighbourhood : Area around a cell, consisting of the cells in that area. This area is delimited by a neighbourhood function
 
-\item Neighborhood function: Function that takes a cell as input and returns the cells in its neighborhood.
+\item Neighbourhood function: Function that takes a cell as input and returns the cells in its neighbourhood.
 
-\item Growth function: Function that takes a cell as input and modifies the value(s) contained in the cell based on its neighborhood.
+\item Growth function: Function that takes a cell as input and modifies the value(s) contained in the cell based on its neighbourhood.
 
 \item Structure: Finite set of cells in prolonged interaction.
 
@@ -300,7 +300,7 @@ easier to correctly understand the requirements:
 
 \subsubsection{Physical System Description} \label{sec_phySystDescrip}
 
-The physical system of \progname{}, as shown in Figure~?, includes the following elements:
+The physical system of \progname{}, as shown in Figure \ref{Fig_SystemContext}, includes the following elements:
 
 \begin{itemize}
 
@@ -308,19 +308,19 @@ The physical system of \progname{}, as shown in Figure~?, includes the following
 
 \item[PS2 :] Growth function
 
-\item[PS3 :] Neighborhood function
+\item[PS3 :] Neighbourhood function
 
 \end{itemize}
 
 \subsubsection{Goal Statements}
 
-\noindent Given the input paramters defined in \ref{sec_DataConstraints}, the goal statements are:
+\noindent Given the input parameters defined in \ref{sec_DataConstraints}, the goal statements are:
 
 \begin{itemize}
 
 \item[GS\refstepcounter{goalnum}\thegoalnum \label{G_GFCT}:] Create the Growth function
 
-\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Create the Neighborhood function
+\item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Create the Neighbourhood function
 
 \item[GS\refstepcounter{goalnum}\thegoalnum \label{G_meaningfulLabel}:] Apply iterative evolution
 
@@ -373,7 +373,7 @@ Equation&
 $G(x) = A \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)$\\
 \hline
 Description & 
-This formula will be used for applying the growth and neighborhood function on a cell. \\
+This formula will be used for applying the growth and neighbourhood function on a cell. \\
 \hline
   Source & \url{https://en.wikipedia.org/wiki/Gaussian_function} \\
   \hline
@@ -538,7 +538,7 @@ Constraints on the input data will be set by the program itself, via a selection
 
 \subsubsection{Properties of a Correct Solution} \label{sec_CorrectSolution}
 
-This program does not provide a "solution", but a visualization of the events induced by the parameter choices made by the user. This section is not relevant.
+This program does not provide a ``solution'', but a visualization of the events induced by the parameter choices made by the user. This section is not relevant.
 
 \section{Requirements}
 
