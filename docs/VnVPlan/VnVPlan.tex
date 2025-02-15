@@ -30,25 +30,10 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+14/02/2025 & 1.0 & First release\\
 \bottomrule
 \end{tabularx}
 
-~\\
-\wss{The intention of the VnV plan is to increase confidence in the software.
-However, this does not mean listing every verification and validation technique
-that has ever been devised.  The VnV plan should also be a \textbf{feasible}
-plan. Execution of the plan should be possible with the time and team available.
-If the full plan cannot be completed during the time available, it can either be
-modified to ``fake it'', or a better solution is to add a section describing
-what work has been completed and what work is still planned for the future.}
-
-\wss{The VnV plan is typically started after the requirements stage, but before
-the design stage.  This means that the sections related to unit testing cannot
-initially be completed.  The sections will be filled in after the design stage
-is complete.  the final version of the VnV plan should have all sections filled
-in.}
 
 \newpage
 
@@ -64,70 +49,43 @@ in.}
 
 \section{Symbols, Abbreviations, and Acronyms}
 
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{l l} 
-  \toprule		
-  \textbf{symbol} & \textbf{description}\\
-  \midrule 
-  T & Test\\
-  \bottomrule
-\end{tabular}\\
-
-\wss{symbols, abbreviations, or acronyms --- you can simply reference the SRS
-  \citep{SRS} tables, if appropriate}
-
-\wss{Remove this section if it isn't needed}
+All symbols, abbreviations and acronyms used here are the same as in the SRS document. Please refer to the relevant section of the SRS for definitions. 
 
 \newpage
 
 \pagenumbering{arabic}
 
-This document ... \wss{provide an introductory blurb and roadmap of the
-  Verification and Validation plan}
+A Verification and Validation (V\&V) plan is a comprehensive guide outlining the goals, scope, techniques, and standards for confirming and validating a software product. 
+Verification ensures that the software aligns with specified requirements and design criteria, while validation confirms that it fulfills user needs and expectations. 
+This plan is crucial for maintaining software, dependability, quality, and functionality, and for identifying and resolving issues before release.
+
+The following document presents the V\&V plan for \progname. It begins with the general information in Section 2, followed by a detailed discussion of the methods to achieve these objectives in Section 3. Finally, Section 4 provides the test descriptions.
 
 \section{General Information}
 
 \subsection{Summary}
 
-\wss{Say what software is being tested.  Give its name and a brief overview of
-  its general functions.}
+The software to be tested is \progname. It can be used to simulate a continuous cellular automaton, allowing simulation parameters to be modified on the fly. 
+In this way, the user can assess the effect of his modifications on the cell automaton, its evolution and its environment.
 
 \subsection{Objectives}
 
-\wss{State what is intended to be accomplished.  The objective will be around
-  the qualities that are most important for your project.  You might have
-  something like: ``build confidence in the software correctness,''
-  ``demonstrate adequate usability.'' etc.  You won't list all of the qualities,
-  just those that are most important.}
+The aim is to check the accuracy of the software, in the sense that the modifications applied to the simulation must be faithful to the modifications made by the user. 
+Also, the graphical representation of the functions derived from the input parameters must be correct. 
+For example, if the user wants the simulation to run twice as fast, then the simulation must run twice as fast.
+If the user wants to add a diffusion constraint to the automaton, this constraint must be taken into account.
 
-\wss{You should also list the objectives that are out of scope.  You don't have 
-the resources to do everything, so what will you be leaving out.  For instance, 
-if you are not going to verify the quality of usability, state this.  It is also 
-worthwhile to justify why the objectives are left out.}
-
-\wss{The objectives are important because they highlight that you are aware of 
-limitations in your resources for verification and validation.  You can't do everything, 
-so what are you going to prioritize?  As an example, if your system depends on an 
-external library, you can explicitly state that you will assume that external library 
-has already been verified by its implementation team.}
+The quality of the code will also be assessed using static analysis such as linter.
+The software depends on a graphics library, which will be assumed to be correct for the rest of the project. No checks will therefore be made on this library.
 
 \subsection{Challenge Level and Extras}
 
-\wss{State the challenge level (advanced, general, basic) for your project.
-Your challenge level should exactly match what is included in your problem
-statement.  This should be the challenge level agreed on between you and the
-course instructor.  You can use a pull request to update your challenge level
-(in TeamComposition.csv or Repos.csv) if your plan changes as a result of the
-VnV planning exercise.}
-
-\wss{Summarize the extras (if any) that were tackled by this project.  Extras
-can include usability testing, code walkthroughs, user documentation, formal
-proof, GenderMag personas, Design Thinking, etc.  Extras should have already
-been approved by the course instructor as included in your problem statement.
-You can use a pull request to update your extras (in TeamComposition.csv or
-Repos.csv) if your plan changes as a result of the VnV planning exercise.}
+The level of difficulty is admittedly intermediate, as a few mathematical models are involved in developing an unpredictable simulation.
+ Also, particular attention will be paid to the user interface, which increases the complexity of the project.
 
 \subsection{Relevant Documentation}
+
+// TODO 
 
 \wss{Reference relevant documentation.  This will definitely include your SRS
   and your other project documents (design documents, like MG, MIS, etc).  You
@@ -137,33 +95,19 @@ Repos.csv) if your plan changes as a result of the VnV planning exercise.}
 
 \citet{SRS}
 
+
 \wss{Don't just list the other documents.  You should explain why they are relevant and 
 how they relate to your VnV efforts.}
 
 \section{Plan}
 
-\wss{Introduce this section.  You can provide a roadmap of the sections to
-  come.}
-
-\subsection{Verification and Validation Team}
-
-\wss{Your teammates.  Maybe your supervisor.
-  You should do more than list names.  You should say what each person's role is
-  for the project's verification.  A table is a good way to summarize this information.}
+This section outlines the plan for verifying the documentation and software for \progname. 
+The key elements to be verified include are SRS, design, V\&V, and implementation.
 
 \subsection{SRS Verification Plan}
 
-\wss{List any approaches you intend to use for SRS verification.  This may
-  include ad hoc feedback from reviewers, like your classmates (like your
-  primary reviewer), or you may plan for something more rigorous/systematic.}
-
-\wss{If you have a supervisor for the project, you shouldn't just say they will
-read over the SRS.  You should explain your structured approach to the review.
-Will you have a meeting?  What will you present?  What questions will you ask?
-Will you give them instructions for a task-based inspection?  Will you use your
-issue tracker?}
-
-\wss{Maybe create an SRS checklist?}
+The SRS will be verified via feedback from a domain expert by using the SRS checklist designed by Dr.Smith. The feedback will be collected by an issue tracker.
+The author will be responsible for dealing with each issue by discussing it with the sender and applying a corrective measure or justifying its absence.
 
 \subsection{Design Verification Plan}
 
@@ -175,67 +119,28 @@ issue tracker?}
 
 \subsection{Verification and Validation Plan Verification Plan}
 
-\wss{The verification and validation plan is an artifact that should also be
-verified.  Techniques for this include review and mutation testing.}
-
-\wss{The review will include reviews by your classmates}
-
-\wss{Create a checklists?}
+The V\&V Plan will be verified via feedback from a domain expert by using the V\&V checklist designed by Dr.Smith. The feedback will be collected by an issue tracker.
+The author will be responsible for dealing with each issue by discussing it with the sender and applying a corrective measure or justifying its absence.
 
 \subsection{Implementation Verification Plan}
 
-\wss{You should at least point to the tests listed in this document and the unit
-  testing plan.}
-
-\wss{In this section you would also give any details of any plans for static
-  verification of the implementation.  Potential techniques include code
-  walkthroughs, code inspection, static analyzers, etc.}
-
-\wss{The final class presentation in CAS 741 could be used as a code
-walkthrough.  There is also a possibility of using the final presentation (in
-CAS741) for a partial usability survey.}
+Verification of the implementation will be carried out by manual review and application of the unit tests listed below. 
+Their results will be compared with those expected and potential differences will be justified.
+Automatic tests will also be used.
 
 \subsection{Automated Testing and Verification Tools}
 
-\wss{What tools are you using for automated testing.  Likely a unit testing
-  framework and maybe a profiling tool, like ValGrind.  Other possible tools
-  include a static analyzer, make, continuous integration tools, test coverage
-  tools, etc.  Explain your plans for summarizing code coverage metrics.
-  Linters are another important class of tools.  For the programming language
-  you select, you should look at the available linters.  There may also be tools
-  that verify that coding standards have been respected, like flake9 for
-  Python.}
-
-\wss{If you have already done this in the development plan, you can point to
-that document.}
-
-\wss{The details of this section will likely evolve as you get closer to the
-  implementation.}
+The automatic tests will be carried out mainly by the pylint tool, which enables static verification of the code, in particular to check that it complies with the PEP8 python programming standard.
+Pylint can also be used to check good code practices such as function atomicity and execution consistency, and can be used to optimise performance.
+The use of pylint will be incorporated into the project's workflow and continuous integration.
 
 \subsection{Software Validation Plan}
 
-\wss{If there is any external data that can be used for validation, you should
-  point to it here.  If there are no plans for validation, you should state that
-  here.}
-
-\wss{You might want to use review sessions with the stakeholder to check that
-the requirements document captures the right requirements.  Maybe task based
-inspection?}
-
-\wss{For those capstone teams with an external supervisor, the Rev 0 demo should 
-be used as an opportunity to validate the requirements.  You should plan on 
-demonstrating your project to your supervisor shortly after the scheduled Rev 0 demo.  
-The feedback from your supervisor will be very useful for improving your project.}
-
-\wss{For teams without an external supervisor, user testing can serve the same purpose 
-as a Rev 0 demo for the supervisor.}
-
-\wss{This section might reference back to the SRS verification section.}
+As part of this project, the software will be verified by comparing the resulting simulations with those of other continuous cellular automaton simulation software.
 
 \section{System Tests}
 
-\wss{There should be text between all headings, even if it is just a roadmap of
-the contents of the subsections.}
+The following section presents the tests to which the functional and non-functional requirements will be subjected, as well as a traceability matrix.
 
 \subsection{Tests for Functional Requirements}
 
@@ -375,11 +280,7 @@ needs to be well-documented, with meaningful names for all of the tests.}
 
 \subsection{Unit Testing Scope}
 
-\wss{What modules are outside of the scope.  If there are modules that are
-  developed by someone else, then you would say here if you aren't planning on
-  verifying them.  There may also be modules that are part of your software, but
-  have a lower priority for verification than others.  If this is the case,
-  explain your rationale for the ranking of module importance.}
+As previously stated, the graphics library is assumed to be correct. Thus, no unit tests will be imposed on it. Unit tests are therefore limited to what the author has implemented.
 
 \subsection{Tests for Functional Requirements}
 
@@ -501,29 +402,5 @@ Their values are defined in this section for easy maintenance.
 
 \wss{This is a section that would be appropriate for some projects.}
 
-\newpage{}
-\section*{Appendix --- Reflection}
-
-\wss{This section is not required for CAS 741}
-
-The information in this section will be used to evaluate the team members on the
-graduate attribute of Lifelong Learning.
-
-\input{../Reflection.tex}
-
-\begin{enumerate}
-  \item What went well while writing this deliverable? 
-  \item What pain points did you experience during this deliverable, and how
-    did you resolve them?
-  \item What knowledge and skills will the team collectively need to acquire to
-  successfully complete the verification and validation of your project?
-  Examples of possible knowledge and skills include dynamic testing knowledge,
-  static testing knowledge, specific tool usage, Valgrind etc.  You should look to
-  identify at least one item for each team member.
-  \item For each of the knowledge areas and skills identified in the previous
-  question, what are at least two approaches to acquiring the knowledge or
-  mastering the skill?  Of the identified approaches, which will each team
-  member pursue, and why did they make this choice?
-\end{enumerate}
 
 \end{document}

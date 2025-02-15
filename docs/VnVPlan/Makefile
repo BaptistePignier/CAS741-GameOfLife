@@ -6,14 +6,17 @@ TEX=pdflatex
 BIBTEX=bibtex
 BUILDTEX=$(TEX) $(PROJECT).tex
 
-all:
+all: clean-all build clean
+
+
+build:
 	$(BUILDTEX)
-	$(BIBTEX) $(PROJECT)
 	$(BUILDTEX)
 	$(BUILDTEX)
 
 clean-all:
-	rm -f *.dvi *.log *.bak *.aux *.bbl *.blg *.idx *.ps *.eps *.pdf *.toc *.out *~
-
+	rm -f *.dvi *.log *.bak *.aux *.bbl *.blg *.idx *.ps *.eps *.toc *.out *~ 
+	rm VnVPlan.pdf
+	
 clean:
-	rm -f *.log *.bak *.aux *.bbl *.blg *.idx *.toc *.out *.lof *.lot *~
+	rm -f *.log *.bak *.aux *.bbl *.blg *.idx *.toc *.out *.synctex.gz *~ *.lof *.lot
