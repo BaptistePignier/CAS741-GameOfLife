@@ -127,7 +127,7 @@
 
 \begin{document}
 
-\title{Software Requirements Specification for \progname : An advanced version of the Conway's Game of Life} 
+\title{Software Requirements Specification for \progname : An Advanced Version of Conway's Game of Life} 
 \author{\authname}
 \date{\today}
 	
@@ -190,10 +190,10 @@ No special symbols will be used
 
 \section{Introduction}
 
-Conway's Game of Life is the result of applying simple rules of evolution.
+Conway's Game of Life [ \cite{gardner1970life} ] is the result of applying simple rules of evolution.
 It allows the observation of an emerging phenomenon called cellular automaton.
 These cellular automata can be made more complex by making the rules of evolution more complex to observe more complex structure.
-
+For example, evolutionary rules can be more permissive by allowing the death or birth of a cell under several conditions.
 This section will develop the characteristics of the SRS document, more than those of the project itself.
 
 \subsection{Purpose of Document}
@@ -213,7 +213,7 @@ The presentation of assumptions is therefore not applicable to this project.
 
 Reviewers of this document should have undergraduate mathematical knowledge as well as a 
 good understanding of the physical approximations that will be implemented.
-He will also need to be aware of the different libraries used for this project.
+He will also need to know the graphics libraries used for this project.
 
 \subsection{Organization of Document}
 
@@ -241,8 +241,7 @@ characteristics and lists the system constraints.
 \begin{itemize}
 \item User Responsibilities:
 \begin{itemize}
-\item The user will have no responsibility for the data they transmits to the system since they will be included in a range of values 
-that the system will provide him.
+\item The user's sole responsibility is to choose values for the parameters from those proposed by the interface.
 \end{itemize}
 \item \progname{} Responsibilities:
 \begin{itemize}
@@ -260,7 +259,7 @@ All useful information will be provided by the graphical window for selecting pa
 
 \subsection{System Constraints}
 
-No system constraints are identified for this project, as long as its requirements are met.
+No system constraints are identified for this project.
 
 \section{Specific System Description}
 
@@ -281,7 +280,7 @@ easier to correctly understand the requirements:
 
 \begin{itemize}
 
-\item A cell : A portion of a display area that contains one or more values
+\item A cell : A portion of a display area that contains one or more numbers that represent its value(s).t
 
 \item The grid : A cell grid as small as possible to simulate a continuous space, such as a computer screen with pixel. The dimensions of this grid are as large as desired.
 
@@ -360,6 +359,7 @@ no assumptions of physical simplification will be made. Therefore, this section 
 % #5 description
 {
   This formula will be used for applying the growth and neighbourhood function on a cell.
+  $A$ is the amplitude of the curve. $\mu$ and $\sigma$ define the shape of the curve.
 }
 % #6 Notes
 {
@@ -504,17 +504,17 @@ The goal \gsref{G_GFCT} are solved by \iref{GFCT}.
   \hline
   Input& $D_u$,$D_v$, $u_t$, $v_t$, $F$, $k$\\
   \hline
-  Output& $u_{t+1} = D_u \nabla^2 u_t - u_t \cdot v_t^2 + F(1 - u_t)$ \\
+  Output& $u_{t+1} = u_t + D_u \cdot \nabla^2 u_t + u_t \cdot v_t^2 + F(1 - u_t)$ \\
   &       $v_{t+1} = D_v \nabla^2 v_t + u_t \cdot v_t^2 - (F + k)v_t$ \\
   \hline
   Description&$D_u$ and $D_v$ are the diffusion rate for $u$ and $v$.\\
   & $u_t$ and $v_t$ are the concentrations of elements $u$ and $v$ at time $t$\\
-  & We will use the Gray-Scott model to implement the diffusion reaction.
+  & $F$ is a real number that represents the feed rate and $k$ is a real number that represents the kill rate.
   \\
   \hline
-  Sources& https://www.karlsims.com/rd.html \\
+  Sources& \url{https://visualpde.com/nonlinear-physics/gray-scott.html} \\
   \hline
-  Ref.\ By & None\\
+  Ref.\ By & \ref{TM:LO} \ref{TM:NL} \\
   \hline
 \end{tabular}
 \end{minipage}\\
@@ -539,7 +539,7 @@ The goal \gsref{G_GFCT} are solved by \iref{GFCT}.
   \hline
   Sources&  None \\
   \hline
-  Ref.\ By & None\\
+  Ref.\ By & \ref{TM:GF} \\
   \hline
 \end{tabular}
 \end{minipage}\\
@@ -565,7 +565,7 @@ qualities that the software is expected to exhibit.
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] The system shall accept input data from the user before the simulation starts
 
-\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] The system must allow modification of input data during simulation
+\item[R\refstepcounter{reqnum}\thereqnum \label{R_Inputs}:] The system must allow change of values of input data during simulation
 
 \item[R\refstepcounter{reqnum}\thereqnum \label{R_Selection}:] The parameter selection interface graphically displays the impact of the entered values on the functions used by the simulation.
 
@@ -580,9 +580,9 @@ qualities that the software is expected to exhibit.
 \noindent \begin{itemize}
 
 \item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Accuracy}:]
-  \textbf{Accuracy} The accuracy of the simulation must be such that no display inaccuracy can be detected.
+  \textbf{Accuracy} The accuracy of the simulation must be such that no display inaccuracy can be detected by the user.
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Usability}:] \textbf{Usability} All users should be able to use this software easily.
+\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Usability}:] \textbf{Usability} All users should be able to use this software without external documentation.
 
 \item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Maintainability}:]
   \textbf{Maintainability} The effort required to make any of the likely
@@ -590,14 +590,13 @@ qualities that the software is expected to exhibit.
     development time.
 
 \item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Portability}:]
-  \textbf{Portability} This program should run on all operating systems supported by the libraries used.
+  \textbf{Portability} This program should run on all operating systems.
 
 \end{itemize}
 
 \subsection{Rationale}
 
-It is clear that significant mathematical and physics skills are required to simulate a biologically accurate cellular automaton development environment. 
-Not having such skills, I limit myself to a basic but correct and useful implementation of a cellular automaton simulation.
+Since the projet don't have scope decision, assumption or constraints, this section is not relevant.
 
 \section{Likely Changes}    
 
@@ -662,5 +661,9 @@ Table~\ref{Table:R_trace} shows the dependencies of instance models and requirem
   \label{Table:Values}
   \end{table}
 
+
+\bibliographystyle {plainnat}
+\bibliography {../../refs/References}
+  
 
 \end{document}
