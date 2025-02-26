@@ -345,102 +345,115 @@ no assumptions of physical simplification will be made. Therefore, this section 
 
 \subsubsection{Theoretical Models}\label{sec_theoretical}
 
-No additional assumptions will be made to modify the equations used.
-As such, the models are described in section 4.2.5. This section is not relevant.
+~\newline
+
+\noindent
+\deftheory
+% #2 refname of theory
+{TM:GF}
+% #3 label
+{Gauss function}
+% #4 equation
+{
+  $G(x) = A \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)$
+}
+% #5 description
+{
+  This formula will be used for applying the growth and neighbourhood function on a cell.
+}
+% #6 Notes
+{
+None.
+}
+% #7 Source
+{
+  \url{https://en.wikipedia.org/wiki/Gaussian_function}
+}
+% #8 Referenced by
+{
+  
+}
+% #9 Preconditions
+{
+None
+}
+% #1 derivation - not applicable by default
+{}
+
+~\newline
+
+\noindent
+\deftheory
+% #2 refname of theory
+{TM:LO}
+% #3 label
+{Laplacian Operator}
+% #4 equation
+{
+  $\nabla^2 u_{i,j} = u_{i+1,j} + u_{i-1,j} + u_{i,j+1} + u_{i,j-1} - 4u_{i,j}$
+}
+% #5 description
+{
+  This formula is the discrete approximation of the second derivative. This model models the interactions between two concentration values. It will be used only if the simulation includes multiple channels.
+}
+% #6 Notes
+{
+None.
+}
+% #7 Source
+{
+  \url{https://en.wikipedia.org/wiki/Finite_difference\#Multivariate_finite_differences}
+}
+% #8 Referenced by
+{
+  
+}
+% #9 Preconditions
+{
+None
+}
+% #1 derivation - not applicable by default
+{}
+
+
+\noindent
+\deftheory
+% #2 refname of theory
+{TM:NL}
+% #3 label
+{Reaction-Diffusion equation}
+% #4 equation
+{
+  $\frac{\partial u}{\partial t} = D_u \nabla^2 u + f(u, v)$
+}
+% #5 description
+{
+  This model models the interactions between two concentration values. 
+  It will be used only if the simulation includes multiple channels.
+}
+% #6 Notes
+{
+None.
+}
+% #7 Source
+{
+  \url{https://www.karlsims.com/rd.html}
+}
+% #8 Referenced by
+{
+  
+}
+% #9 Preconditions
+{
+None
+}
+% #1 derivation - not applicable by default
+{}
 
 \subsubsection{General Definitions}\label{sec_gendef}
 
-This section collects the laws and equations that will be used in building the
-instance models.
-
-~\newline
-
-\noindent
-\begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-\hline
-\rowcolor[gray]{0.9}
-Number& GD\refstepcounter{defnum}\thedefnum \label{GAUSS}\\
-\hline
-Label &\bf Gauss function \\
-\hline
-% Units&$MLt^{-3}T^0$\\
-% \hline
-SI Units& N/A\\
-\hline
-Equation& 
-$G(x) = A \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)$\\
-\hline
-Description & 
-This formula will be used for applying the growth and neighbourhood function on a cell. \\
-\hline
-  Source & \url{https://en.wikipedia.org/wiki/Gaussian_function} \\
-  \hline
-  Ref.\ By & None\\
-  \hline
-\end{tabular}
-\end{minipage}\\
-
-~\newline
-
-\noindent
-\begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-\hline
-\rowcolor[gray]{0.9}
-Number& GD\refstepcounter{defnum}\thedefnum \label{LO}\\
-\hline
-Label &\bf Laplacian Operator \\
-\hline
-% Units&$MLt^{-3}T^0$\\
-% \hline
-SI Units& N/A\\
-\hline
-Equation& 
-$\nabla^2 u_{i,j} = u_{i+1,j} + u_{i-1,j} + u_{i,j+1} + u_{i,j-1} - 4u_{i,j}$\\
-\hline
-Description & 
-This formula is the discrete approximation of the second derivative. This model models the interactions between two concentration values. It will be used only if the simulation includes multiple channels.\\
-\hline
-  Source & \url{https://en.wikipedia.org/wiki/Finite_difference#Multivariate_finite_differences} \\
-  \hline
-  Ref.\ By & None\\
-  \hline
-\end{tabular}
-\end{minipage}\\
-
-~\newline
-
-\noindent
-\begin{minipage}{\textwidth}
-\renewcommand*{\arraystretch}{1.5}
-\begin{tabular}{| p{\colAwidth} | p{\colBwidth}|}
-\hline
-\rowcolor[gray]{0.9}
-Number& GD\refstepcounter{defnum}\thedefnum \label{NL}\\
-\hline
-Label &\bf Reaction-Diffusion equation \\
-\hline
-% Units&$MLt^{-3}T^0$\\
-% \hline
-SI Units& N/A\\
-\hline
-Equation& 
-$\frac{\partial u}{\partial t} = D_u \nabla^2 u + f(u, v)$
- \\
-\hline
-Description & This model models the interactions between two concentration values. 
-It will be used only if the simulation includes multiple channels.\\
-
-\hline
-  Source & \url{https://www.karlsims.com/rd.html} \\
-  \hline
-  Ref.\ By & None\\
-  \hline
-\end{tabular}
-\end{minipage}\\
+No additional assumptions will be made to modify the equations used.
+As such, the models are described in section \ref{sec_theoretical}. This section is not relevant.
 
 \subsubsection{Data Definitions}\label{sec_datadef}
 
