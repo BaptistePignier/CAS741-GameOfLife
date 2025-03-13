@@ -3,6 +3,7 @@ from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy import signal
 from scipy.signal import convolve2d
 
 # --- Initialisation et configuration de la fenêtre ---
@@ -14,7 +15,7 @@ cell_size = 10              # Taille initiale d'une cellule (en unités de donn�
 x_offset = 0                # Décalage initial en x (origine de l'affichage)
 y_offset = 0                # Décalage initial en y
 sim_size = N * cell_size    # Taille totale de la zone de simulation (en unités de données)
-panel_width = 100           # Largeur du panneau de contrôle
+panel_width = 200           # Largeur du panneau de contrôle
 speed = 10                  # Vitesse de simulation
 
 # Définir la taille de la fenêtre (la zone de simulation reste fixe en pixels)
@@ -53,7 +54,7 @@ def update(grid):
     return new_grid.astype(int)
 
 def update_plot():
-    global grid
+    global grid, running
     grid = update(grid)
     grid_display.set_data(grid)
     canvas.draw()
@@ -84,7 +85,8 @@ def update_speed(val):
     speed = int(float(val))
 
 def on_closing():
-    toggle_simulation()
+    global running
+    running = False
     root.quit()
     root.destroy()
 
@@ -105,6 +107,44 @@ reset_button.pack(pady=10, fill='x')
 speed_slider = ttk.Scale(control_frame, from_=1, to=1000, orient='horizontal', command=update_speed)
 speed_slider.set(speed)  # Valeur initiale
 speed_slider.pack(pady=10, fill='x')
+
+# Ajouter une visualisation de fonction
+function_fig, function_ax = plt.subplots(figsize=(2, 2))
+function_ax.set_title('α⋅exp(-βx²)')
+
+# Paramètres initiaux de la gaussienne
+x = np.linspace(-2, 2, 100)
+function_line, = function_ax.plot(x, np.exp(-x**2))
+function_ax.set_ylim(-0.2, 1.2)
+function_ax.set_xticks([])
+function_ax.set_yticks([])
+
+function_canvas = FigureCanvasTkAgg(function_fig, master=control_frame)
+function_canvas.get_tk_widget().pack(pady=10, fill='x')
+
+# Sliders pour les paramètres de la gaussienne
+ttk.Label(control_frame, text="α (amplitude)").pack(pady=(10,0))
+alpha_slider = ttk.Scale(control_frame, from_=0.1, to=2.0, orient='horizontal')
+alpha_slider.set(1.0)
+alpha_slider.pack(pady=(0,10), fill='x')
+
+ttk.Label(control_frame, text="β (largeur)").pack(pady=(10,0))
+beta_slider = ttk.Scale(control_frame, from_=0.1, to=3.0, orient='horizontal')
+beta_slider.set(1.0)
+beta_slider.pack(pady=(0,10), fill='x')
+
+def update_gaussian(val=None):
+    x = np.linspace(-2, 2, 100)
+    alpha = alpha_slider.get()
+    beta = beta_slider.get()
+    y = alpha * np.exp(-beta * x**2)
+    function_line.set_ydata(y)
+    function_ax.set_ylim(-0.2, alpha * 1.2)
+    function_canvas.draw()
+
+# Connecter la fonction de mise à jour aux sliders
+alpha_slider.configure(command=update_gaussian)
+beta_slider.configure(command=update_gaussian)
 
 running = False
 
