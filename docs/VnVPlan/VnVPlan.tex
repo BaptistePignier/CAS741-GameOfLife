@@ -85,19 +85,11 @@ The level of difficulty is admittedly intermediate, as a few mathematical models
 
 \subsection{Relevant Documentation}
 
-// TODO 
-
-\wss{Reference relevant documentation.  This will definitely include your SRS
-  and your other project documents (design documents, like MG, MIS, etc).  You
-  can include these even before they are written, since by the time the project
-  is done, they will be written.  You can create BibTeX entries for your
-  documents and within those entries include a hyperlink to the documents.}
+The SRS is crucial for VnV as it outlines what the software is supposed to do. It defines the functional and non-functional requirements that the software must meet.
+During verification, we check that the software meets these requirements. Validation ensures that the software fulfills its intended use as specified in the SRS.
 
 \citet{SRS}
 
-
-\wss{Don't just list the other documents.  You should explain why they are relevant and 
-how they relate to your VnV efforts.}
 
 \section{Plan}
 
@@ -110,12 +102,6 @@ The SRS will be verified via feedback from a domain expert by using the SRS chec
 The author will be responsible for dealing with each issue by discussing it with the sender and applying a corrective measure or justifying its absence.
 
 \subsection{Design Verification Plan}
-
-\wss{Plans for design verification}
-
-\wss{The review will include reviews by your classmates}
-
-\wss{Create a checklists?}
 
 \subsection{Verification and Validation Plan Verification Plan}
 
@@ -143,124 +129,91 @@ As part of this project, the software will be verified by comparing the resultin
 The following section presents the tests to which the functional and non-functional requirements will be subjected, as well as a traceability matrix.
 
 \subsection{Tests for Functional Requirements}
-
-\wss{Subsets of the tests may be in related, so this section is divided into
-  different areas.  If there are no identifiable subsets for the tests, this
-  level of document structure can be removed.}
-
-\wss{Include a blurb here to explain why the subsections below
-  cover the requirements.  References to the SRS would be good here.}
-
-\subsubsection{Area of Testing1}
-
-\wss{It would be nice to have a blurb here to explain why the subsections below
-  cover the requirements.  References to the SRS would be good here.  If a section
-  covers tests for input constraints, you should reference the data constraints
-  table in the SRS.}
 		
-\paragraph{Title for Test}
+\paragraph{Test on inputs}
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item{Simulation test\\}
 
-Control: Manual versus Automatic
+Control: Manual
 					
-Initial State: 
+Initial State: Initially, the grid will be in any state
 					
-Input: 
+Input: entries will be those corresponding to the 3B2S rule
 					
-Output: \wss{The expected result for the given inputs.  Output is not how you
-are going to return the results of the test.  The output is the expected
-result.}
+Output: The output will be the simulation as it would have been with the same grid on a classic Game of Life simulator.
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
-					
-How test will be performed: 
-					
-\item{test-id2\\}
+How test will be performed:
 
-Control: Manual versus Automatic
-					
-Initial State: 
-					
-Input: 
-					
-Output: \wss{The expected result for the given inputs}
+Inputs will be entered manually, and output will be compared visually with that of another Game of Life simulation software.
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
+\item{Function test\\}
 
-How test will be performed: 
+Control: Manual
+					
+Initial State: The function graphs will be in any state
+
+Input: The input will be an arbitrary modification of the function parameters
+					
+Output: The output will be the modified graph of the function
+
+How test will be performed:
+
+Inputs will be entered manually, and output will be compared visually with that of another function visualization software such as Geogebra.
 
 \end{enumerate}
-
-\subsubsection{Area of Testing2}
-
-...
 
 \subsection{Tests for Nonfunctional Requirements}
-
-\wss{The nonfunctional requirements for accuracy will likely just reference the
-  appropriate functional tests from above.  The test cases should mention
-  reporting the relative error for these tests.  Not all projects will
-  necessarily have nonfunctional requirements related to accuracy.}
-
-\wss{For some nonfunctional tests, you won't be setting a target threshold for
-passing the test, but rather describing the experiment you will do to measure
-the quality for different inputs.  For instance, you could measure speed versus
-the problem size.  The output of the test isn't pass/fail, but rather a summary
-table or graph.}
-
-\wss{Tests related to usability could include conducting a usability test and
-  survey.  The survey will be in the Appendix.}
-
-\wss{Static tests, review, inspections, and walkthroughs, will not follow the
-format for the tests given below.}
-
-\wss{If you introduce static tests in your plan, you need to provide details.
-How will they be done?  In cases like code (or document) walkthroughs, who will
-be involved? Be specific.}
-
-\subsubsection{Area of Testing1}
 		
-\paragraph{Title for Test}
+\paragraph{Nonfunctional Test}
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item{Usability test\\}
 
-Type: Functional, Dynamic, Manual, Static etc.
+Type: Manual
 					
-Initial State: 
+Initial State: The software will be launched for the first time, in an empty state.
 					
-Input/Condition: 
+Condition: An inexperienced third party will be asked to run a simulation and modify its parameters, without any further guidance.
 					
-Output/Result: 
+Result: The test will be passed if the third party successfully completes the task.
 					
-How test will be performed: 
-					
-\item{test-id2\\}
+\item{Portability test\\}
 
-Type: Functional, Dynamic, Manual, Static etc.
+Type: Manual
 					
-Initial State: 
+Initial State: The software is to be downloaded onto a machine running any operating system.
 					
-Input: 
+Condition: The software will be started and the simulation run.
 					
-Output: 
+Result : The test will be passed if the simulation runs correctly, with no problems attributable to the operating system. 
 					
-How test will be performed: 
 
 \end{enumerate}
 
-\subsubsection{Area of Testing2}
-
-...
 
 \subsection{Traceability Between Test Cases and Requirements}
 
-\wss{Provide a table that shows which test cases are supporting which
-  requirements.}
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+  \hline        
+    & Simulation test & Function test & Usability test &  Portability test\\
+  \hline
+  R1   & X &   &   & \\ \hline
+  R2   & X &   &   &\\ \hline
+  R4   & X &   &   & \\ \hline
+  R3   &   & X &   & \\ \hline
+  NFR2 &   &   & X & \\ \hline
+  NFR4 &   &   &   & X\\
+
+  \hline
+  \end{tabular}
+  \caption{Traceability Matrix Showing the Connections Between Test Cases and Requirements}
+  \label{Table:trace}
+  \end{table}
 
 \section{Unit Test Description}
 

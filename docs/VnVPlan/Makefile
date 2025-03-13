@@ -11,6 +11,7 @@ all: clean-all build clean
 
 build:
 	$(BUILDTEX)
+	$(BIBTEX) $(PROJECT)
 	$(BUILDTEX)
 	$(BUILDTEX)
 
