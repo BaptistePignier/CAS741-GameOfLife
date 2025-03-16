@@ -46,8 +46,7 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+03/16/25 & 1.0 & First Release\\
 \bottomrule
 \end{tabularx}
 
@@ -74,7 +73,8 @@ This section records information for easy reference.
   SRS & Software Requirements Specification\\
   \progname & Explanation of program name\\
   UC & Unlikely Change \\
-  \wss{etc.} & \wss{...}\\
+  US & User settings \\
+  FI & Functionnal inputs \\
   \bottomrule
 \end{tabular}\\
 
@@ -159,14 +159,13 @@ change.
 \begin{description}
 \item[\refstepcounter{acnum} \actheacnum \label{acHardware}:] The specific
   hardware on which the software is running.
-\item[\refstepcounter{acnum} \actheacnum \label{acInput}:] The format of the
-  initial input data.
-\item ...
-\end{description}
+\item[\refstepcounter{acnum} \actheacnum \label{acLangage}:] The programming language used for the implementation.
 
-\wss{Anticipated changes relate to changes that would be made in requirements,
-design or implementation choices.  They are not related to changes that are made
-at run-time, like the values of parameters.}
+\item[\refstepcounter{acnum} \actheacnum \label{acStochastic}:] Adding a stochastic evolution feature.
+
+\item[\refstepcounter{acnum} \actheacnum \label{acInterface}:] The arrangement of graphic components on the simulation interface.
+
+\end{description}
 
 \subsection{Unlikely Changes} \label{SecUchange}
 
@@ -179,8 +178,10 @@ decisions will be changed.
 
 \begin{description}
 \item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Input/Output devices
-  (Input: File and/or Keyboard, Output: File, Memory, and/or Screen).
-\item ...
+  (Input: Keyboard, Output: Memory and Screen).
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] The geometry of the simulation will remain a two-dimensional grid.
+
 \end{description}
 
 \section{Module Hierarchy} \label{SecMH}
@@ -192,7 +193,16 @@ actually be implemented.
 
 \begin{description}
 \item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
-\item ...
+\item [\refstepcounter{mnum} \mthemnum \label{mUM}:] US Model Module
+\item [\refstepcounter{mnum} \mthemnum \label{mUV}:] US View Module
+\item [\refstepcounter{mnum} \mthemnum \label{mUC}:] US Control Module
+\item [\refstepcounter{mnum} \mthemnum \label{mFM}:] FI Model Module
+\item [\refstepcounter{mnum} \mthemnum \label{mFV}:] FI View Module
+\item [\refstepcounter{mnum} \mthemnum \label{mFC}:] FI Control Module
+\item [\refstepcounter{mnum} \mthemnum \label{mSM}:] Simulation Model Module
+\item [\refstepcounter{mnum} \mthemnum \label{mSV}:] Simulation View Module
+\item [\refstepcounter{mnum} \mthemnum \label{mSC}:] Simulation Control Module
+\item [\refstepcounter{mnum} \mthemnum \label{mWM}:] Window Manager Module
 \end{description}
 
 
@@ -206,19 +216,20 @@ actually be implemented.
 {Hardware-Hiding Module} & ~ \\
 \midrule
 
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding Module} & ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\ 
-& ?\\
+\multirow{7}{0.3\textwidth}{Behaviour-Hiding Module}
+& \mref{mUV}\\
+& \mref{mUC}\\
+& \mref{mFV}\\
+& \mref{mFC}\\
+& \mref{mSV}\\
+& \mref{mSC}\\ 
+& \mref{mWM}\\
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision Module} & {?}\\
-& ?\\
-& ?\\
+\multirow{3}{0.3\textwidth}{Software Decision Module}
+& \mref{mUM}\\
+& \mref{mFM}\\
+& \mref{mSM}\\
 \bottomrule
 
 \end{tabular}
@@ -231,13 +242,6 @@ actually be implemented.
 The design of the system is intended to satisfy the requirements developed in
 the SRS. In this stage, the system is decomposed into modules. The connection
 between requirements and modules is listed in Table~\ref{TblRT}.
-
-\wss{The intention of this section is to document decisions that are made
-  ``between'' the requirements and the design.  To satisfy some requirements,
-  design decisions need to be made.  Rather than make these decisions implicit,
-  they are explicitly recorded here.  For instance, if a program has security
-  requirements, a specific design decision may be made to satisfy those
-  requirements with a password.}
 
 \section{Module Decomposition} \label{SecMD}
 
@@ -278,18 +282,68 @@ to be implemented.
 \item[Implemented By:] --
 \end{description}
 
-\subsubsection{Input Format Module (\mref{mInput})}
+\subsubsection{US View Module (\mref{mUV})}
 
 \begin{description}
-\item[Secrets:]The format and structure of the input data.
-\item[Services:]Converts the input data into the data structure used by the
-  input parameters module.
-\item[Implemented By:] [Your Program Name Here]
-\item[Type of Module:] [Record, Library, Abstract Object, or Abstract Data Type]
-  [Information to include for leaf modules in the decomposition by secrets tree.]
+\item[Secrets:]The view of the settings entered by the user
+\item[Services:]Displays user settings selection objects on the GUI.
+\item[Implemented By:] \progname
+\item[Type of Module:] Abstract Object
 \end{description}
 
-\subsubsection{Etc.}
+\subsubsection{US Control Module (\mref{mUC})}
+
+\begin{description}
+\item[Secrets:]Management of settings entered by the user
+\item[Services:]Retrieves the value of user settings selectors and makes them available for calculated functional inputs.
+\item[Implemented By:] \progname
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\subsubsection{FI View Module (\mref{mFV})}
+
+\begin{description}
+\item[Secrets:]The view of the calculated functional inputs.
+\item[Services:]Displays the result of calculated functional inputs on the GUI.
+\item[Implemented By:] \progname
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\subsubsection{FI Control Module (\mref{mFC})}
+
+\begin{description}
+\item[Secrets:]Management of the calculated functional inputs.
+\item[Services:]Retrieves user settings and makes the calculated functional inputs available to the simulation.
+\item[Implemented By:] \progname
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\subsubsection{Simulation View Module (\mref{mSV})}
+
+\begin{description}
+\item[Secrets:]The view of the simulation result.
+\item[Services:]Displays the simulation result on the GUI.
+\item[Implemented By:] \progname
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\subsubsection{Simulation Control Module (\mref{mSC})}
+
+\begin{description}
+\item[Secrets:]Management of the simulation.
+\item[Services:]Manages the simulation animations (play/pause/reset/zoom)
+\item[Implemented By:] \progname
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\subsubsection{Window Manager Module (\mref{mWM})}
+
+\begin{description}
+\item[Secrets:]Management of the GUI.
+\item[Services:]Manages the launching and stopping of the software and the arrangement of the different views on the graphical interface
+\item[Implemented By:] \progname
+\item[Type of Module:] Abstract Object
+\end{description}
 
 
 \subsection{Software Decision Module}
@@ -299,13 +353,36 @@ to be implemented.
   facts, or programming considerations. The secrets of this module are
   \emph{not} described in the SRS.
 \item[Services:] Includes data structure and algorithms used in the system that
-  do not provide direct interaction with the user. 
-  % Changes in these modules are more likely to be motivated by a desire to
-  % improve performance than by externally imposed changes.
+  do not provide direct interaction with the user.
 \item[Implemented By:] --
 \end{description}
 
-\subsubsection{Etc.}
+\subsubsection{US Model Module (\mref{mUM})}
+
+\begin{description}
+\item[Secrets:]Representation of user settings.
+\item[Services:]Validates and saves user settings values.
+\item[Implemented By:] \progname
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\subsubsection{FI Model Module (\mref{mFM})}
+
+\begin{description}
+\item[Secrets:]Representation of calculated functional inputs.
+\item[Services:]Validates, calculate and saves functional inputs.
+\item[Implemented By:] \progname
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\subsubsection{Simulation Model Module (\mref{mSM})}
+
+\begin{description}
+\item[Secrets:]Representation of the simulation state.
+\item[Services:]Saves the simulation state and calculate the next one.
+\item[Implemented By:] \progname
+\item[Type of Module:] Abstract Object
+\end{description}
 
 \section{Traceability Matrix} \label{SecTM}
 
@@ -320,17 +397,12 @@ requirements and between the modules and the anticipated changes.
 \toprule
 \textbf{Req.} & \textbf{Modules}\\
 \midrule
-R1 & \mref{mHH}, \mref{mInput}, \mref{mParams}, \mref{mControl}\\
-R2 & \mref{mInput}, \mref{mParams}\\
-R3 & \mref{mVerify}\\
-R4 & \mref{mOutput}, \mref{mControl}\\
-R5 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R6 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R7 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R8 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R9 & \mref{mVerifyOut}\\
-R10 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}\\
-R11 & \mref{mOutput}, \mref{mODEs}, \mref{mEnergy}, \mref{mControl}\\
+R1 & \mref{mHH}, \mref{mUC}, \mref{mUV}\\
+R2 & \mref{mUM}, \mref{mUC}, \mref{mFC}, \mref{mSC}\\
+R3 & \mref{mFM}, \mref{mFC}, \mref{mFV}, \mref{mUC}, \mref{mUV}\\
+R4 & \mref{mSM}, \mref{mSC}\\
+R5 & \mref{mSV}\\
+
 \bottomrule
 \end{tabular}
 \caption{Trace Between Requirements and Modules}
@@ -344,17 +416,9 @@ R11 & \mref{mOutput}, \mref{mODEs}, \mref{mEnergy}, \mref{mControl}\\
 \textbf{AC} & \textbf{Modules}\\
 \midrule
 \acref{acHardware} & \mref{mHH}\\
-\acref{acInput} & \mref{mInput}\\
-\acref{acParams} & \mref{mParams}\\
-\acref{acVerify} & \mref{mVerify}\\
-\acref{acOutput} & \mref{mOutput}\\
-\acref{acVerifyOut} & \mref{mVerifyOut}\\
-\acref{acODEs} & \mref{mODEs}\\
-\acref{acEnergy} & \mref{mEnergy}\\
-\acref{acControl} & \mref{mControl}\\
-\acref{acSeqDS} & \mref{mSeqDS}\\
-\acref{acSolver} & \mref{mSolver}\\
-\acref{acPlot} & \mref{mPlot}\\
+\acref{acLangage} & \mref{mUM}, \mref{mUV}, \mref{mUC}, \mref{mFM}, \mref{mFV}, \mref{mFC}, \mref{mSM}, \mref{mSV}, \mref{mSC}\\
+\acref{acStochastic} & \mref{mUM}, \mref{mSM}\\
+\acref{acInterface} & \mref{mWM}\\
 \bottomrule
 \end{tabular}
 \caption{Trace Between Anticipated Changes and Modules}
@@ -373,39 +437,31 @@ the modules. It can be seen that the graph is a directed acyclic graph
 (DAG). Each level of the hierarchy offers a testable and usable subset of the
 system, and modules in the higher level of the hierarchy are essentially simpler
 because they use modules from the lower levels.
-
-\wss{The uses relation is not a data flow diagram.  In the code there will often
-be an import statement in module A when it directly uses module B.  Module B
-provides the services that module A needs.  The code for module A needs to be
-able to see these services (hence the import statement).  Since the uses
-relation is transitive, there is a use relation without an import, but the
-arrows in the diagram typically correspond to the presence of import statement.}
-
-\wss{If module A uses module B, the arrow is directed from A to B.}
-
 \begin{figure}[H]
 \centering
-%\includegraphics[width=0.7\textwidth]{UsesHierarchy.png}
+\includegraphics[width=1\textwidth]{UsesHierarchy.png}
 \caption{Use hierarchy among modules}
 \label{FigUH}
 \end{figure}
 
-%\section*{References}
-
 \section{User Interfaces}
 
-\wss{Design of user interface for software and hardware.  Attach an appendix if
-needed. Drawings, Sketches, Figma}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{UI.png}
+  \caption{User interface}
+  \label{FigUI}
+  \end{figure}
 
 \section{Design of Communication Protocols}
 
-\wss{If appropriate}
+Communication protocols are highly dependent on the programming language used. Modules will be implemented using the object-oriented programming paradigm. 
+Therefore, information exchanges between modules will be done using getters and setters. 
+The data types exchanged will be model instances or types specific to the chosen language.
 
 \section{Timeline}
 
-\wss{Schedule of tasks and who is responsible}
-
-\wss{You can point to GitHub if this information is included there}
+The project timeline can be found on the github page. \url{https://github.com/users/BaptistePignier/projects/3}
 
 \bibliographystyle {plainnat}
 \bibliography{../../../refs/References}
