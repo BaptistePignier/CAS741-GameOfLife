@@ -1,19 +1,23 @@
 # Makefile
 # From https://danielkaes.wordpress.com/2009/03/14/compiling-latex-documents-using-makefiles/
 
-PROJECT=MG
+PROJECT=MG #SRS or CA
 TEX=pdflatex
 BIBTEX=bibtex
 BUILDTEX=$(TEX) $(PROJECT).tex
 
-all:
+all: clean-all build clean
+
+
+build:
 	$(BUILDTEX)
 	$(BIBTEX) $(PROJECT)
 	$(BUILDTEX)
 	$(BUILDTEX)
 
 clean-all:
-	rm -f *.dvi *.log *.bak *.aux *.bbl *.blg *.idx *.ps *.eps *.pdf *.toc *.out *~
-
+	rm -f *.dvi *.log *.bak *.aux *.bbl *.blg *.idx *.ps *.eps *.toc *.out *~
+	rm MG.pdf
+	
 clean:
-	rm -f *.log *.bak *.aux *.bbl *.blg *.idx *.toc *.out *.lof *.lot *~
+	rm -f *.log *.bak *.aux *.bbl *.blg *.idx *.toc *.out *.synctex.gz *~ *.lot *.lof
