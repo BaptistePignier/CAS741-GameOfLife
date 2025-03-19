@@ -22,7 +22,6 @@ class SimView:
         
         # Création du canvas Tkinter
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
-        self.canvas.get_tk_widget().grid(row=0, column=0, sticky='nsew')
         self.canvas.get_tk_widget().config(
             width=sim_size,
             height=sim_size,

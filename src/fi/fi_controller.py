@@ -2,6 +2,8 @@ class FiController:
     def __init__(self, model, view):
         self.model = model
         self.view = view
+        
+        # Affichage initial
         self.update_display()
     
     def update_parameters(self, alpha=None, beta=None):

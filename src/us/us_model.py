@@ -1,17 +1,14 @@
 class UsModel:
     def __init__(self):
         self.panel_width = 200
-        self.control_frame = None
         self.toggle_button = None
         self.reset_button = None
         self.speed_slider = None
         self.alpha_slider = None
         self.beta_slider = None
         
-    def set_widgets(self, control_frame, toggle_button, reset_button, 
-                   speed_slider, alpha_slider, beta_slider):
-        """Stocke les références aux widgets."""
-        self.control_frame = control_frame
+    def set_widgets(self, toggle_button, reset_button, speed_slider, alpha_slider, beta_slider):
+        """Stocke les références aux widgets de contrôle."""
         self.toggle_button = toggle_button
         self.reset_button = reset_button
         self.speed_slider = speed_slider

@@ -2,43 +2,34 @@ import tkinter as tk
 from tkinter import ttk
 
 class UsView:
-    def __init__(self, root, panel_width, sim_size):
-        # Création du panneau de contrôle
-        self.control_frame = ttk.Frame(root, width=panel_width, height=sim_size)
-        self.control_frame.grid(row=0, column=1, sticky='ns')
-        self.control_frame.grid_propagate(False)
-        
-        # Configuration du grid dans le control_frame
-        self.control_frame.grid_columnconfigure(0, weight=1)
-        
+    def __init__(self, control_frame):
         # Création des boutons
-        self.toggle_button = ttk.Button(self.control_frame, text="Start")
-        self.toggle_button.grid(row=0, column=0, pady=10, padx=5, sticky='ew')
+        self.toggle_button = ttk.Button(control_frame, text="Start")
+        self.reset_button = ttk.Button(control_frame, text="Reset")
         
-        self.reset_button = ttk.Button(self.control_frame, text="Reset")
-        self.reset_button.grid(row=1, column=0, pady=10, padx=5, sticky='ew')
+        # Label pour afficher la vitesse actuelle
+        self.speed_label = ttk.Label(control_frame, text="FPS : 60")
         
-        # Création du slider de vitesse
-        ttk.Label(self.control_frame, text="Vitesse de simulation").grid(row=2, column=0, pady=(10,0), padx=5)
-        self.speed_slider = ttk.Scale(self.control_frame, from_=1, to=1000, orient='horizontal')
-        self.speed_slider.set(10)
-        self.speed_slider.grid(row=3, column=0, pady=(0,10), padx=5, sticky='ew')
+        # Création du slider de vitesse (générations par seconde)
+        self.speed_slider = ttk.Scale(
+            control_frame,
+            from_=1,
+            to=200,
+            orient='horizontal',
+            command=self._update_speed_label
+        )
+        self.speed_slider.set(60)  # 60 générations par seconde par défaut
         
-        # Sliders pour les paramètres de la gaussienne
-        ttk.Label(self.control_frame, text="α (amplitude)").grid(row=4, column=0, pady=(10,0), padx=5)
-        self.alpha_slider = ttk.Scale(self.control_frame, from_=0.1, to=2.0, orient='horizontal')
+        # Création des sliders gaussiens
+        self.alpha_slider = ttk.Scale(control_frame, from_=0.1, to=2.0, orient='horizontal')
         self.alpha_slider.set(1.0)
-        self.alpha_slider.grid(row=5, column=0, pady=(0,10), padx=5, sticky='ew')
         
-        ttk.Label(self.control_frame, text="β (largeur)").grid(row=6, column=0, pady=(10,0), padx=5)
-        self.beta_slider = ttk.Scale(self.control_frame, from_=0.1, to=3.0, orient='horizontal')
+        self.beta_slider = ttk.Scale(control_frame, from_=0.1, to=3.0, orient='horizontal')
         self.beta_slider.set(1.0)
-        self.beta_slider.grid(row=7, column=0, pady=(0,10), padx=5, sticky='ew')
     
     def get_widgets(self):
         """Retourne tous les widgets importants."""
         return {
-            'control_frame': self.control_frame,
             'toggle_button': self.toggle_button,
             'reset_button': self.reset_button,
             'speed_slider': self.speed_slider,
@@ -54,11 +45,21 @@ class UsView:
         """Définit la commande du bouton reset."""
         self.reset_button.config(command=command)
     
+    def _update_speed_label(self, value):
+        """Met à jour le label de vitesse."""
+        self.speed_label.config(text=f"FPS : {int(float(value))}")
+        
     def set_speed_command(self, command):
         """Définit la commande du slider de vitesse."""
-        self.speed_slider.config(command=command)
+        # Combine la mise à jour du label avec la commande originale
+        def combined_command(value):
+            self._update_speed_label(value)
+            command(value)
+        self.speed_slider.config(command=combined_command)
     
     def set_gaussian_commands(self, alpha_command, beta_command):
         """Définit les commandes des sliders gaussiens."""
         self.alpha_slider.config(command=alpha_command)
         self.beta_slider.config(command=beta_command)
+    
+

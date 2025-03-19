@@ -1,3 +1,5 @@
+import tkinter as tk
+from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
@@ -17,8 +19,6 @@ class FiView:
         
         # Création du canvas Tkinter
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
-        if master is not None:
-            self.canvas.get_tk_widget().grid(row=3, column=0, pady=10, padx=5, sticky='ew')
     
     def update_plot(self, x_values, y_values, y_max=None):
         """Met à jour le graphe avec les nouvelles valeurs."""
@@ -31,3 +31,5 @@ class FiView:
     def get_canvas(self):
         """Retourne le widget canvas."""
         return self.canvas.get_tk_widget()
+    
+
