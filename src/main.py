@@ -6,18 +6,22 @@ from wm import WindowManager
 
 def main():
     # Configuration initiale
-    N = 500
     cell_size = 10
-    sim_size = N * cell_size
+    grid_height = 500  # Nombre de cellules en hauteur
+    grid_width = int(grid_height * 1.33)  # Ratio 4:3 pour la largeur
+    
+    # Calcul des dimensions de la fenêtre
+    sim_height = grid_height * cell_size
+    sim_width = grid_width * cell_size
     panel_width = 200
     
     # Création de la fenêtre principale et du gestionnaire de fenêtres
     root = tk.Tk()
-    window_manager = WindowManager(root, sim_size, panel_width)
+    window_manager = WindowManager(root, sim_width, panel_width)
     
     # Initialisation du MVC du jeu de la vie
-    sim_model = SimModel(size=N)
-    sim_view = SimView(root, sim_size, cell_size)
+    sim_model = SimModel(width=grid_width, height=grid_height)
+    sim_view = SimView(root, sim_width, sim_height, cell_size)
     sim_controller = SimController(sim_model, sim_view, root)
     
     # Initialisation du MVC de l'interface utilisateur

@@ -22,7 +22,7 @@ class SimController:
                 for _ in range(generations_per_update):
                     self.model.update()
             
-            # Mise à jour de l'affichage via FuncAnimation
+            # Mise à jour de l'affichage
             self.view.update_display(self.model.get_grid())
             
             # Planification de la prochaine mise à jour
@@ -32,6 +32,7 @@ class SimController:
     def toggle_simulation(self):
         """Démarre ou arrête la simulation."""
         self.running = not self.running
+        self.view.paused = not self.running
         if self.running:
             self.update()
         elif self.update_timer:
@@ -42,6 +43,7 @@ class SimController:
     def reset_simulation(self):
         """Réinitialise la simulation."""
         self.running = False
+        self.view.paused = True
         self.model.reset()
         self.view.update_display(self.model.get_grid())
     

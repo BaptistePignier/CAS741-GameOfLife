@@ -2,9 +2,14 @@ import numpy as np
 from scipy.signal import convolve2d
 
 class SimModel:
-    def __init__(self, size=500, initial_alive_prob=0.2):
-        self.size = size
-        self.grid = np.random.choice([0, 1], size*size, p=[1-initial_alive_prob, initial_alive_prob]).reshape(size, size)
+    def __init__(self, width=500, height=500, initial_alive_prob=0.2):
+        self.width = width
+        self.height = height
+        self.grid = np.random.choice(
+            [0, 1],
+            width * height,
+            p=[1-initial_alive_prob, initial_alive_prob]
+        ).reshape(height, width)  # Note: numpy utilise (rows, cols) = (height, width)
     
     def update(self):
         """Calcule la génération suivante du jeu de la vie."""
@@ -17,8 +22,11 @@ class SimModel:
     
     def reset(self, initial_alive_prob=0.2):
         """Réinitialise la grille avec une nouvelle configuration aléatoire."""
-        self.grid = np.random.choice([0, 1], self.size*self.size, 
-                                   p=[1-initial_alive_prob, initial_alive_prob]).reshape(self.size, self.size)
+        self.grid = np.random.choice(
+            [0, 1],
+            self.width * self.height,
+            p=[1-initial_alive_prob, initial_alive_prob]
+        ).reshape(self.height, self.width)
     
     def get_grid(self):
         """Retourne la grille actuelle."""
