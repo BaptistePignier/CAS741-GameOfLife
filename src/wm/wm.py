@@ -50,7 +50,17 @@ class WindowManager:
         """Place toutes les vues dans l'interface."""
         self.sim_view = sim_view  # Sauvegarde la référence
         self.place_simulation_view(sim_view)
-        self.place_control_panel(us_view, fi_view)
+        
+        # Place les contrôles utilisateur dans le panneau latéral
+        us_frame = us_view.get_frame()
+        us_frame.grid(row=0, column=0, sticky='nsew', padx=5, pady=5)
+        
+        # Place la vue de la fonction gaussienne en bas du panneau de contrôle
+        fi_frame = fi_view.get_frame()
+        fi_frame.grid(row=1, column=0, sticky='ew', padx=5, pady=5)
+        
+        # Configure le redimensionnement
+        self.control_frame.grid_rowconfigure(1, weight=1)  # Le graphique peut s'étendre
     
     def place_simulation_view(self, sim_view):
         """Place la vue de simulation dans la zone principale."""
@@ -62,54 +72,9 @@ class WindowManager:
         sim_height = self.root.winfo_height()
         sim_view.update_dimensions(sim_width, sim_height)
     
-    def place_control_panel(self, us_view, fi_view):
+    def place_control_panel(self, us_view):
         """Place tous les éléments de contrôle dans le panneau latéral."""
-        current_row = 0
-        
-        # Boutons de contrôle
-        us_view.toggle_button.grid(row=current_row, column=0, pady=10, padx=5, sticky='ew')
-        current_row += 1
-        
-        us_view.reset_button.grid(row=current_row, column=0, pady=10, padx=5, sticky='ew')
-        current_row += 1
-        
-        # Contrôle de la vitesse
-        ttk.Label(self.control_frame, text="Générations par seconde").grid(
-            row=current_row, column=0, pady=(10,0), padx=5)
-        current_row += 1
-        
-        us_view.speed_label.grid(row=current_row, column=0, pady=(5,0), padx=5)
-        current_row += 1
-        
-        us_view.speed_slider.grid(row=current_row, column=0, pady=(0,10), padx=5, sticky='ew')
-        current_row += 1
-        
-        # Section gaussienne
-        Separator(self.control_frame, orient='horizontal').grid(
-            row=current_row, column=0, pady=10, sticky='ew')
-        current_row += 1
-        
-        ttk.Label(self.control_frame, text="Paramètres de la fonction").grid(
-            row=current_row, column=0, pady=(10,0), padx=5)
-        current_row += 1
-        
-        ttk.Label(self.control_frame, text="α (amplitude)").grid(
-            row=current_row, column=0, pady=(10,0), padx=5)
-        current_row += 1
-        
-        us_view.alpha_slider.grid(row=current_row, column=0, pady=(0,10), padx=5, sticky='ew')
-        current_row += 1
-        
-        ttk.Label(self.control_frame, text="β (largeur)").grid(
-            row=current_row, column=0, pady=(10,0), padx=5)
-        current_row += 1
-        
-        us_view.beta_slider.grid(row=current_row, column=0, pady=(0,10), padx=5, sticky='ew')
-        current_row += 1
-        
-        # Graphe gaussien
-        fi_view.canvas.get_tk_widget().grid(
-            row=current_row, column=0, pady=10, padx=5, sticky='ew')
+        us_view.get_frame().grid(row=0, column=0, sticky='nsew')
     
     def calculate_grid_dimensions(self):
         """Calcule les dimensions de la grille basées sur l'espace disponible."""

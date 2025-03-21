@@ -11,10 +11,20 @@ class SimView:
         self.master = master
         
         # Création de la figure matplotlib sans dimensions fixes
-        self.fig = plt.figure(constrained_layout=True)
+        self.fig = plt.figure(constrained_layout=False)  # Désactive constrained_layout car on gère les marges manuellement
+        self.fig.set_facecolor('none')  # Fond transparent
+        
+        # Création et configuration de l'axe
         self.ax = self.fig.add_subplot(111)
         self.ax.set_aspect('equal')  # Garde les cellules carrées
+        self.ax.set_position([0, 0, 1, 1])  # Utilise tout l'espace disponible
         self.cmap = plt.get_cmap('binary')
+        
+        # Configuration des marges et de l'apparence
+        self.fig.subplots_adjust(left=0, right=1, top=1, bottom=0, wspace=0, hspace=0)
+        self.ax.set_xticks([])
+        self.ax.set_yticks([])
+        self.ax.set_frame_on(False)
         
         # Configuration initiale de l'affichage
         self.grid_display = self.ax.imshow(
@@ -27,9 +37,6 @@ class SimView:
         self.ax.set_xlim(0, width/cell_size)
         self.ax.set_ylim(0, height/cell_size)
         self.ax.grid(True, color='gray', linestyle='-', linewidth=0.5, alpha=0.2)
-        self.ax.set_xticks([])
-        self.ax.set_yticks([])
-        self.ax.set_frame_on(False)
         
         # Création du canvas Tkinter avec les dimensions correctes
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
@@ -155,8 +162,11 @@ class SimView:
             height=height
         )
         
-        # Force le redimensionnement de la figure matplotlib
-        self.fig.set_size_inches(width/100, height/100)
+        # Utilise un facteur d'échelle plus approprié pour la conversion en pouces
+        # DPI standard est 96, donc diviser par 96 pour obtenir des pouces
+        width_inches = max(width / 96, 1)  # Au moins 1 pouce
+        height_inches = max(height / 96, 1)  # Au moins 1 pouce
+        self.fig.set_size_inches(width_inches, height_inches)
         self.canvas.draw()
     
     def __del__(self):
