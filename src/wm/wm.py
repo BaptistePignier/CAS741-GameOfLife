@@ -1,18 +1,24 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter.ttk import Separator
 
 class WindowManager:
     def __init__(self, root, sim_size, panel_width):
+        """Initialise le gestionnaire de fenêtres.
+        
+        Args:
+            root: Fenêtre principale Tkinter
+            sim_size (int): Taille de la zone de simulation en pixels
+            panel_width (int): Largeur du panneau de contrôle en pixels
+        """
         self.root = root
         self.sim_size = sim_size
         self.panel_width = panel_width
-        self.sim_view = None  # Référence à la vue de simulation
+        self.sim_view = None
         
         # Configuration de la fenêtre principale
-        self.root.title("Jeu de la Vie Interactif")
+        self.root.title("Jeu de la Vie")
         window_width = sim_size + panel_width
-        window_height = int(sim_size * 0.75)  # Ratio initial pour la fenêtre
+        window_height = sim_size  # Fenêtre carrée pour la simulation
         self.root.geometry(f"{window_width}x{window_height}")
         
         # Configuration du layout principal
@@ -21,88 +27,66 @@ class WindowManager:
         # Configuration du panneau de contrôle
         self.setup_control_panel()
         
-        # Calcul des dimensions de la grille
-        self.cell_size = 10  # Taille fixe des cellules
-        self.calculate_grid_dimensions()
-        
-        # Configuration du gestionnaire de redimensionnement
-        self.root.bind('<Configure>', self._on_window_resize)
+        # Configuration de la taille des cellules
+        self.cell_size = 10
     
     def setup_main_layout(self):
         """Configure le layout principal de la fenêtre."""
-        # Zone principale pour la simulation
-        self.root.columnconfigure(0, weight=1)
-        self.root.rowconfigure(0, weight=1)
+        # Zone de simulation (extensible)
+        self.root.grid_columnconfigure(0, weight=1)
+        self.root.grid_rowconfigure(0, weight=1)
         
-        # Panneau latéral pour les contrôles
-        self.root.columnconfigure(1, weight=0, minsize=self.panel_width)
+        # Panneau de contrôle (largeur fixe)
+        self.root.grid_columnconfigure(1, weight=0, minsize=self.panel_width)
+        
+        # Empêche le redimensionnement en dessous d'une taille minimale
+        min_width = self.panel_width + 300  # 300px minimum pour la simulation
+        min_height = 400  # Hauteur minimale raisonnable
+        self.root.minsize(min_width, min_height)
     
     def setup_control_panel(self):
         """Configure le panneau de contrôle."""
-        self.control_frame = ttk.Frame(self.root, width=self.panel_width)
-        self.control_frame.grid(row=0, column=1, sticky='nsew')
-        self.control_frame.grid_propagate(False)
+        # Frame principal des contrôles
+        self.control_frame = ttk.Frame(self.root)
+        self.control_frame.grid(row=0, column=1, sticky='nsew', padx=5, pady=5)
         
-        # Configuration du grid pour les éléments de contrôle
+        # Configuration du grid pour les contrôles
         self.control_frame.grid_columnconfigure(0, weight=1)
+        
+        # Empêche le redimensionnement horizontal du panneau
+        self.control_frame.grid_propagate(False)
+        self.control_frame.configure(width=self.panel_width)
     
     def place_views(self, sim_view, us_view, fi_view):
-        """Place toutes les vues dans l'interface."""
-        self.sim_view = sim_view  # Sauvegarde la référence
-        self.place_simulation_view(sim_view)
+        """Place toutes les vues dans l'interface.
         
-        # Place les contrôles utilisateur dans le panneau latéral
+        Args:
+            sim_view: Vue de la simulation
+            us_view: Vue des contrôles utilisateur
+            fi_view: Vue de la fonction d'influence
+        """
+        # Place la vue de simulation
+        self.sim_view = sim_view
+        sim_canvas = sim_view.get_canvas()
+        sim_canvas.grid(row=0, column=0, sticky='nsew')
+        
+        # Place les vues de contrôle
         us_frame = us_view.get_frame()
-        us_frame.grid(row=0, column=0, sticky='nsew', padx=5, pady=5)
+        us_frame.grid(row=0, column=0, sticky='ew')
         
-        # Place la vue de la fonction gaussienne en bas du panneau de contrôle
+        # Séparateur entre les contrôles et le graphe
+        ttk.Separator(self.control_frame, orient='horizontal').grid(
+            row=1, column=0, sticky='ew', pady=10
+        )
+        
+        # Place la vue de la fonction gaussienne
         fi_frame = fi_view.get_frame()
-        fi_frame.grid(row=1, column=0, sticky='ew', padx=5, pady=5)
-        
-        # Configure le redimensionnement
-        self.control_frame.grid_rowconfigure(1, weight=1)  # Le graphique peut s'étendre
-    
-    def place_simulation_view(self, sim_view):
-        """Place la vue de simulation dans la zone principale."""
-        canvas = sim_view.get_canvas()
-        canvas.grid(row=0, column=0, sticky='nsew')
-        
-        # Calcul des dimensions de la zone de simulation
-        sim_width = self.root.winfo_width() - self.panel_width
-        sim_height = self.root.winfo_height()
-        sim_view.update_dimensions(sim_width, sim_height)
-    
-    def place_control_panel(self, us_view):
-        """Place tous les éléments de contrôle dans le panneau latéral."""
-        us_view.get_frame().grid(row=0, column=0, sticky='nsew')
-    
-    def calculate_grid_dimensions(self):
-        """Calcule les dimensions de la grille basées sur l'espace disponible."""
-        sim_width = self.root.winfo_width() - self.panel_width
-        sim_height = self.root.winfo_height()
-        
-        # Calcul du nombre de cellules dans chaque dimension
-        self.grid_width = sim_width // self.cell_size
-        self.grid_height = sim_height // self.cell_size
-    
-    def get_grid_dimensions(self):
-        """Retourne les dimensions actuelles de la grille."""
-        return self.grid_width, self.grid_height
-    
-    def get_window_dimensions(self):
-        """Retourne les dimensions actuelles de la fenêtre de simulation."""
-        return (self.root.winfo_width() - self.panel_width,
-                self.root.winfo_height())
-    
-    def _on_window_resize(self, event):
-        """Gère le redimensionnement de la fenêtre."""
-        if event.widget == self.root and self.sim_view is not None:
-            # Mise à jour des dimensions de la simulation
-            sim_width = self.root.winfo_width() - self.panel_width
-            sim_height = self.root.winfo_height()
-            self.sim_view.update_dimensions(sim_width, sim_height)
-            self.calculate_grid_dimensions()
+        fi_frame.grid(row=2, column=0, sticky='ew')
     
     def get_control_frame(self):
-        """Retourne le frame de contrôle pour les widgets enfants."""
+        """Retourne le frame de contrôle.
+        
+        Returns:
+            ttk.Frame: Frame contenant les contrôles
+        """
         return self.control_frame

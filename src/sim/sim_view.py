@@ -1,175 +1,92 @@
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.animation import FuncAnimation
+import numpy as np
 
 class SimView:
     def __init__(self, master, width, height, cell_size):
+        """Initialise la vue de simulation.
+        
+        Args:
+            master: Widget parent Tkinter
+            width (int): Largeur de la fenêtre en pixels
+            height (int): Hauteur de la fenêtre en pixels
+            cell_size (int): Taille d'une cellule en pixels
+        """
         self.width = width
         self.height = height
         self.cell_size = cell_size
-        self.current_grid = None
         self.master = master
+        self.current_grid = None
         
-        # Création de la figure matplotlib sans dimensions fixes
-        self.fig = plt.figure(constrained_layout=False)  # Désactive constrained_layout car on gère les marges manuellement
+        # Calcul des dimensions de la grille
+        self.grid_width = width // cell_size
+        self.grid_height = height // cell_size
+        
+        # Création de la figure matplotlib avec une taille fixe
+        self.fig = plt.figure(figsize=(width/100, height/100))  # DPI standard = 100
         self.fig.set_facecolor('none')  # Fond transparent
         
-        # Création et configuration de l'axe
+        # Configuration optimisée de l'axe
         self.ax = self.fig.add_subplot(111)
-        self.ax.set_aspect('equal')  # Garde les cellules carrées
-        self.ax.set_position([0, 0, 1, 1])  # Utilise tout l'espace disponible
-        self.cmap = plt.get_cmap('binary')
-        
-        # Configuration des marges et de l'apparence
-        self.fig.subplots_adjust(left=0, right=1, top=1, bottom=0, wspace=0, hspace=0)
+        self.ax.set_position([0, 0, 1, 1])  # Utilise tout l'espace
         self.ax.set_xticks([])
         self.ax.set_yticks([])
         self.ax.set_frame_on(False)
         
-        # Configuration initiale de l'affichage
+        # Configuration de l'affichage avec une colormap optimisée
         self.grid_display = self.ax.imshow(
-            [[0]], cmap=self.cmap, interpolation='nearest',
-            vmin=0, vmax=1,
-            extent=[0, width/cell_size, 0, height/cell_size]  # Utilise les dimensions en nombre de cellules
+            np.zeros((self.grid_height, self.grid_width)),
+            cmap='binary',
+            interpolation='nearest',
+            aspect='equal',
+            vmin=0,
+            vmax=1
         )
         
-        # Configuration des limites initiales pour le zoom
-        self.ax.set_xlim(0, width/cell_size)
-        self.ax.set_ylim(0, height/cell_size)
-        self.ax.grid(True, color='gray', linestyle='-', linewidth=0.5, alpha=0.2)
-        
-        # Création du canvas Tkinter avec les dimensions correctes
+        # Création du canvas Tkinter avec une taille fixe
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
-        self.canvas.get_tk_widget().config(
+        canvas_widget = self.canvas.get_tk_widget()
+        canvas_widget.configure(
             width=width,
             height=height,
             bd=0,
             highlightthickness=0
         )
         
-        # Configuration des événements de zoom et pan
-        self.zoom_scale = 1.5
-        self.canvas.mpl_connect('scroll_event', self._on_scroll)
-        self.canvas.mpl_connect('button_press_event', self._on_press)
-        self.canvas.mpl_connect('button_release_event', self._on_release)
-        self.canvas.mpl_connect('motion_notify_event', self._on_motion)
-        self._pan_start = None
+        # Configuration des limites de la vue
+        self.ax.set_xlim(0, self.grid_width)
+        self.ax.set_ylim(0, self.grid_height)
         
-        # Configuration de l'animation
-        self._setup_animation()
+        # Désactive les événements matplotlib inutiles pour améliorer les performances
+        self.canvas.mpl_disconnect(self.canvas.callbacks.callbacks['button_press_event'][0])
+        self.canvas.mpl_disconnect(self.canvas.callbacks.callbacks['button_release_event'][0])
+        self.canvas.mpl_disconnect(self.canvas.callbacks.callbacks['motion_notify_event'][0])
         
-        # Garde une référence forte à l'animation
-        self._keep_ref = None
-        
-    def _on_scroll(self, event):
-        """Gestion du zoom avec la molette de la souris"""
-        if event.inaxes != self.ax:
-            return
-            
-        # Facteur de zoom basé sur la direction du scroll
-        scale = self.zoom_scale if event.button == 'up' else 1/self.zoom_scale
-        
-        # Position actuelle du curseur
-        x_data, y_data = event.xdata, event.ydata
-        
-        # Limites actuelles
-        x_min, x_max = self.ax.get_xlim()
-        y_min, y_max = self.ax.get_ylim()
-        
-        # Calcul des nouvelles limites
-        x_range = (x_max - x_min) / scale
-        y_range = (y_max - y_min) / scale
-        
-        # Centre le zoom sur la position du curseur
-        self.ax.set_xlim([x_data - x_range * (x_data - x_min)/(x_max - x_min),
-                         x_data + x_range * (x_max - x_data)/(x_max - x_min)])
-        self.ax.set_ylim([y_data - y_range * (y_data - y_min)/(y_max - y_min),
-                         y_data + y_range * (y_max - y_data)/(y_max - y_min)])
-        
-        self.canvas.draw_idle()
-    
-    def _on_press(self, event):
-        """Début du pan avec le clic de souris"""
-        if event.inaxes != self.ax or event.button != 1:
-            return
-        self._pan_start = (event.xdata, event.ydata)
-        self.canvas.get_tk_widget().config(cursor="fleur")
-    
-    def _on_release(self, event):
-        """Fin du pan"""
-        self._pan_start = None
-        self.canvas.get_tk_widget().config(cursor="")
-    
-    def _on_motion(self, event):
-        """Déplacement pendant le pan"""
-        if self._pan_start is None or event.inaxes != self.ax:
-            return
-            
-        dx = event.xdata - self._pan_start[0]
-        dy = event.ydata - self._pan_start[1]
-        
-        x_min, x_max = self.ax.get_xlim()
-        y_min, y_max = self.ax.get_ylim()
-        
-        self.ax.set_xlim(x_min - dx, x_max - dx)
-        self.ax.set_ylim(y_min - dy, y_max - dy)
-        
-        self.canvas.draw_idle()
-        
-    def _setup_animation(self):
-        """Configure l'animation matplotlib."""
-        self._keep_ref = FuncAnimation(
-            self.fig,
-            self._update_frame,
-            interval=20,  # 20ms = 50fps max
-            blit=True,
-            cache_frame_data=False,
-            save_count=None
-        )
-        self.paused = True
-    
-    def _update_frame(self, frame):
-        """Fonction d'update pour FuncAnimation."""
-        if self.current_grid is not None:
-            self.grid_display.set_array(self.current_grid)
-        return [self.grid_display]
+        # Pré-allocation du buffer pour éviter les allocations répétées
+        self._grid_buffer = np.zeros((self.grid_height, self.grid_width))
     
     def update_display(self, grid):
-        """Met à jour l'affichage avec la nouvelle grille."""
-        self.current_grid = grid
-        if hasattr(self, 'grid_display'):
-            self.grid_display.set_array(grid)
-            self.canvas.draw_idle()
+        """Met à jour l'affichage de la grille.
+        
+        Args:
+            grid (numpy.ndarray): Nouvelle grille à afficher
+        """
+        # Mise à jour optimisée de l'affichage
+        if grid is not None and grid.shape == self._grid_buffer.shape:
+            # Évite la copie si la grille n'a pas changé
+            if not np.array_equal(self._grid_buffer, grid):
+                np.copyto(self._grid_buffer, grid)
+                self.grid_display.set_array(self._grid_buffer)
+                self.canvas.draw()
     
     def get_canvas(self):
-        """Retourne le widget canvas."""
+        """Retourne le widget canvas.
+        
+        Returns:
+            tkinter.Widget: Widget canvas Tkinter
+        """
         return self.canvas.get_tk_widget()
     
-    def stop_animation(self):
-        """Arrête l'animation proprement."""
-        if self._keep_ref is not None:
-            self._keep_ref.event_source.stop()
-            self._keep_ref = None
-    
-    def update_dimensions(self, width, height):
-        """Met à jour les dimensions de la vue."""
-        self.width = width
-        self.height = height
-        
-        # Met à jour les dimensions du widget Tkinter
-        self.canvas.get_tk_widget().config(
-            width=width,
-            height=height
-        )
-        
-        # Utilise un facteur d'échelle plus approprié pour la conversion en pouces
-        # DPI standard est 96, donc diviser par 96 pour obtenir des pouces
-        width_inches = max(width / 96, 1)  # Au moins 1 pouce
-        height_inches = max(height / 96, 1)  # Au moins 1 pouce
-        self.fig.set_size_inches(width_inches, height_inches)
-        self.canvas.draw()
-    
     def __del__(self):
-        """Nettoyage des ressources."""
-        self.stop_animation()
+        """Nettoyage des ressources matplotlib."""
         plt.close(self.fig)
