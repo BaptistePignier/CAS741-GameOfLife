@@ -50,6 +50,7 @@
 \section{Symbols, Abbreviations, and Acronyms}
 
 All symbols, abbreviations and acronyms used here are the same as in the SRS document. Please refer to the relevant section of the SRS for definitions. 
+In this document, we will use the xSyB notation to define the generation rule used in discrete simulation. This notation means "a cell survives if and only if there are x cells in its neighborhood, and a cell is born in a cell that has y other cells in its neighborhood."
 
 \newpage
 
@@ -136,7 +137,7 @@ The following section presents the tests to which the functional and non-functio
 
 \item{Simulation test\\}
 
-Control: Manual
+Control: Automatic
 					
 Initial State: Initially, the grid will be in any state
 					
@@ -146,7 +147,7 @@ Output: The output will be the simulation as it would have been with the same gr
 
 How test will be performed:
 
-Inputs will be entered manually, and output will be compared visually with that of another Game of Life simulation software.
+Inputs will be entered manually and the output will be automatically compared to that of another Game of Life simulation software through a simple comparison operation.
 
 \item{Function test\\}
 
