@@ -6,9 +6,8 @@ from wm import WindowManager
 
 def main():
     # Configuration initiale
-    cell_size = 10  # Taille d'une cellule en pixels
-    grid_size = 50  # Nombre de cellules par côté
-    sim_size = grid_size * cell_size  # Taille de la zone de simulation
+    grid_size = 100  # Nombre de cellules par côté
+    sim_size = 1500
     panel_width = 200  # Largeur du panneau de contrôle
     
     # Création de la fenêtre principale et du gestionnaire de fenêtres
@@ -17,7 +16,7 @@ def main():
     
     # Initialisation du MVC de la simulation
     sim_model = SimModel(width=grid_size, height=grid_size)
-    sim_view = SimView(root, sim_size, sim_size, cell_size)
+    sim_view = SimView(root, sim_size, sim_size)
     sim_controller = SimController(sim_model, sim_view, root)
     
     # Initialisation du MVC de l'interface utilisateur

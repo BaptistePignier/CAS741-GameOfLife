@@ -21,6 +21,8 @@ class FiView:
         # Graphe de la gaussienne (en haut)
         self.ax_gaussian = self.fig.add_subplot(gs[0])
         self.ax_gaussian.set_title('exp(- 0.5 * ((x - μ)/σ)²)')
+        self.ax_gaussian.set_xticks([])  # Cache les graduations en x
+        self.ax_gaussian.set_yticks([])  # Cache les graduations en y
         
         # Configuration initiale du graphe gaussien
         x_init = [-2, 2]
@@ -28,24 +30,24 @@ class FiView:
         self.line, = self.ax_gaussian.plot(x_init, y_init, 'b-', linewidth=2)
         self.ax_gaussian.set_ylim(-0.2, 1.2)
         self.ax_gaussian.grid(True, linestyle='--', alpha=0.3)
-        self.ax_gaussian.set_xlabel('x')
-        self.ax_gaussian.set_ylabel('y')
         
         # Graphe du noyau en anneau (en bas)
         self.ax_ring = self.fig.add_subplot(gs[1])
         self.ax_ring.set_title('Noyau en anneau')
+        self.ax_ring.set_xticks([])  # Cache les graduations en x
+        self.ax_ring.set_yticks([])  # Cache les graduations en y
         
-        # Initialisation du graphe du noyau en anneau avec une meilleure résolution
-        kernel_size = 27  
+        # Configuration initiale du graphe du noyau en anneau
+        empty_kernel = np.zeros((26, 26))  # Même taille que le noyau final
         self.ring_image = self.ax_ring.imshow(
-            np.zeros((kernel_size, kernel_size)),
+            empty_kernel,
             cmap='viridis',
-            extent=[-2, 2, -2, 2],
+            interpolation='nearest',  # Plus net que bilinear
             aspect='equal',
-            interpolation='bilinear'  
+            extent=[-1, 1, -1, 1],
+            vmin=0,  # Force l'échelle à commencer à 0
+            vmax=0.005  # Valeur max approximative du noyau
         )
-        self.ax_ring.set_xticks([-2, -1, 0, 1, 2])
-        self.ax_ring.set_yticks([-2, -1, 0, 1, 2])
         self.ax_ring.grid(True, linestyle='--', alpha=0.3)
         
         # Création du canvas Tkinter avec une taille minimale
@@ -63,10 +65,11 @@ class FiView:
         self.canvas.draw()
     
     def update_ring_plot(self, kernel):
+        print("maj")
         """Met à jour le graphe du noyau en anneau."""
         self.ring_image.set_array(kernel)
         self.canvas.draw()
-    
+
     def get_frame(self):
         """Retourne le frame interne."""
         return self.frame

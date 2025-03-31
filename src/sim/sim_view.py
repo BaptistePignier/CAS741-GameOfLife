@@ -3,24 +3,18 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 
 class SimView:
-    def __init__(self, master, width, height, cell_size):
+    def __init__(self, master, width, height):
         """Initialise la vue de simulation.
         
         Args:
             master: Widget parent Tkinter
             width (int): Largeur de la fenêtre en pixels
             height (int): Hauteur de la fenêtre en pixels
-            cell_size (int): Taille d'une cellule en pixels
         """
         self.width = width
         self.height = height
-        self.cell_size = cell_size
         self.master = master
         self.current_grid = None
-        
-        # Calcul des dimensions de la grille
-        self.grid_width = width // cell_size
-        self.grid_height = height // cell_size
         
         # Création de la figure matplotlib avec une taille fixe
         self.fig = plt.figure(figsize=(width/100, height/100))  # DPI standard = 100
@@ -35,7 +29,7 @@ class SimView:
         
         # Configuration de l'affichage avec une colormap optimisée
         self.grid_display = self.ax.imshow(
-            np.zeros((self.grid_height, self.grid_width)),
+            np.zeros((100, 100)),  # Taille initiale de la grille (sera mise à jour)
             cmap='binary',
             interpolation='nearest',
             aspect='equal',
@@ -54,16 +48,17 @@ class SimView:
         )
         
         # Configuration des limites de la vue
-        self.ax.set_xlim(0, self.grid_width)
-        self.ax.set_ylim(0, self.grid_height)
+        self.ax.set_xlim(-0.5, 99.5)  # Centrage de la grille
+        self.ax.set_ylim(-0.5, 99.5)  # Centrage de la grille
         
         # Désactive les événements matplotlib inutiles pour améliorer les performances
-        self.canvas.mpl_disconnect(self.canvas.callbacks.callbacks['button_press_event'][0])
-        self.canvas.mpl_disconnect(self.canvas.callbacks.callbacks['button_release_event'][0])
-        self.canvas.mpl_disconnect(self.canvas.callbacks.callbacks['motion_notify_event'][0])
+        for event_name in ['button_press_event', 'button_release_event', 'motion_notify_event']:
+            callbacks = self.canvas.callbacks.callbacks.get(event_name, {})
+            if callbacks and 0 in callbacks:
+                self.canvas.mpl_disconnect(callbacks[0])
         
         # Pré-allocation du buffer pour éviter les allocations répétées
-        self._grid_buffer = np.zeros((self.grid_height, self.grid_width))
+        self._grid_buffer = np.zeros((100, 100))
     
     def update_display(self, grid):
         """Met à jour l'affichage de la grille.

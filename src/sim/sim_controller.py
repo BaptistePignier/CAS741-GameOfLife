@@ -16,6 +16,9 @@ class SimController:
         self.update_timer = None
         self.batch_size = 1  # Nombre de générations par mise à jour
         self._update_batch_size()
+        
+        # Mise à jour initiale de l'affichage
+        self.view.update_display(self.model.get_grid())
     
     def _update_batch_size(self):
         """Met à jour le nombre de générations à calculer par frame."""
