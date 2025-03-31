@@ -26,9 +26,6 @@ class WindowManager:
         
         # Configuration du panneau de contrôle
         self.setup_control_panel()
-        
-        # Configuration de la taille des cellules
-        self.cell_size = 10
     
     def setup_main_layout(self):
         """Configure le layout principal de la fenêtre."""

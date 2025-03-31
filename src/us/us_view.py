@@ -71,6 +71,37 @@ class UsView:
             value=0.15
         )
         self.sigma_slider.grid(row=3, column=0, pady=(0,5), padx=10, sticky='ew')
+
+        # Nouveau frame pour la fonction de croissance
+        growth_frame = ttk.LabelFrame(self.frame, text="Fonction de croissance")
+        growth_frame.grid_columnconfigure(0, weight=1)
+        growth_frame.grid(row=4, column=0, pady=5, padx=5, sticky='ew')
+        
+        # Paramètre μ (mu) pour la croissance
+        self.growth_mu_label = ttk.Label(growth_frame, text="μ : 0.50")
+        self.growth_mu_label.grid(row=0, column=0, pady=(5,0))
+        
+        self.growth_mu_slider = ttk.Scale(
+            growth_frame,
+            from_=0.0,
+            to=1.0,
+            orient=tk.HORIZONTAL,
+            value=0.5
+        )
+        self.growth_mu_slider.grid(row=1, column=0, pady=(0,5), padx=10, sticky='ew')
+        
+        # Paramètre σ (sigma) pour la croissance
+        self.growth_sigma_label = ttk.Label(growth_frame, text="σ : 0.15")
+        self.growth_sigma_label.grid(row=2, column=0, pady=(5,0))
+        
+        self.growth_sigma_slider = ttk.Scale(
+            growth_frame,
+            from_=0.05,
+            to=0.5,
+            orient=tk.HORIZONTAL,
+            value=0.15
+        )
+        self.growth_sigma_slider.grid(row=3, column=0, pady=(0,5), padx=10, sticky='ew')
     
     def _update_speed_label(self, value):
         """Met à jour le label de vitesse."""
@@ -91,7 +122,7 @@ class UsView:
             command(float(value))
         self.speed_slider.config(command=combined_command)
     
-    def set_gaussian_commands(self, mu_command, sigma_command):
+    def set_gaussian_commands(self, mu_command, sigma_command, growth_mu_command=None, growth_sigma_command=None):
         """Configure les commandes des sliders gaussiens."""
         def update_mu(value):
             self.mu_label.config(text=f"μ : {float(value):.2f}")
@@ -100,9 +131,21 @@ class UsView:
         def update_sigma(value):
             self.sigma_label.config(text=f"σ : {float(value):.2f}")
             sigma_command(value)
+            
+        def update_growth_mu(value):
+            self.growth_mu_label.config(text=f"μ : {float(value):.2f}")
+            if growth_mu_command:
+                growth_mu_command(value)
+        
+        def update_growth_sigma(value):
+            self.growth_sigma_label.config(text=f"σ : {float(value):.2f}")
+            if growth_sigma_command:
+                growth_sigma_command(value)
         
         self.mu_slider.config(command=update_mu)
         self.sigma_slider.config(command=update_sigma)
+        self.growth_mu_slider.config(command=update_growth_mu)
+        self.growth_sigma_slider.config(command=update_growth_sigma)
     
     def get_frame(self):
         """Retourne le frame interne."""
@@ -118,5 +161,9 @@ class UsView:
             'mu_slider': self.mu_slider,
             'sigma_slider': self.sigma_slider,
             'mu_label': self.mu_label,
-            'sigma_label': self.sigma_label
+            'sigma_label': self.sigma_label,
+            'growth_mu_slider': self.growth_mu_slider,
+            'growth_sigma_slider': self.growth_sigma_slider,
+            'growth_mu_label': self.growth_mu_label,
+            'growth_sigma_label': self.growth_sigma_label
         }
