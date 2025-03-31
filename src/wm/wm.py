@@ -13,7 +13,6 @@ class WindowManager:
         self.root = root
         self.sim_size = sim_size
         self.panel_width = panel_width
-        self.sim_view = None
         
         # Configuration de la fenêtre principale
         self.root.title("Jeu de la Vie")
@@ -63,7 +62,6 @@ class WindowManager:
             fi_view: Vue de la fonction d'influence
         """
         # Place la vue de simulation
-        self.sim_view = sim_view
         sim_canvas = sim_view.get_canvas()
         sim_canvas.grid(row=0, column=0, sticky='nsew')
         

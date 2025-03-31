@@ -6,12 +6,6 @@ import numpy as np
 
 class FiView:
     def __init__(self, master, figsize=(6, 6)):
-        """Initializes the FiView with frames and plots for displaying gaussian, kernel, and growth functions.
-        
-        Args:
-            master: The parent Tkinter widget.
-            figsize (tuple): The size of the matplotlib figures.
-        """
         # Frame principal
         self.frame = ttk.Frame(master)
         self.frame.grid(row=0, column=0, sticky='nsew')
@@ -82,7 +76,6 @@ class FiView:
         
         # Graphe gaussien
         self.line, = self.ax_gaussian.plot(x_init, y_init, 'b-', linewidth=2)
-        self.ax_gaussian.set_xlim(0, 1)
         self.ax_gaussian.set_ylim(-0.2, 1.2)
         self.ax_gaussian.grid(True, linestyle='--', alpha=0.3)
         
@@ -101,7 +94,6 @@ class FiView:
         
         # Graphe de croissance
         self.growth_line, = self.ax_growth.plot(x_init, y_init, 'g-', linewidth=2)
-        self.ax_growth.set_xlim(0, 1)
         self.ax_growth.set_ylim(-0.2, 1.2)
         self.ax_growth.grid(True, linestyle='--', alpha=0.3)
         
@@ -110,20 +102,19 @@ class FiView:
         self.ring_canvas.draw()
         self.growth_canvas.draw()
     
-    def update_plot(self, x_values, y_values, y_max=None, is_growth=False):
-        """Met à jour le graphe gaussien avec les nouvelles valeurs."""
-        if is_growth:
-            self.growth_line.set_xdata(x_values)
-            self.growth_line.set_ydata(y_values)
-            if y_max is not None:
-                self.ax_growth.set_ylim(-0.2, y_max * 1.2)
-            self.growth_canvas.draw_idle()
-        else:
-            self.line.set_xdata(x_values)
-            self.line.set_ydata(y_values)
-            if y_max is not None:
-                self.ax_gaussian.set_ylim(-0.2, y_max * 1.2)
-            self.gaussian_canvas.draw_idle()
+    def update_gaussian_plot(self, x_values, y_values, y_max=None):
+        self.line.set_xdata(x_values)
+        self.line.set_ydata(y_values)
+        if y_max is not None:
+            self.ax_gaussian.set_ylim(-0.2, y_max * 1.2)
+        self.gaussian_canvas.draw_idle()
+
+    def update_growth_plot(self, x_values, y_values, y_max=None):
+        self.growth_line.set_xdata(x_values)
+        self.growth_line.set_ydata(y_values)
+        if y_max is not None:
+            self.ax_growth.set_ylim(-0.2, y_max * 1.2)
+        self.growth_canvas.draw_idle()
     
     def update_ring_plot(self, kernel):
         """Met à jour le graphe du noyau en anneau."""

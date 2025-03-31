@@ -30,11 +30,11 @@ class FiController:
         x = self.model.get_x_values()
         if mu is not None or sigma is not None:
             y = self.model._gauss(x, self.model.mu, self.model.sigma)
-            self.view.update_plot(x, y)
+            self.view.update_gaussian_plot(x, y)
         
         if growth_mu is not None or growth_sigma is not None:
             y = self.model._gauss(x, self.model.growth_mu, self.model.growth_sigma)
-            self.view.update_plot(x, y, is_growth=True)
+            self.view.update_growth_plot(x, y)
         
         # Mise à jour du cache
         self.last_mu = mu
@@ -47,7 +47,11 @@ class FiController:
         # Mise à jour du graphe gaussien
         x_values = self.model.get_x_values()
         y_values = self.model._gauss(x_values, self.model.mu, self.model.sigma)
-        self.view.update_plot(x_values, y_values, max(y_values))
+        self.view.update_gaussian_plot(x_values, y_values, max(y_values))
+        
+        # Mise à jour du graphe de croissance
+        y_values = self.model._gauss(x_values, self.model.growth_mu, self.model.growth_sigma)
+        self.view.update_growth_plot(x_values, y_values, max(y_values))
         
         # Mise à jour du filtre en anneau
         kernel = self.model.get_ring_kernel()
