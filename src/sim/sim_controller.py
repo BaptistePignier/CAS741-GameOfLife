@@ -44,6 +44,9 @@ class SimController:
         
         # Met à jour la simulation si elle est en cours
         if self.us_controller.is_running():
+            
+            #self.model.set_kernel_ring(self.us_controller.get_kernel_ring())
+            
             # Calcule plusieurs générations si nécessaire
             for _ in range(self.batch_size):
                 self.model.update_discrete()

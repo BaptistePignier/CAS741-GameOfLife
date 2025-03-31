@@ -19,35 +19,37 @@ class SimModel:
         # Utilise int8 au lieu de int64 pour réduire l'utilisation mémoire
         self.grid = np.zeros((height, width), dtype=np.int8)
         self.reset()
+
+
+
+        self.kernel_ring = None
     
+    def set_kernel_ring(self, kernel_ring):
+        self.kernel_ring = kernel_ring
+
+
+    def growth_lenia(self, u):
+        return -1 + 2 * self.us_controller.model._gauss(u, self.growth_mu, self.growth_sigma)        # Baseline -1, peak +1
+
+
     def growth_GoL(self, u):
         mask1 = (u >= 1) & (u <= 3)
-        mask2 = (u > 3) & (u <= 4)    
+        mask2 = (u > 3) & (u <= 4)
         return -1 + (u - 1) * mask1 + 8 * (1 - u/4) * mask2
 
     def update_discrete(self):
-        """Calcule la génération suivante du jeu de la vie.
-        
-        Utilise une convolution 2D avec un kernel pré-calculé pour compter les voisins,
-        puis applique les règles du jeu de la vie de manière vectorisée.
-        """
         NEIGHBORS_KERNEL = np.array([[1, 1, 1],
                                [1, 0, 1],
                                [1, 1, 1]], dtype=np.int8)
-        # Calcul optimisé des voisins avec le kernel pré-calculé
         neighbors = convolve2d(self.grid, NEIGHBORS_KERNEL,
                              mode='same', boundary='wrap')
         
-        # Application vectorisée des règles du jeu
-        # Une cellule survit si elle a 2 ou 3 voisins
-        # Une cellule naît si elle a exactement 3 voisins
-        
-        # Mise à jour de la grille en une seule opération
         self.grid = self.grid + self.growth_GoL(neighbors)
         self.grid = np.clip(self.grid, 0, 1)
     
     def update_continuous(self):
-        pass
+        NEIGHBORS_KERNEL = self.kernel_ring
+
 
     def reset(self, prob=None):
         """Réinitialise la grille avec une nouvelle configuration aléatoire.

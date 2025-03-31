@@ -29,8 +29,11 @@ def main():
     # Placement des vues dans l'interface
     window_manager.place_views(sim_view, us_view, fi_view)
 
+
     # Démarrage de la simulation
     sim_controller.run()
+
+   
 
     # Configuration de la fermeture propre de l'application
     def on_closing():
