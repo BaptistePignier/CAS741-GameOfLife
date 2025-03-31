@@ -1,8 +1,8 @@
-import numpy as np
+from . import FiModel
 
 class FiController:
-    def __init__(self, model, view):
-        self.model = model
+    def __init__(self, view):
+        self.model = FiModel()
         self.view = view
         
         # Cache pour éviter les recalculs inutiles

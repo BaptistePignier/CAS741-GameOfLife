@@ -22,9 +22,8 @@ def main():
     us_view = UsView(window_manager.get_control_frame())
     
     # Initialisation du MVC de la fonction gaussienne
-    fi_model = FiModel()  # μ=0.5, σ=0.15 par défaut
     fi_view = FiView(window_manager.get_control_frame())
-    fi_controller = FiController(fi_model, fi_view)
+    fi_controller = FiController(fi_view)
     
     # Configuration du contrôleur de l'interface utilisateur
     us_controller = UsController(us_view, sim_controller, fi_controller)
