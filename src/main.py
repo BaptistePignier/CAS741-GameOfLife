@@ -6,7 +6,7 @@ from wm import WindowManager
 
 def main():
     # Configuration initiale
-    grid_size = 100  # Nombre de cellules par côté
+    
     sim_size = 1500
     panel_width = 200  # Largeur du panneau de contrôle
     
@@ -15,9 +15,8 @@ def main():
     window_manager = WindowManager(root, sim_size, panel_width)
     
     # Initialisation du MVC de la simulation
-    sim_model = SimModel(width=grid_size, height=grid_size)
     sim_view = SimView(root, sim_size, sim_size)
-    sim_controller = SimController(sim_model, sim_view, root)
+    sim_controller = SimController(sim_view, root)
     
     # Initialisation du MVC de l'interface utilisateur
     us_model = UsModel()
@@ -49,9 +48,6 @@ def main():
         root.destroy()
     
     root.protocol("WM_DELETE_WINDOW", on_closing)
-    
-    # Affichage initial
-    sim_view.update_display(sim_model.get_grid())
     
     # Démarrage de la boucle principale
     root.mainloop()

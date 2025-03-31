@@ -1,13 +1,15 @@
+from . import SimModel
+
 class SimController:
-    def __init__(self, model, view, root):
+    def __init__(self, view, root):
         """Initialise le contrôleur de simulation.
         
         Args:
-            model: Instance de SimModel
             view: Instance de SimView
             root: Fenêtre principale Tkinter
         """
-        self.model = model
+        grid_size = 100  # Nombre de cellules par côté
+        self.model = SimModel(grid_size, grid_size)
         self.view = view
         self.root = root
         self.running = False
