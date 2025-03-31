@@ -19,7 +19,6 @@ def main():
     sim_controller = SimController(sim_view, root)
     
     # Initialisation du MVC de l'interface utilisateur
-    us_model = UsModel()
     us_view = UsView(window_manager.get_control_frame())
     
     # Initialisation du MVC de la fonction gaussienne
@@ -28,7 +27,7 @@ def main():
     fi_controller = FiController(fi_model, fi_view)
     
     # Configuration du contrôleur de l'interface utilisateur
-    us_controller = UsController(us_model, us_view, sim_controller, fi_controller)
+    us_controller = UsController(us_view, sim_controller, fi_controller)
     
     # Ajout des commandes pour les sliders de la fonction de croissance
     us_view.set_gaussian_commands(

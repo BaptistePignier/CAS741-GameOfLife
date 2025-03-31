@@ -1,6 +1,8 @@
+from . import UsModel
+
 class UsController:
-    def __init__(self, model, view, game_controller, gaussian_controller):
-        self.model = model
+    def __init__(self, view, game_controller, gaussian_controller):
+        self.model = UsModel()
         self.view = view
         self.game_controller = game_controller
         self.gaussian_controller = gaussian_controller
