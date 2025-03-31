@@ -1,10 +1,9 @@
 from . import UsModel
 
 class UsController:
-    def __init__(self, view, sim_controller, fi_controller):
+    def __init__(self, view, fi_controller):
         self.model = UsModel()
         self.view = view
-        self.sim_controller = sim_controller
         self.fi_controller = fi_controller
         
         # Récupération des widgets
@@ -51,26 +50,34 @@ class UsController:
 
     def toggle_simulation(self):
         """Gère le démarrage/arrêt de la simulation."""
-        is_running = self.sim_controller.toggle_simulation()
-        self.model.update_toggle_button_text(is_running)
+        self.model.toggle_running_state()
     
     def reset_simulation(self):
         """Réinitialise la simulation."""
-        self.sim_controller.reset_simulation()
-        self.model.update_toggle_button_text(False)
+        self.model.reset_state()
+    
+    def get_speed(self):
+        """Retourne la vitesse actuelle de simulation.
+        
+        Returns:
+            float: Nombre de générations par seconde
+        """
+        return self.model.speed
     
     def update_speed(self, value):
-        """Met à jour la vitesse de simulation."""
-        self.sim_controller.set_speed(value)
+        """Met à jour la vitesse de simulation.
+        
+        Args:
+            value (float): Nouvelle vitesse en générations par seconde
+        """
+        self.model.speed = float(value)
     
-    def update_gaussian_mu(self, value):
-        """Met à jour le paramètre mu de la gaussienne."""
-        self.fi_controller.update_parameters(mu=float(value))
+    def is_running(self):
+        """Retourne l'état actuel de la simulation.
+        
+        Returns:
+            bool: True si la simulation est en cours
+        """
+        return self.model.is_running
+
     
-    def update_gaussian_sigma(self, value):
-        """Met à jour le paramètre sigma de la gaussienne."""
-        self.fi_controller.update_parameters(sigma=float(value))
-    
-    def stop(self):
-        """Arrête la simulation."""
-        self.sim_controller.stop()
