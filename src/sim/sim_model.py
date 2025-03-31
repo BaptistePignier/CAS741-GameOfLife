@@ -3,9 +3,7 @@ from scipy.signal import convolve2d
 
 class SimModel:
     # Kernel pré-calculé pour le calcul des voisins
-    NEIGHBORS_KERNEL = np.array([[1, 1, 1],
-                               [1, 0, 1],
-                               [1, 1, 1]], dtype=np.int8)
+    
     
     def __init__(self, width=500, height=500, initial_alive_prob=0.2):
         """Initialise le modèle de simulation.
@@ -22,25 +20,34 @@ class SimModel:
         self.grid = np.zeros((height, width), dtype=np.int8)
         self.reset()
     
+    def growth_GoL(self, u):
+        mask1 = (u >= 1) & (u <= 3)
+        mask2 = (u > 3) & (u <= 4)    
+        return -1 + (u - 1) * mask1 + 8 * (1 - u/4) * mask2
+
     def update(self):
         """Calcule la génération suivante du jeu de la vie.
         
         Utilise une convolution 2D avec un kernel pré-calculé pour compter les voisins,
         puis applique les règles du jeu de la vie de manière vectorisée.
         """
+        NEIGHBORS_KERNEL = np.array([[1, 1, 1],
+                               [1, 0, 1],
+                               [1, 1, 1]], dtype=np.int8)
         # Calcul optimisé des voisins avec le kernel pré-calculé
-        neighbors = convolve2d(self.grid, self.NEIGHBORS_KERNEL,
+        neighbors = convolve2d(self.grid, NEIGHBORS_KERNEL,
                              mode='same', boundary='wrap')
         
         # Application vectorisée des règles du jeu
         # Une cellule survit si elle a 2 ou 3 voisins
         # Une cellule naît si elle a exactement 3 voisins
-        birth = (neighbors == 3)
-        survive = (self.grid == 1) & (neighbors == 2)
         
         # Mise à jour de la grille en une seule opération
-        self.grid = np.logical_or(birth, survive).astype(np.int8)
+        self.grid = self.grid + self.growth_GoL(neighbors)
+        self.grid = np.clip(self.grid, 0, 1)
     
+   
+
     def reset(self, prob=None):
         """Réinitialise la grille avec une nouvelle configuration aléatoire.
         
