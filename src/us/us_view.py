@@ -122,30 +122,7 @@ class UsView:
             command(float(value))
         self.speed_slider.config(command=combined_command)
     
-    def set_gaussian_commands(self, mu_command, sigma_command, growth_mu_command=None, growth_sigma_command=None):
-        """Configure les commandes des sliders gaussiens."""
-        def update_mu(value):
-            self.mu_label.config(text=f"μ : {float(value):.2f}")
-            mu_command(value)
-        
-        def update_sigma(value):
-            self.sigma_label.config(text=f"σ : {float(value):.2f}")
-            sigma_command(value)
-            
-        def update_growth_mu(value):
-            self.growth_mu_label.config(text=f"μ : {float(value):.2f}")
-            if growth_mu_command:
-                growth_mu_command(value)
-        
-        def update_growth_sigma(value):
-            self.growth_sigma_label.config(text=f"σ : {float(value):.2f}")
-            if growth_sigma_command:
-                growth_sigma_command(value)
-        
-        self.mu_slider.config(command=update_mu)
-        self.sigma_slider.config(command=update_sigma)
-        self.growth_mu_slider.config(command=update_growth_mu)
-        self.growth_sigma_slider.config(command=update_growth_sigma)
+    
     
     def get_frame(self):
         """Retourne le frame interne."""

@@ -25,7 +25,7 @@ class SimModel:
         mask2 = (u > 3) & (u <= 4)    
         return -1 + (u - 1) * mask1 + 8 * (1 - u/4) * mask2
 
-    def update(self):
+    def update_discrete(self):
         """Calcule la génération suivante du jeu de la vie.
         
         Utilise une convolution 2D avec un kernel pré-calculé pour compter les voisins,
@@ -46,7 +46,8 @@ class SimModel:
         self.grid = self.grid + self.growth_GoL(neighbors)
         self.grid = np.clip(self.grid, 0, 1)
     
-   
+    def update_continuous(self):
+        pass
 
     def reset(self, prob=None):
         """Réinitialise la grille avec une nouvelle configuration aléatoire.

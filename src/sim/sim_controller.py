@@ -38,7 +38,7 @@ class SimController:
             
         # Calcule plusieurs générations si nécessaire
         for _ in range(self.batch_size):
-            self.model.update()
+            self.model.update_discrete()
         
         # Met à jour l'affichage une seule fois
         self.view.update_display(self.model.get_grid())

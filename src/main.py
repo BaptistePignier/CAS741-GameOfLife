@@ -27,21 +27,12 @@ def main():
     
     # Configuration du contrôleur de l'interface utilisateur
     us_controller = UsController(us_view, sim_controller, fi_controller)
-    
-    # Ajout des commandes pour les sliders de la fonction de croissance
-    us_view.set_gaussian_commands(
-        lambda x: fi_controller.update_parameters(mu=x),
-        lambda x: fi_controller.update_parameters(sigma=x),
-        lambda x: fi_controller.update_parameters(growth_mu=x),
-        lambda x: fi_controller.update_parameters(growth_sigma=x)
-    )
-    
+
     # Placement des vues dans l'interface
     window_manager.place_views(sim_view, us_view, fi_view)
     
     # Configuration de la fermeture propre de l'application
     def on_closing():
-        us_controller.stop()  # Arrête la simulation
         root.quit()
         root.destroy()
     
