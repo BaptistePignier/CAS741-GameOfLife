@@ -1,7 +1,7 @@
 import tkinter as tk
-from sim import SimModel, SimView, SimController
-from fi import FiModel, FiView, FiController
-from us import UsModel, UsView, UsController
+from sim import SimView, SimController
+from fi import FiView, FiController
+from us import UsView, UsController
 from wm import WindowManager
 
 def main():
