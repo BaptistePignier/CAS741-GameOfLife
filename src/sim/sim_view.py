@@ -39,13 +39,7 @@ class SimView:
         
         # Création du canvas Tkinter avec une taille fixe
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
-        canvas_widget = self.canvas.get_tk_widget()
-        canvas_widget.configure(
-            width=width,
-            height=height,
-            bd=0,
-            highlightthickness=0
-        )
+        self.canvas_widget = self.canvas.get_tk_widget()
         
         # Configuration des limites de la vue
         self.ax.set_xlim(-0.5, width-0.5)  # Centrage de la grille
@@ -80,7 +74,7 @@ class SimView:
         Returns:
             tkinter.Widget: Widget canvas Tkinter
         """
-        return self.canvas.get_tk_widget()
+        return self.canvas_widget
     
     def __del__(self):
         """Nettoyage des ressources matplotlib."""

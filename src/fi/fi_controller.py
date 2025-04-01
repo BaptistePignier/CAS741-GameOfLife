@@ -19,6 +19,9 @@ class FiController:
     
     def get_ring_kernel(self):
         return self.model.get_ring_kernel()
+
+    def get_growth_lenia(self):
+        return self.model.growth_lenia
     
     def update_parameters(self, mu=None, sigma=None, growth_mu=None, growth_sigma=None):
         """Met à jour les paramètres et rafraîchit l'affichage."""

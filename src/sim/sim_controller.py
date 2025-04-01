@@ -1,4 +1,5 @@
 from . import SimModel
+import numpy as np
 
 class SimController:
     def __init__(self, view, root, us_controller, fi_controller):
@@ -20,6 +21,7 @@ class SimController:
         self.batch_size = 1  # Nombre de générations par mise à jour
         
     def run(self):
+        self.reset()
         # Mise à jour initiale de l'affichage
         self.view.update_display(self.model.get_grid())
         
@@ -48,7 +50,8 @@ class SimController:
             
             # Transmission des FI au sim_model
             self.model.set_kernel_ring(self.fi_controller.get_ring_kernel())
-            
+            self.model.set_growth_lenia(self.fi_controller.get_growth_lenia())
+
             # Calcule plusieurs générations si nécessaire
             for _ in range(self.batch_size):
                 self.model.update_discrete()
@@ -69,3 +72,20 @@ class SimController:
         if self.update_timer:
             self.root.after_cancel(self.update_timer)
             self.update_timer = None
+
+    def reset(self, prob=None):
+        """Réinitialise la grille avec une nouvelle configuration aléatoire.
+        
+        Args:
+            prob (float, optional): Nouvelle probabilité pour les cellules vivantes.
+                                  Si None, utilise la probabilité initiale.
+        """
+        if prob is not None and 0 <= prob <= 1:
+            self.model.initial_alive_prob = prob
+            
+        # Génération optimisée de la grille aléatoire
+        self.model.grid = np.random.choice(
+            [0, 1],
+            self.model.width * self.model.height,
+            p=[1-self.model.initial_alive_prob, self.model.initial_alive_prob]
+        ).reshape(self.model.height, self.model.width).astype(np.int8)
