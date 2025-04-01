@@ -8,8 +8,8 @@ class SimView:
         
         Args:
             master: Widget parent Tkinter
-            width (int): Largeur de la fenêtre en pixels
-            height (int): Hauteur de la fenêtre en pixels
+            width (int): Largeur de la grille en cellules
+            height (int): Hauteur de la grille en cellules
         """
         self.width = width
         self.height = height
@@ -29,7 +29,7 @@ class SimView:
         
         # Configuration de l'affichage avec une colormap optimisée
         self.grid_display = self.ax.imshow(
-            np.zeros((100, 100)),  # Taille initiale de la grille (sera mise à jour)
+            np.zeros((height, width)),  # Taille initiale de la grille (sera mise à jour)
             cmap='binary',
             interpolation='nearest',
             aspect='equal',
@@ -48,8 +48,8 @@ class SimView:
         )
         
         # Configuration des limites de la vue
-        self.ax.set_xlim(-0.5, 99.5)  # Centrage de la grille
-        self.ax.set_ylim(-0.5, 99.5)  # Centrage de la grille
+        self.ax.set_xlim(-0.5, width-0.5)  # Centrage de la grille
+        self.ax.set_ylim(-0.5, height-0.5)  # Centrage de la grille
         
         # Désactive les événements matplotlib inutiles pour améliorer les performances
         for event_name in ['button_press_event', 'button_release_event', 'motion_notify_event']:
@@ -58,7 +58,7 @@ class SimView:
                 self.canvas.mpl_disconnect(callbacks[0])
         
         # Pré-allocation du buffer pour éviter les allocations répétées
-        self._grid_buffer = np.zeros((100, 100))
+        self._grid_buffer = np.zeros((height, width))
     
     def update_display(self, grid):
         """Met à jour l'affichage de la grille.

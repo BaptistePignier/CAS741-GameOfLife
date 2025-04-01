@@ -8,9 +8,9 @@ class SimController:
             view: Instance de SimView
             root: Fenêtre principale Tkinter
             us_controller: Instance de UsController
+            fi_controller: Instance de FiController
         """
-        grid_size = 100  # Nombre de cellules par côté
-        self.model = SimModel(grid_size, grid_size)
+        self.model = SimModel(view.width, view.height)
         self.view = view
         self.root = root
         self.us_controller = us_controller
@@ -46,6 +46,7 @@ class SimController:
         # Met à jour la simulation si elle est en cours
         if self.us_controller.is_running():
             
+            # Transmission des FI au sim_model
             self.model.set_kernel_ring(self.fi_controller.get_ring_kernel())
             
             # Calcule plusieurs générations si nécessaire
@@ -68,5 +69,3 @@ class SimController:
         if self.update_timer:
             self.root.after_cancel(self.update_timer)
             self.update_timer = None
-
-
