@@ -14,17 +14,19 @@ def main():
     root = tk.Tk()
     window_manager = WindowManager(root, sim_size, panel_width)
     
+    us_view = UsView(window_manager.get_control_frame())
+    us_controller = UsController(us_view)  # Initialisation temporaire
+
     # Initialisation du MVC de l'interface utilisateur
     fi_view = FiView(window_manager.get_control_frame())
-    fi_controller = FiController(fi_view)
+    fi_controller = FiController(fi_view, us_controller)
     
-    us_view = UsView(window_manager.get_control_frame())
-    us_controller = UsController(us_view, fi_controller)  # Initialisation temporaire
+   
 
     # Initialisation du MVC de la simulation
     sim_view = SimView(root, sim_size, sim_size)
     # Création du contrôleur de simulation avec le contrôleur utilisateur
-    sim_controller = SimController(sim_view, root, us_controller)
+    sim_controller = SimController(sim_view, root, us_controller, fi_controller)
     
     # Placement des vues dans l'interface
     window_manager.place_views(sim_view, us_view, fi_view)
@@ -32,8 +34,6 @@ def main():
 
     # Démarrage de la simulation
     sim_controller.run()
-
-   
 
     # Configuration de la fermeture propre de l'application
     def on_closing():

@@ -1,10 +1,9 @@
 from . import UsModel
 
 class UsController:
-    def __init__(self, view, fi_controller):
+    def __init__(self, view):
         self.model = UsModel()
         self.view = view
-        self.fi_controller = fi_controller
         
         # Récupération des widgets
         widgets = view.get_widgets()
@@ -18,12 +17,7 @@ class UsController:
         self.view.set_toggle_command(self.toggle_simulation)
         self.view.set_reset_command(self.reset_simulation)
         self.view.set_speed_command(self.update_speed)
-        self.set_gaussian_commands(
-            lambda x: self.fi_controller.update_parameters(mu=x),
-            lambda x: self.fi_controller.update_parameters(sigma=x),
-            lambda x: self.fi_controller.update_parameters(growth_mu=x),
-            lambda x: self.fi_controller.update_parameters(growth_sigma=x)
-        )
+        
     
     def set_gaussian_commands(self, mu_command, sigma_command, growth_mu_command, growth_sigma_command):
         """Configure les commandes des sliders gaussiens."""

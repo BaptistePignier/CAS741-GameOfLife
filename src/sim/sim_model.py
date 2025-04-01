@@ -19,9 +19,7 @@ class SimModel:
         # Utilise int8 au lieu de int64 pour réduire l'utilisation mémoire
         self.grid = np.zeros((height, width), dtype=np.int8)
         self.reset()
-
-
-
+        
         self.kernel_ring = None
     
     def set_kernel_ring(self, kernel_ring):

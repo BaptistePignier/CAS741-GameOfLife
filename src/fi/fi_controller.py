@@ -2,16 +2,27 @@ import numpy as np
 from . import FiModel
 
 class FiController:
-    def __init__(self, view):
+    def __init__(self, view, us_controller):
         self.model = FiModel()
         self.view = view
+        self.us_controller = us_controller
 
         # Affichage initial
         self._update_display()
+
+        self.us_controller.set_gaussian_commands(
+            lambda x: self.update_parameters(mu=x),
+            lambda x: self.update_parameters(sigma=x),
+            lambda x: self.update_parameters(growth_mu=x),
+            lambda x: self.update_parameters(growth_sigma=x)
+        )
+    
+    def get_ring_kernel(self):
+        return self.model.get_ring_kernel()
     
     def update_parameters(self, mu=None, sigma=None, growth_mu=None, growth_sigma=None):
         """Met à jour les paramètres et rafraîchit l'affichage."""
-        
+
         # Mise à jour des paramètres
         self.model.set_parameters(mu, sigma, growth_mu, growth_sigma)
         

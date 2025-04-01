@@ -1,7 +1,7 @@
 from . import SimModel
 
 class SimController:
-    def __init__(self, view, root, us_controller):
+    def __init__(self, view, root, us_controller, fi_controller):
         """Initialise le contrôleur de simulation.
         
         Args:
@@ -14,6 +14,7 @@ class SimController:
         self.view = view
         self.root = root
         self.us_controller = us_controller
+        self.fi_controller = fi_controller
         self.min_delay = 16  # ~60 FPS maximum (1000/60 ≈ 16.67ms)
         self.update_timer = None
         self.batch_size = 1  # Nombre de générations par mise à jour
@@ -45,7 +46,7 @@ class SimController:
         # Met à jour la simulation si elle est en cours
         if self.us_controller.is_running():
             
-            #self.model.set_kernel_ring(self.us_controller.get_kernel_ring())
+            self.model.set_kernel_ring(self.fi_controller.get_ring_kernel())
             
             # Calcule plusieurs générations si nécessaire
             for _ in range(self.batch_size):
@@ -67,3 +68,5 @@ class SimController:
         if self.update_timer:
             self.root.after_cancel(self.update_timer)
             self.update_timer = None
+
+
