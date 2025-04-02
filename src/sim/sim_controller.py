@@ -3,13 +3,13 @@ import numpy as np
 
 class SimController:
     def __init__(self, view, root, us_controller, fi_controller):
-        """Initialise le contrôleur de simulation.
+        """Initialize the simulation controller.
         
         Args:
-            view: Instance de SimView
-            root: Fenêtre principale Tkinter
-            us_controller: Instance de UsController
-            fi_controller: Instance de FiController
+            view: SimView instance
+            root: Main Tkinter window
+            us_controller: UsController instance
+            fi_controller: FiController instance
         """
         self.model = SimModel(view.width, view.height)
         self.view = view
@@ -20,67 +20,67 @@ class SimController:
         self.update_timer = None
         
     def run(self):
-        # Vérifie le mode (continu ou discret) pour l'initialisation
+        # Check mode (continuous or discrete) for initialization
         if self.us_controller.is_mode_continuous():
             self.reset_continuous()
         else:
             self.reset_discrete()
         
-        # Mise à jour initiale de l'affichage
+        # Initial display update
         self.view.update_display(self.model.get_grid())
         
-        # Démarrage du timer de mise à jour
+        # Start the update timer
         self.update()
 
     def update(self):
-        """Met à jour le modèle et la vue si la simulation est en cours."""
-        # Vérifie si une réinitialisation est demandée
+        """Update the model and view if the simulation is running."""
+        # Check if a reset is requested
         if self.us_controller.model.acknowledge_reset():
-            # Vérifie le mode (continu ou discret) pour la réinitialisation
+            # Check the mode (continuous or discrete) for reset
             if self.us_controller.is_mode_continuous():
                 self.reset_continuous()
             else:
                 self.reset_discrete()
             self.view.update_display(self.model.get_grid())
         
-        # Met à jour la simulation si elle est en cours
+        # Update the simulation if it's running
         if self.us_controller.is_running():
             
-            # Transmission des FI au sim_model
+            # Pass FIs to sim_model
             self.model.set_kernel_ring(self.fi_controller.get_ring_kernel())
             self.model.set_growth_lenia(self.fi_controller.get_growth_lenia())
 
-            # Calcule une génération selon le mode (continu ou discret)
+            # Calculate a generation based on mode (continuous or discrete)
             if self.us_controller.is_mode_continuous():
                 self.model.update_continuous()
             else:
                 self.model.update_discrete()
             
-            # Met à jour l'affichage
+            # Update the display
             self.view.update_display(self.model.get_grid())
         
-        # Planifie la prochaine mise à jour
+        # Schedule the next update
         generations_per_second = self.us_controller.get_speed()
         delay = max(self.min_delay, int(1000 / generations_per_second))
         self.update_timer = self.root.after(delay, self.update)
     
     def stop(self):
-        """Arrête le timer de mise à jour."""
+        """Stop the update timer."""
         if self.update_timer:
             self.root.after_cancel(self.update_timer)
             self.update_timer = None
 
     def reset_discrete(self, prob=None):
-        """Réinitialise la grille avec une nouvelle configuration aléatoire.
+        """Reset the grid with a new random configuration.
         
         Args:
-            prob (float, optional): Nouvelle probabilité pour les cellules vivantes.
-                                  Si None, utilise la probabilité initiale.
+            prob (float, optional): New probability for live cells.
+                                  If None, uses the initial probability.
         """
         if prob is not None and 0 <= prob <= 1:
             self.model.initial_alive_prob = prob
             
-        # Génération optimisée de la grille aléatoire
+        # Optimized generation of the random grid
         self.model.grid = np.random.choice(
             [0, 1],
             self.model.width * self.model.height,

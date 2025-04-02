@@ -2,16 +2,16 @@ import numpy as np
 from scipy.signal import convolve2d
 
 class SimModel:
-    # Kernel pré-calculé pour le calcul des voisins
+    # Pre-calculated kernel for neighbor calculation
     
     
     def __init__(self, width=500, height=500, initial_alive_prob=0.2):
-        """Initialise le modèle de simulation.
+        """Initialize the simulation model.
         
         Args:
-            width (int): Largeur de la grille en cellules
-            height (int): Hauteur de la grille en cellules
-            initial_alive_prob (float): Probabilité initiale qu'une cellule soit vivante
+            width (int): Grid width in cells
+            height (int): Grid height in cells
+            initial_alive_prob (float): Initial probability for a cell to be alive
         """
         self.width = width
         self.height = height
@@ -49,9 +49,9 @@ class SimModel:
     
     
     def get_grid(self):
-        """Retourne la grille actuelle.
+        """Return the current grid.
         
         Returns:
-            numpy.ndarray: Grille actuelle de cellules (0 = morte, 1 = vivante)
+            numpy.ndarray: Current grid of cells (0 = dead, 1 = alive)
         """
         return self.grid

@@ -5,41 +5,41 @@ from us import UsView, UsController
 from wm import WindowManager
 
 def main():
-    """Point d'entrée principal de l'application."""
-    # Configuration de la taille de la simulation
-    grid_size = 100  # Taille de la grille en cellules
-    panel_width = 200  # Largeur du panneau de contrôle en pixels
+    """Main entry point of the application."""
+    # Configuration of the simulation size
+    grid_size = 100  # Grid size in cells
+    panel_width = 200  # Control panel width in pixels
     
-    # Création de la fenêtre principale
+    # Creation of the main window
     root = tk.Tk()
     window_manager = WindowManager(root, grid_size, panel_width)
     
-    # Initialisation du MVC de l'interface utilisateur
+    # Initialization of the user interface MVC
     us_view = UsView(window_manager.get_control_frame())
     us_controller = UsController(us_view)
     
-    # Initialisation du MVC des fonctions d'influence
+    # Initialization of the influence functions MVC
     fi_view = FiView(window_manager.get_control_frame())
     fi_controller = FiController(fi_view, us_controller)
     
-    # Initialisation du MVC de la simulation
+    # Initialization of the simulation MVC
     sim_view = SimView(root, grid_size, grid_size)
     sim_controller = SimController(sim_view, root, us_controller, fi_controller)
     
-    # Placement des vues dans l'interface
+    # Placement of views in the interface
     window_manager.place_views(sim_view, us_view, fi_view)
     
-    # Démarrage de la simulation
+    # Starting the simulation
     sim_controller.run()
     
-    # Configuration de la fermeture propre de l'application
+    # Configuration for proper application closure
     def on_closing():
         root.quit()
         root.destroy()
     
     root.protocol("WM_DELETE_WINDOW", on_closing)
     
-    # Lancement de la boucle principale
+    # Launch of the main loop
     root.mainloop()
 
 if __name__ == "__main__":

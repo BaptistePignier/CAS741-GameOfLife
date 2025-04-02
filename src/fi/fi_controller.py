@@ -7,7 +7,7 @@ class FiController:
         self.view = view
         self.us_controller = us_controller
 
-        # Affichage initial
+        # Initial display
         self._update_display()
 
         self.us_controller.set_gaussian_commands(
@@ -24,23 +24,23 @@ class FiController:
         return self.model.growth_lenia
     
     def update_parameters(self, mu=None, sigma=None, growth_mu=None, growth_sigma=None):
-        """Met à jour les paramètres et rafraîchit l'affichage."""
+        """Update parameters and refresh the display."""
 
-        # Mise à jour des paramètres
+        # Parameter update
         self.model.set_parameters(mu, sigma, growth_mu, growth_sigma)
         
-        # Mise à jour de l'affichage
+        # Display update
         self._update_display()
     
     def _update_display(self):
-        """Met à jour tous les éléments d'affichage."""
-        # Création des valeurs x pour les deux graphiques
+        """Update all display elements."""
+        # Create x values for both graphs
         x = np.linspace(-2, 2, 100)
         
-        # Mise à jour du graphique de l'anneau
+        # Update the ring plot
         self.view.update_ring_plot(self.model.get_ring_kernel())
         
-        # Mise à jour des graphiques gaussiens
+        # Update the gaussian plots
         y_ring = self.model._gauss(x, self.model.mu, self.model.sigma)
         self.view.update_gaussian_plot(x, y_ring)
         

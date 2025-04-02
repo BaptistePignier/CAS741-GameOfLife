@@ -4,32 +4,32 @@ import numpy as np
 
 class SimView:
     def __init__(self, master, width, height):
-        """Initialise la vue de simulation.
+        """Initialize the simulation view.
         
         Args:
-            master: Widget parent Tkinter
-            width (int): Largeur de la grille en cellules
-            height (int): Hauteur de la grille en cellules
+            master: Parent Tkinter widget
+            width (int): Grid width in cells
+            height (int): Grid height in cells
         """
         self.width = width
         self.height = height
         self.master = master
         self.current_grid = None
         
-        # Création de la figure matplotlib avec une taille fixe
-        self.fig = plt.figure(figsize=(width/100, height/100))  # DPI standard = 100
-        self.fig.set_facecolor('none')  # Fond transparent
+        # Creation of matplotlib figure with fixed size
+        self.fig = plt.figure(figsize=(width/100, height/100))  # Standard DPI = 100
+        self.fig.set_facecolor('none')  # Transparent background
         
-        # Configuration optimisée de l'axe
+        # Optimized axis configuration
         self.ax = self.fig.add_subplot(111)
-        self.ax.set_position([0, 0, 1, 1])  # Utilise tout l'espace
+        self.ax.set_position([0, 0, 1, 1])  # Use all available space
         self.ax.set_xticks([])
         self.ax.set_yticks([])
         self.ax.set_frame_on(False)
         
-        # Configuration de l'affichage avec une colormap optimisée
+        # Display configuration with optimized colormap
         self.grid_display = self.ax.imshow(
-            np.zeros((height, width)),  # Taille initiale de la grille (sera mise à jour)
+            np.zeros((height, width)),  # Initial grid size (will be updated)
             cmap='binary',
             interpolation='nearest',
             aspect='equal',
@@ -37,15 +37,15 @@ class SimView:
             vmax=1
         )
         
-        # Création du canvas Tkinter avec une taille fixe
+        # Creation of Tkinter canvas with fixed size
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
         self.canvas_widget = self.canvas.get_tk_widget()
         
-        # Configuration des limites de la vue
-        self.ax.set_xlim(-0.5, width-0.5)  # Centrage de la grille
-        self.ax.set_ylim(-0.5, height-0.5)  # Centrage de la grille
+        # Configuration of view limits
+        self.ax.set_xlim(-0.5, width-0.5)  # Grid centering
+        self.ax.set_ylim(-0.5, height-0.5)  # Grid centering
         
-        # Désactive les événements matplotlib inutiles pour améliorer les performances
+        # Disable unused matplotlib events to improve performance
         for event_name in ['button_press_event', 'button_release_event', 'motion_notify_event']:
             callbacks = self.canvas.callbacks.callbacks.get(event_name, {})
             if callbacks and 0 in callbacks:
@@ -53,22 +53,22 @@ class SimView:
 
     
     def update_display(self, grid):
-        """Met à jour l'affichage de la grille.
+        """Update the grid display.
         
         Args:
-            grid (numpy.ndarray): Nouvelle grille à afficher
+            grid (numpy.ndarray): New grid to display
         """
         self.grid_display.set_array(grid)
         self.canvas.draw()
     
     def get_canvas(self):
-        """Retourne le widget canvas.
+        """Return the canvas widget.
         
         Returns:
-            tkinter.Widget: Widget canvas Tkinter
+            tkinter.Widget: Tkinter canvas widget
         """
         return self.canvas_widget
     
     def __del__(self):
-        """Nettoyage des ressources matplotlib."""
+        """Clean up matplotlib resources."""
         plt.close(self.fig)

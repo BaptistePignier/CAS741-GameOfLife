@@ -2,24 +2,24 @@ import numpy as np
 
 class FiModel:
     def __init__(self, mu=0.5, sigma=0.15, growth_mu=0.5, growth_sigma=0.15):
-        self.mu = mu        # Centre de l'anneau
-        self.sigma = sigma  # Largeur de l'anneau
+        self.mu = mu        # Center of the ring
+        self.sigma = sigma  # Width of the ring
         self.growth_mu = growth_mu
         self.growth_sigma = growth_sigma
-        self.R = 13        # Rayon du noyau (en pixels)
+        self.R = 13        # Kernel radius (in pixels)
         self.ring_kernel = None
         
         self._update_ring_kernel()
     
     def _gauss(self, x, mu, sigma):
-        """Fonction gaussienne pour créer le profil de l'anneau."""
+        """Gaussian function to create the ring profile."""
         return np.exp(-0.5 * ((x-mu)/sigma)**2)
 
     def growth_lenia(self, u):
         return -1 + 2 * self._gauss(u, self.growth_mu, self.growth_sigma)        # Baseline -1, peak +1
 
     def _update_ring_kernel(self):
-        """Met à jour le noyau en anneau et le retourne."""
+        """Update the ring kernel and return it."""
         y, x = np.ogrid[-self.R:self.R, -self.R:self.R]
         distance = np.sqrt((1+x)**2 + (1+y)**2) / self.R
 
@@ -29,11 +29,11 @@ class FiModel:
         return self.ring_kernel
     
     def get_ring_kernel(self):
-        """Retourne le noyau en anneau actuel."""
+        """Return the current ring kernel."""
         return self.ring_kernel
 
     def set_parameters(self, mu=None, sigma=None, growth_mu=None, growth_sigma=None):
-        """Met à jour les paramètres et recalcule le noyau si nécessaire."""
+        """Update parameters and recalculate the kernel if necessary."""
         update_kernel = False
         
         if mu is not None:

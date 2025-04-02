@@ -5,15 +5,15 @@ class UsController:
         self.model = UsModel()
         self.view = view
         
-        # Récupération des widgets
+        # Get widgets
         widgets = view.get_widgets()
         self.model.set_widgets(**widgets)
         
-        # Configuration des commandes
+        # Configure commands
         self.setup_commands()
     
     def setup_commands(self):
-        """Configure toutes les commandes des widgets."""
+        """Configure all widget commands."""
         self.view.set_toggle_command(self.toggle_simulation)
         self.view.set_reset_command(self.reset_simulation)
         self.view.set_speed_command(self.update_speed)
@@ -21,7 +21,7 @@ class UsController:
         
     
     def set_gaussian_commands(self, mu_command, sigma_command, growth_mu_command, growth_sigma_command):
-        """Configure les commandes des sliders gaussiens."""
+        """Configure gaussian slider commands."""
         def update_mu(value):
             self.view.mu_label.config(text=f"μ : {float(value):.2f}")
             mu_command(value)
@@ -35,7 +35,7 @@ class UsController:
             growth_mu_command(value)
         
         def update_growth_sigma(value):
-            # Arrondir la valeur au millième
+            # Round value to thousandth
             rounded_value = round(float(value), 3)
             self.view.growth_sigma_label.config(text=f"σ : {rounded_value:.3f}")
             growth_sigma_command(rounded_value)
@@ -46,45 +46,45 @@ class UsController:
         self.view.growth_sigma_slider.config(command=update_growth_sigma)
 
     def toggle_simulation(self):
-        """Gère le démarrage/arrêt de la simulation."""
+        """Handle start/stop of the simulation."""
         self.model.toggle_running_state()
     
     def reset_simulation(self):
-        """Réinitialise la simulation."""
+        """Reset the simulation."""
         self.model.reset_state()
     
     def get_speed(self):
-        """Retourne la vitesse actuelle de simulation.
+        """Return the current simulation speed.
         
         Returns:
-            float: Nombre de générations par seconde
+            float: Number of generations per second
         """
         return self.model.speed
     
     def update_speed(self, value):
-        """Met à jour la vitesse de simulation.
+        """Update the simulation speed.
         
         Args:
-            value (float): Nouvelle vitesse en générations par seconde
+            value (float): New speed in generations per second
         """
         self.model.speed = float(value)
     
     def is_running(self):
-        """Retourne l'état actuel de la simulation.
+        """Return the current simulation state.
         
         Returns:
-            bool: True si la simulation est en cours
+            bool: True if the simulation is running
         """
         return self.model.is_running
 
     def toggle_continuous_mode(self):
-        """Gère l'activation/désactivation du mode continu."""
+        """Handle enable/disable of continuous mode."""
         self.model.toggle_continuous_mode()
     
     def is_mode_continuous(self):
-        """Retourne l'état actuel du mode continu.
+        """Return the current continuous mode state.
         
         Returns:
-            bool: True si le mode continu est activé
+            bool: True if continuous mode is enabled
         """
         return self.model.is_mode_continuous()

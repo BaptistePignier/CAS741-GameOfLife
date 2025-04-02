@@ -3,53 +3,53 @@ from tkinter import ttk
 
 class UsView:
     def __init__(self, control_frame):
-        # Création du frame interne
+        # Creation of internal frame
         self.frame = ttk.Frame(control_frame)
         self.frame.grid_columnconfigure(0, weight=1)
         
-        # Création des widgets
+        # Creation of widgets
         self._create_control_buttons()
         self._create_speed_frame()
         self._create_gaussian_frame()
     
     def _create_control_buttons(self):
-        """Crée les boutons de contrôle."""
-        self.toggle_button = ttk.Button(self.frame, text="Démarrer")
+        """Create control buttons."""
+        self.toggle_button = ttk.Button(self.frame, text="Start")
         self.toggle_button.grid(row=0, column=0, pady=5)
         
-        # Frame pour le bouton reset et le switch continu
+        # Frame for reset button and continuous switch
         reset_frame = ttk.Frame(self.frame)
         reset_frame.grid(row=1, column=0, pady=5)
         reset_frame.grid_columnconfigure(0, weight=1)
         reset_frame.grid_columnconfigure(1, weight=1)
         
-        # Bouton reset
-        self.reset_button = ttk.Button(reset_frame, text="Réinitialiser")
+        # Reset button
+        self.reset_button = ttk.Button(reset_frame, text="Reset")
         self.reset_button.grid(row=1, column=0, pady=5, padx=5)
         
-        # Frame pour le switch continu
+        # Frame for continuous switch
         continuous_frame = ttk.Frame(reset_frame)
         continuous_frame.grid(row=1, column=1, pady=5, padx=5)
         
-        # Label pour le switch continu
-        continuous_label = ttk.Label(continuous_frame, text="Continu")
+        # Label for continuous switch
+        continuous_label = ttk.Label(continuous_frame, text="Continuous")
         continuous_label.pack(anchor=tk.CENTER)
         
-        # Switch continu (utilisation d'un Checkbutton comme switch)
+        # Continuous switch (using Checkbutton as switch)
         self.continuous_switch = ttk.Checkbutton(continuous_frame)
         self.continuous_switch.pack(anchor=tk.CENTER)
     
     def _create_speed_frame(self):
-        """Crée le frame de contrôle de la vitesse."""
-        speed_frame = ttk.LabelFrame(self.frame, text="Vitesse")
+        """Create speed control frame."""
+        speed_frame = ttk.LabelFrame(self.frame, text="Speed")
         speed_frame.grid_columnconfigure(0, weight=1)
         speed_frame.grid(row=2, column=0, pady=5, padx=5, sticky='ew')
         
-        # Label FPS dynamique
+        # Dynamic FPS label
         self.speed_label = ttk.Label(speed_frame, text="FPS : 60")
         self.speed_label.grid(row=0, column=0, pady=(5,0))
         
-        # Slider de vitesse
+        # Speed slider
         self.speed_slider = ttk.Scale(
             speed_frame,
             from_=1,
@@ -60,12 +60,12 @@ class UsView:
         self.speed_slider.grid(row=1, column=0, pady=5, padx=10, sticky='ew')
     
     def _create_gaussian_frame(self):
-        """Crée le frame des paramètres gaussiens."""
-        gaussian_frame = ttk.LabelFrame(self.frame, text="Fonction gaussienne")
+        """Create gaussian parameters frame."""
+        gaussian_frame = ttk.LabelFrame(self.frame, text="Gaussian Function")
         gaussian_frame.grid_columnconfigure(0, weight=1)
         gaussian_frame.grid(row=3, column=0, pady=5, padx=5, sticky='ew')
         
-        # Paramètre μ (mu)
+        # μ (mu) parameter
         self.mu_label = ttk.Label(gaussian_frame, text="μ : 0.50")
         self.mu_label.grid(row=0, column=0, pady=(5,0))
         
@@ -78,7 +78,7 @@ class UsView:
         )
         self.mu_slider.grid(row=1, column=0, pady=(0,5), padx=10, sticky='ew')
         
-        # Paramètre σ (sigma)
+        # σ (sigma) parameter
         self.sigma_label = ttk.Label(gaussian_frame, text="σ : 0.15")
         self.sigma_label.grid(row=2, column=0, pady=(5,0))
         
@@ -91,12 +91,12 @@ class UsView:
         )
         self.sigma_slider.grid(row=3, column=0, pady=(0,5), padx=10, sticky='ew')
 
-        # Nouveau frame pour la fonction de croissance
-        growth_frame = ttk.LabelFrame(self.frame, text="Fonction de croissance")
+        # New frame for growth function
+        growth_frame = ttk.LabelFrame(self.frame, text="Growth Function")
         growth_frame.grid_columnconfigure(0, weight=1)
         growth_frame.grid(row=4, column=0, pady=5, padx=5, sticky='ew')
         
-        # Paramètre μ (mu) pour la croissance
+        # μ (mu) parameter for growth
         self.growth_mu_label = ttk.Label(growth_frame, text="μ : 0.50")
         self.growth_mu_label.grid(row=0, column=0, pady=(5,0))
         
@@ -109,7 +109,7 @@ class UsView:
         )
         self.growth_mu_slider.grid(row=1, column=0, pady=(0,5), padx=10, sticky='ew')
         
-        # Paramètre σ (sigma) pour la croissance
+        # σ (sigma) parameter for growth
         self.growth_sigma_label = ttk.Label(growth_frame, text="σ : 0.050")
         self.growth_sigma_label.grid(row=2, column=0, pady=(5,0))
         
@@ -123,34 +123,34 @@ class UsView:
         self.growth_sigma_slider.grid(row=3, column=0, pady=(0,5), padx=10, sticky='ew')
     
     def _update_speed_label(self, value):
-        """Met à jour le label de vitesse."""
+        """Update the speed label."""
         self.speed_label.config(text=f"FPS : {int(float(value))}")
     
     def set_toggle_command(self, command):
-        """Configure la commande du bouton toggle."""
+        """Configure the toggle button command."""
         self.toggle_button.config(command=command)
     
     def set_reset_command(self, command):
-        """Configure la commande du bouton reset."""
+        """Configure the reset button command."""
         self.reset_button.config(command=command)
     
     def set_speed_command(self, command):
-        """Configure la commande du slider de vitesse."""
+        """Configure the speed slider command."""
         def combined_command(value):
             self._update_speed_label(value)
             command(float(value))
         self.speed_slider.config(command=combined_command)
     
     def set_continuous_command(self, command):
-        """Configure la commande du switch continu."""
+        """Configure the continuous switch command."""
         self.continuous_switch.config(command=command)
     
     def get_frame(self):
-        """Retourne le frame interne."""
+        """Return the internal frame."""
         return self.frame
     
     def get_widgets(self):
-        """Retourne un dictionnaire des widgets pour le modèle."""
+        """Return a dictionary of widgets for the model."""
         return {
             'toggle_button': self.toggle_button,
             'reset_button': self.reset_button,
