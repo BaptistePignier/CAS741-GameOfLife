@@ -50,9 +50,7 @@ class SimView:
             callbacks = self.canvas.callbacks.callbacks.get(event_name, {})
             if callbacks and 0 in callbacks:
                 self.canvas.mpl_disconnect(callbacks[0])
-        
-        # Pré-allocation du buffer pour éviter les allocations répétées
-        self._grid_buffer = np.zeros((height, width))
+
     
     def update_display(self, grid):
         """Met à jour l'affichage de la grille.
@@ -60,13 +58,8 @@ class SimView:
         Args:
             grid (numpy.ndarray): Nouvelle grille à afficher
         """
-        # Mise à jour optimisée de l'affichage
-        if grid is not None and grid.shape == self._grid_buffer.shape:
-            # Évite la copie si la grille n'a pas changé
-            if not np.array_equal(self._grid_buffer, grid):
-                np.copyto(self._grid_buffer, grid)
-                self.grid_display.set_array(self._grid_buffer)
-                self.canvas.draw()
+        self.grid_display.set_array(grid)
+        self.canvas.draw()
     
     def get_canvas(self):
         """Retourne le widget canvas.

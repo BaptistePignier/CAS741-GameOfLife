@@ -20,7 +20,12 @@ class SimController:
         self.update_timer = None
         
     def run(self):
-        self.reset_discrete()
+        # Vérifie le mode (continu ou discret) pour l'initialisation
+        if self.us_controller.is_mode_continuous():
+            self.reset_continuous()
+        else:
+            self.reset_discrete()
+        
         # Mise à jour initiale de l'affichage
         self.view.update_display(self.model.get_grid())
         
@@ -31,7 +36,11 @@ class SimController:
         """Met à jour le modèle et la vue si la simulation est en cours."""
         # Vérifie si une réinitialisation est demandée
         if self.us_controller.model.acknowledge_reset():
-            self.reset_discrete()
+            # Vérifie le mode (continu ou discret) pour la réinitialisation
+            if self.us_controller.is_mode_continuous():
+                self.reset_continuous()
+            else:
+                self.reset_discrete()
             self.view.update_display(self.model.get_grid())
         
         # Met à jour la simulation si elle est en cours
@@ -41,8 +50,11 @@ class SimController:
             self.model.set_kernel_ring(self.fi_controller.get_ring_kernel())
             self.model.set_growth_lenia(self.fi_controller.get_growth_lenia())
 
-            # Calcule une génération
-            self.model.update_discrete()
+            # Calcule une génération selon le mode (continu ou discret)
+            if self.us_controller.is_mode_continuous():
+                self.model.update_continuous()
+            else:
+                self.model.update_discrete()
             
             # Met à jour l'affichage
             self.view.update_display(self.model.get_grid())

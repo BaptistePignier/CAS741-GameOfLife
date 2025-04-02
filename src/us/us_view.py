@@ -17,8 +17,27 @@ class UsView:
         self.toggle_button = ttk.Button(self.frame, text="Démarrer")
         self.toggle_button.grid(row=0, column=0, pady=5)
         
-        self.reset_button = ttk.Button(self.frame, text="Réinitialiser")
-        self.reset_button.grid(row=1, column=0, pady=5)
+        # Frame pour le bouton reset et le switch continu
+        reset_frame = ttk.Frame(self.frame)
+        reset_frame.grid(row=1, column=0, pady=5)
+        reset_frame.grid_columnconfigure(0, weight=1)
+        reset_frame.grid_columnconfigure(1, weight=1)
+        
+        # Bouton reset
+        self.reset_button = ttk.Button(reset_frame, text="Réinitialiser")
+        self.reset_button.grid(row=1, column=0, pady=5, padx=5)
+        
+        # Frame pour le switch continu
+        continuous_frame = ttk.Frame(reset_frame)
+        continuous_frame.grid(row=1, column=1, pady=5, padx=5)
+        
+        # Label pour le switch continu
+        continuous_label = ttk.Label(continuous_frame, text="Continu")
+        continuous_label.pack(anchor=tk.CENTER)
+        
+        # Switch continu (utilisation d'un Checkbutton comme switch)
+        self.continuous_switch = ttk.Checkbutton(continuous_frame)
+        self.continuous_switch.pack(anchor=tk.CENTER)
     
     def _create_speed_frame(self):
         """Crée le frame de contrôle de la vitesse."""
@@ -91,15 +110,15 @@ class UsView:
         self.growth_mu_slider.grid(row=1, column=0, pady=(0,5), padx=10, sticky='ew')
         
         # Paramètre σ (sigma) pour la croissance
-        self.growth_sigma_label = ttk.Label(growth_frame, text="σ : 0.15")
+        self.growth_sigma_label = ttk.Label(growth_frame, text="σ : 0.050")
         self.growth_sigma_label.grid(row=2, column=0, pady=(5,0))
         
         self.growth_sigma_slider = ttk.Scale(
             growth_frame,
-            from_=0.05,
-            to=0.5,
+            from_=0.0,
+            to=0.1,
             orient=tk.HORIZONTAL,
-            value=0.15
+            value=0.05
         )
         self.growth_sigma_slider.grid(row=3, column=0, pady=(0,5), padx=10, sticky='ew')
     
@@ -122,7 +141,9 @@ class UsView:
             command(float(value))
         self.speed_slider.config(command=combined_command)
     
-    
+    def set_continuous_command(self, command):
+        """Configure la commande du switch continu."""
+        self.continuous_switch.config(command=command)
     
     def get_frame(self):
         """Retourne le frame interne."""
@@ -133,6 +154,7 @@ class UsView:
         return {
             'toggle_button': self.toggle_button,
             'reset_button': self.reset_button,
+            'continuous_switch': self.continuous_switch,
             'speed_slider': self.speed_slider,
             'speed_label': self.speed_label,
             'mu_slider': self.mu_slider,

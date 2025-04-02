@@ -17,6 +17,7 @@ class UsController:
         self.view.set_toggle_command(self.toggle_simulation)
         self.view.set_reset_command(self.reset_simulation)
         self.view.set_speed_command(self.update_speed)
+        self.view.set_continuous_command(self.toggle_continuous_mode)
         
     
     def set_gaussian_commands(self, mu_command, sigma_command, growth_mu_command, growth_sigma_command):
@@ -34,8 +35,10 @@ class UsController:
             growth_mu_command(value)
         
         def update_growth_sigma(value):
-            self.view.growth_sigma_label.config(text=f"σ : {float(value):.2f}")
-            growth_sigma_command(value)
+            # Arrondir la valeur au millième
+            rounded_value = round(float(value), 3)
+            self.view.growth_sigma_label.config(text=f"σ : {rounded_value:.3f}")
+            growth_sigma_command(rounded_value)
         
         self.view.mu_slider.config(command=update_mu)
         self.view.sigma_slider.config(command=update_sigma)
@@ -74,4 +77,14 @@ class UsController:
         """
         return self.model.is_running
 
+    def toggle_continuous_mode(self):
+        """Gère l'activation/désactivation du mode continu."""
+        self.model.toggle_continuous_mode()
+    
+    def is_mode_continuous(self):
+        """Retourne l'état actuel du mode continu.
         
+        Returns:
+            bool: True si le mode continu est activé
+        """
+        return self.model.is_mode_continuous()

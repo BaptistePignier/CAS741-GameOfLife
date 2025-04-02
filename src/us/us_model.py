@@ -5,10 +5,13 @@ class UsModel:
         self.speed = 60.0  # Vitesse par défaut (générations par seconde)
         self.is_running = False  # État de la simulation
         self.needs_reset = False  # Flag pour la réinitialisation
+        self.is_continuous = False  # État du mode continu
+        self.continuous_switch = None
     
-    def set_widgets(self, toggle_button, **kwargs):
+    def set_widgets(self, toggle_button, continuous_switch=None, **kwargs):
         """Stocke uniquement la référence au bouton toggle qui a besoin d'être mis à jour."""
         self.toggle_button = toggle_button
+        self.continuous_switch = continuous_switch
     
     def update_toggle_button_text(self, is_running):
         """Met à jour le texte du bouton toggle.
@@ -48,3 +51,20 @@ class UsModel:
     def get_panel_width(self):
         """Retourne la largeur du panneau de contrôle."""
         return self.panel_width
+    
+    def toggle_continuous_mode(self):
+        """Inverse l'état du mode continu.
+        
+        Returns:
+            bool: Nouvel état du mode continu
+        """
+        self.is_continuous = not self.is_continuous
+        return self.is_continuous
+    
+    def is_mode_continuous(self):
+        """Retourne l'état du mode continu.
+        
+        Returns:
+            bool: True si le mode continu est activé
+        """
+        return self.is_continuous
