@@ -9,8 +9,9 @@ class FiModel:
         self.R = 13        # Kernel radius (in pixels)
         self.ring_kernel = None
         
-        self.growth_lenia = None
+        
         self.x = np.linspace(-2, 2, 1000)
+        self.y = None
 
         self._update_ring_kernel()
         self._update_growth_lenia()
@@ -34,7 +35,7 @@ class FiModel:
     
     def _update_growth_lenia(self):
         
-        self.growth_lenia = self._gauss(self.x, self.growth_mu, self.growth_sigma)
+        self.y = self._gauss(self.x, self.growth_mu, self.growth_sigma)
 
     def get_ring_kernel(self):
         """Return the current ring kernel."""

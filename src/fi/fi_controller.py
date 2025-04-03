@@ -8,7 +8,7 @@ class FiController:
         self.us_controller = us_controller
 
         # Initial display
-        self.view.update_plots(self.model.ring_kernel,self.model.x,self.model.growth_lenia)
+        self.view.update_plots(self.model.ring_kernel,self.model.x,self.model.y)
 
         self.us_controller.set_gaussian_commands(
             lambda x: self.update_parameters(mu=x),
@@ -31,6 +31,6 @@ class FiController:
         self.model.set_parameters(mu, sigma, growth_mu, growth_sigma)
         
         # Display update
-        self.view.update_plots(self.model.ring_kernel,self.model.x,self.model.growth_lenia)
+        self.view.update_plots(self.model.ring_kernel,self.model.x,self.model.y)
     
         
