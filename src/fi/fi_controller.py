@@ -40,9 +40,7 @@ class FiController:
         # Update the ring plot
         self.view.update_ring_plot(self.model.get_ring_kernel())
         
-        # Update the gaussian plots
-        y_ring = self.model._gauss(x, self.model.mu, self.model.sigma)
-        self.view.update_gaussian_plot(x, y_ring)
-        
+       
+        # Update the growth plot
         y_growth = self.model._gauss(x, self.model.growth_mu, self.model.growth_sigma)
         self.view.update_growth_plot(x, y_growth)
