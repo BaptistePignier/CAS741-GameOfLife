@@ -24,6 +24,7 @@ class FiModel:
         return -1 + 2 * self._gauss(u, self.growth_mu, self.growth_sigma)        # Baseline -1, peak +1
 
     def _update_ring_kernel(self):
+        print("update ring kernel")
         """Update the ring kernel and return it."""
         y, x = np.ogrid[-self.R:self.R, -self.R:self.R]
         distance = np.sqrt((1+x)**2 + (1+y)**2) / self.R
@@ -34,7 +35,7 @@ class FiModel:
         
     
     def _update_growth_lenia(self):
-        
+        print("update growth lenia")
         self.y = self._gauss(self.x, self.growth_mu, self.growth_sigma)
 
     def get_ring_kernel(self):
@@ -46,15 +47,20 @@ class FiModel:
         
         if mu is not None:
             self.mu = float(mu)
+            self._update_ring_kernel()
             
         if sigma is not None:
             self.sigma = float(sigma)
+            self._update_ring_kernel()
             
         if growth_mu is not None:
             self.growth_mu = float(growth_mu)
+            self._update_growth_lenia()
             
         if growth_sigma is not None:
             self.growth_sigma = float(growth_sigma)
+            self._update_growth_lenia()
+
+
         
-        self._update_ring_kernel()
-        self._update_growth_lenia()
+        
