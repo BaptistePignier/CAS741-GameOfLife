@@ -9,7 +9,11 @@ class FiModel:
         self.R = 13        # Kernel radius (in pixels)
         self.ring_kernel = None
         
+        self.growth_lenia = None
+        self.x = np.linspace(-2, 2, 100)
+
         self._update_ring_kernel()
+        self._update_growth_lenia()
     
     def _gauss(self, x, mu, sigma):
         """Gaussian function to create the ring profile."""
@@ -26,23 +30,24 @@ class FiModel:
         self.ring_kernel = self._gauss(distance, self.mu, self.sigma)
         self.ring_kernel[distance > 1] = 0               # Cut at d=1
         self.ring_kernel = self.ring_kernel / np.sum(self.ring_kernel)     # Normalize
-        return self.ring_kernel
+        
     
+    def _update_growth_lenia(self):
+        
+        self.growth_lenia = self._gauss(self.x, self.growth_mu, self.growth_sigma)
+
     def get_ring_kernel(self):
         """Return the current ring kernel."""
         return self.ring_kernel
 
     def set_parameters(self, mu=None, sigma=None, growth_mu=None, growth_sigma=None):
         """Update parameters and recalculate the kernel if necessary."""
-        update_kernel = False
         
         if mu is not None:
             self.mu = float(mu)
-            update_kernel = True
             
         if sigma is not None:
             self.sigma = float(sigma)
-            update_kernel = True
             
         if growth_mu is not None:
             self.growth_mu = float(growth_mu)
@@ -50,4 +55,5 @@ class FiModel:
         if growth_sigma is not None:
             self.growth_sigma = float(growth_sigma)
         
-        return self._update_ring_kernel() if update_kernel else None
+        self._update_ring_kernel()
+        self._update_growth_lenia()
