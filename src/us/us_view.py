@@ -34,7 +34,7 @@ class UsView:
         # Label for continuous switch
         continuous_label = ttk.Label(continuous_frame, text="Continuous")
         continuous_label.pack(anchor=tk.CENTER)
-        
+                
         # Continuous switch (using Checkbutton as switch)
         self.continuous_switch = ttk.Checkbutton(continuous_frame)
         self.continuous_switch.pack(anchor=tk.CENTER)

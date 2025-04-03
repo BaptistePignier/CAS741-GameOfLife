@@ -46,15 +46,13 @@ class SimController:
         # Update the simulation if it's running
         if self.us_controller.is_running():
             
-            # Pass FIs to sim_model
-            self.model.set_kernel_ring(self.fi_controller.get_ring_kernel())
             self.model.set_growth_lenia(self.fi_controller.get_growth_lenia())
 
             # Calculate a generation based on mode (continuous or discrete)
             if self.us_controller.is_mode_continuous():
-                self.model.update_continuous()
+                self.model.update_continuous(self.fi_controller.get_con_nhood())
             else:
-                self.model.update_discrete()
+                self.model.update_discrete(self.fi_controller.get_dis_nhood())
             
             # Update the display
             self.view.update_display(self.model.get_grid())

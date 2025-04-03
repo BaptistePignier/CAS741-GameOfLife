@@ -14,15 +14,15 @@ class FiView:
         self.frame.grid_rowconfigure(1, weight=1)  # Growth
         
         # Figure unique avec deux sous-graphiques
-        self.fig, (self.ax_ring, self.ax_growth) = plt.subplots(2, 1, figsize=(6, 6), 
+        self.fig, (self.ax_con_nhood, self.ax_growth) = plt.subplots(2, 1, figsize=(6, 6), 
                                                gridspec_kw={'height_ratios': [2, 1]})
         self.fig.set_facecolor('white')
         self.fig.tight_layout(pad=3)
         
         # Configuration de l'axe pour le kernel
-        self.ax_ring.set_xticks([])
-        self.ax_ring.set_yticks([])
-        self.ax_ring.set_title("Kernel visualization")
+        self.ax_con_nhood.set_xticks([])
+        self.ax_con_nhood.set_yticks([])
+        self.ax_con_nhood.set_title("Neighborhood visualization")
         
         # Configuration de l'axe pour la croissance
         self.ax_growth.set_xticks([])
@@ -35,7 +35,7 @@ class FiView:
         
         # Initialisation du graphique kernel
         empty_kernel = np.zeros((26, 26))
-        self.ring_image = self.ax_ring.imshow(
+        self.con_nhood_image = self.ax_con_nhood.imshow(
             empty_kernel,
             cmap='viridis',
             interpolation='nearest',
@@ -44,7 +44,7 @@ class FiView:
             vmin=0,
             vmax=0.005
         )
-        self.ax_ring.grid(True, linestyle='--', alpha=0.3)
+        self.ax_con_nhood.grid(True, linestyle='--', alpha=0.3)
         
         # Initialisation du graphique de croissance
         x_init = [0, 1]
@@ -56,18 +56,22 @@ class FiView:
         # Mise à jour initiale du canvas
         self.canvas.draw()
 
-
-
-    def update_plots(self,kernel,x,y):
-        """Met à jour les deux graphiques."""
-        """Met à jour le graphique du kernel."""
-        self.ring_image.set_array(kernel)
+    def update_growth_plot(self, x_values, y_values, y_max=None):
+        """Met à jour le graphique de croissance."""
+        self.growth_line.set_xdata(x_values)
+        self.growth_line.set_ydata(y_values)
+        if y_max is not None:
+            self.ax_growth.set_ylim(-0.2, y_max * 1.2)
+        self.canvas.draw_idle()
+    
+    def update_con_nhood_plot(self, kernel):
+        """Met à jour le graphique du voisinage de connectivité."""
+        self.con_nhood_image.set_array(kernel)
         self.canvas.draw_idle()
         
-        """Met à jour le graphique de croissance."""
-        self.growth_line.set_xdata(x)
-        self.growth_line.set_ydata(y)
-        self.canvas.draw_idle()
+    def update_nhood_plot(self, kernel):
+        """Méthode de compatibilité qui appelle update_con_nhood_plot."""
+        self.update_con_nhood_plot(kernel)
 
     def get_frame(self):
         """Renvoie le frame principal."""
@@ -76,4 +80,8 @@ class FiView:
     def get_canvas(self):
         """Renvoie les widgets canvas."""
         return None, self.canvas.get_tk_widget(), self.canvas.get_tk_widget()
+        
+    def update_gaussian_plot(self, x_values, y_values, y_max=None):
+        """Méthode fictive pour compatibilité avec le contrôleur."""
+        pass
         

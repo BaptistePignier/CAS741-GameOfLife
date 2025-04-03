@@ -7,13 +7,18 @@ class FiModel:
         self.growth_mu = growth_mu
         self.growth_sigma = growth_sigma
         self.R = 13        # Kernel radius (in pixels)
-        self.ring_kernel = None
+        self.con_nhood = None
         
-        
-        self.x = np.linspace(-2, 2, 1000)
-        self.y = None
+        self.dis_nhood = np.array([ [0, 0, 0, 0, 0],
+                                    [0, 1, 1, 1, 0],
+                                    [0, 1, 0, 1, 0],
+                                    [0, 1, 1, 1, 0],
+                                    [0, 0, 0, 0, 0]], dtype=np.int8)
 
-        self._update_ring_kernel()
+        self.growth_lenia = None
+        self.x = np.linspace(-2, 2, 1000)
+
+        self._update_con_nhood()
         self._update_growth_lenia()
     
     def _gauss(self, x, mu, sigma):
@@ -23,43 +28,45 @@ class FiModel:
     def growth_lenia(self, u):
         return -1 + 2 * self._gauss(u, self.growth_mu, self.growth_sigma)        # Baseline -1, peak +1
 
-    def _update_ring_kernel(self):
-        print("update ring kernel")
-        """Update the ring kernel and return it."""
+    def _update_con_nhood(self):
+        """Update the connectivity neighborhood and return it."""
         y, x = np.ogrid[-self.R:self.R, -self.R:self.R]
         distance = np.sqrt((1+x)**2 + (1+y)**2) / self.R
 
-        self.ring_kernel = self._gauss(distance, self.mu, self.sigma)
-        self.ring_kernel[distance > 1] = 0               # Cut at d=1
-        self.ring_kernel = self.ring_kernel / np.sum(self.ring_kernel)     # Normalize
+        self.con_nhood = self._gauss(distance, self.mu, self.sigma)
+        self.con_nhood[distance > 1] = 0               # Cut at d=1
+        self.con_nhood = self.con_nhood / np.sum(self.con_nhood)     # Normalize
         
     
     def _update_growth_lenia(self):
-        print("update growth lenia")
-        self.y = self._gauss(self.x, self.growth_mu, self.growth_sigma)
+        
+        self.growth_lenia = self._gauss(self.x, self.growth_mu, self.growth_sigma)
 
-    def get_ring_kernel(self):
-        """Return the current ring kernel."""
-        return self.ring_kernel
+    def get_con_nhood(self):
+        """Return the current connectivity neighborhood."""
+        return self.con_nhood
+    
+    def get_dis_nhood(self):
+        """Return the current connectivity neighborhood."""
+        return self.dis_nhood
 
     def set_parameters(self, mu=None, sigma=None, growth_mu=None, growth_sigma=None):
         """Update parameters and recalculate the kernel if necessary."""
         
         if mu is not None:
             self.mu = float(mu)
-            self._update_ring_kernel()
             
         if sigma is not None:
             self.sigma = float(sigma)
-            self._update_ring_kernel()
             
         if growth_mu is not None:
             self.growth_mu = float(growth_mu)
-            self._update_growth_lenia()
             
         if growth_sigma is not None:
             self.growth_sigma = float(growth_sigma)
-            self._update_growth_lenia()
+        
+        self._update_con_nhood()
+        self._update_growth_lenia()
 
 
         

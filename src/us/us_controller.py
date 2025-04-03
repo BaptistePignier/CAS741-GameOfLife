@@ -6,8 +6,7 @@ class UsController:
         self.view = view
         
         # Get widgets
-        widgets = view.get_widgets()
-        self.model.set_widgets(**widgets)
+        self.model.set_widgets(**view.get_widgets())
         
         # Configure commands
         self.setup_commands()
