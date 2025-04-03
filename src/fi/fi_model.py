@@ -10,7 +10,7 @@ class FiModel:
         self.ring_kernel = None
         
         self.growth_lenia = None
-        self.x = np.linspace(-2, 2, 100)
+        self.x = np.linspace(-2, 2, 1000)
 
         self._update_ring_kernel()
         self._update_growth_lenia()
