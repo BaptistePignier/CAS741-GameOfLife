@@ -38,7 +38,7 @@ class FiController:
     def _update_display(self):
         """Update all display elements."""
         # Create x values for growth graph
-        x = np.linspace(-2, 2, 100)
+        x = np.linspace(-2, 2, 1000)
         
         # Update the nhood plot
         if self.us_controller.is_mode_continuous():

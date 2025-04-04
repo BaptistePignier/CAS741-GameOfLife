@@ -15,11 +15,10 @@ class FiModel:
                                     [0, 1, 1, 1, 0],
                                     [0, 0, 0, 0, 0]], dtype=np.int8)
 
-        self.growth_lenia = None
         self.x = np.linspace(-2, 2, 1000)
 
         self._update_con_nhood()
-        self._update_growth_lenia()
+        
     
     def _gauss(self, x, mu, sigma):
         """Gaussian function to create the ring profile."""
@@ -36,11 +35,7 @@ class FiModel:
         self.con_nhood = self._gauss(distance, self.mu, self.sigma)
         self.con_nhood[distance > 1] = 0               # Cut at d=1
         self.con_nhood = self.con_nhood / np.sum(self.con_nhood)     # Normalize
-        
-    
-    def _update_growth_lenia(self):
-        
-        self.growth_lenia = self._gauss(self.x, self.growth_mu, self.growth_sigma)
+
 
     def get_con_nhood(self):
         """Return the current connectivity neighborhood."""
@@ -66,7 +61,7 @@ class FiModel:
             self.growth_sigma = float(growth_sigma)
         
         self._update_con_nhood()
-        self._update_growth_lenia()
+        
 
 
         

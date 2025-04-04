@@ -80,8 +80,3 @@ class FiView:
     def get_canvas(self):
         """Renvoie les widgets canvas."""
         return None, self.canvas.get_tk_widget(), self.canvas.get_tk_widget()
-        
-    def update_gaussian_plot(self, x_values, y_values, y_max=None):
-        """Méthode fictive pour compatibilité avec le contrôleur."""
-        pass
-        
