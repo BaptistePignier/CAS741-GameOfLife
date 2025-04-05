@@ -14,7 +14,8 @@ class FiController:
             lambda x: self.update_parameters(mu=x),
             lambda x: self.update_parameters(sigma=x),
             lambda x: self.update_parameters(growth_mu=x),
-            lambda x: self.update_parameters(growth_sigma=x)
+            lambda x: self.update_parameters(growth_sigma=x),
+            lambda : self._update_display()
         )
     
     def get_con_nhood(self):

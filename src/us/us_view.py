@@ -126,25 +126,6 @@ class UsView:
         """Update the speed label."""
         self.speed_label.config(text=f"FPS : {int(float(value))}")
     
-    def set_toggle_command(self, command):
-        """Configure the toggle button command."""
-        self.toggle_button.config(command=command)
-    
-    def set_reset_command(self, command):
-        """Configure the reset button command."""
-        self.reset_button.config(command=command)
-    
-    def set_speed_command(self, command):
-        """Configure the speed slider command."""
-        def combined_command(value):
-            self._update_speed_label(value)
-            command(float(value))
-        self.speed_slider.config(command=combined_command)
-    
-    def set_continuous_command(self, command):
-        """Configure the continuous switch command."""
-        self.continuous_switch.config(command=command)
-    
     def get_frame(self):
         """Return the internal frame."""
         return self.frame
