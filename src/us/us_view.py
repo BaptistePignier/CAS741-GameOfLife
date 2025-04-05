@@ -27,16 +27,35 @@ class UsView:
         self.reset_button = ttk.Button(reset_frame, text="Reset")
         self.reset_button.grid(row=1, column=0, pady=5, padx=5)
         
-        # Frame for continuous switch
+        # Frame for continuous switch and the numeric entry
         continuous_frame = ttk.Frame(reset_frame)
         continuous_frame.grid(row=1, column=1, pady=5, padx=5)
+        continuous_frame.grid_columnconfigure(0, weight=1)
+        continuous_frame.grid_columnconfigure(1, weight=2)
+        
+        # Sous-frame pour le champ de texte numérique
+        numeric_frame = ttk.Frame(continuous_frame)
+        numeric_frame.grid(row=0, column=0, padx=(0, 10))
+        
+        # Label pour le champ numérique
+        numeric_label = ttk.Label(numeric_frame, text="Numéro:")
+        numeric_label.pack(anchor=tk.CENTER, pady=(0, 3))
+        
+        # Champ de texte pour saisir un numéro
+        self.numeric_entry = ttk.Entry(numeric_frame, width=5)
+        self.numeric_entry.insert(0, "0")  # Valeur par défaut
+        self.numeric_entry.pack(anchor=tk.CENTER)
+        
+        # Sous-frame pour la case à cocher continuous
+        cont_switch_frame = ttk.Frame(continuous_frame)
+        cont_switch_frame.grid(row=0, column=1)
         
         # Label for continuous switch
-        continuous_label = ttk.Label(continuous_frame, text="Continuous")
-        continuous_label.pack(anchor=tk.CENTER)
+        continuous_label = ttk.Label(cont_switch_frame, text="Continuous")
+        continuous_label.pack(anchor=tk.CENTER, pady=(0, 3))
                 
         # Continuous switch (using Checkbutton as switch)
-        self.continuous_switch = ttk.Checkbutton(continuous_frame)
+        self.continuous_switch = ttk.Checkbutton(cont_switch_frame)
         self.continuous_switch.pack(anchor=tk.CENTER)
     
     def _create_speed_frame(self):
@@ -126,4 +145,19 @@ class UsView:
     def get_frame(self):
         """Return the internal frame."""
         return self.frame
+    
+    def set_numeric_entry_command(self, command):
+        """Configure la commande pour le champ de texte numérique.
+        
+        Args:
+            command (function): La fonction à appeler quand le contenu change
+        """
+        # Fonction intermédiaire qui sera appelée lors d'un changement
+        def on_value_change(*args):
+            command(self.numeric_entry.get())
+        
+        # Variable de contrôle pour surveiller les changements
+        self.numeric_var = tk.StringVar()
+        self.numeric_var.trace_add("write", on_value_change)
+        self.numeric_entry.config(textvariable=self.numeric_var)
 

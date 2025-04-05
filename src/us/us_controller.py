@@ -17,7 +17,17 @@ class UsController:
             self.model.speed = float(value)
 
         self.view.speed_slider.config(command=combined_command)
+        
+        # Configure numeric entry
+        self.view.set_numeric_entry_command(self.update_numeric_value)
     
+    def update_numeric_value(self, value):
+        """Update the numeric value in the model.
+        
+        Args:
+            value (str): New value from the text entry
+        """
+        self.model.set_numeric_value(value)
     
     def set_interface_commands(self, mu_command, sigma_command, growth_mu_command, growth_sigma_command, continuous_button_command):
         """Configure gaussian slider commands."""
@@ -76,3 +86,20 @@ class UsController:
             bool: True if continuous mode is enabled
         """
         return self.model.is_mode_continuous()
+    
+    def get_numeric_value(self):
+        """Return the current numeric value.
+        
+        Returns:
+            int: The numeric value entered by the user
+        """
+        return self.model.get_numeric_value()
+
+
+    def get_numeric_value(self):
+        """Retourner la valeur numérique stockée.
+        
+        Returns:
+            int: La valeur numérique
+        """
+        return self.model.numeric_value

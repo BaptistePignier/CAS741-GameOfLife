@@ -6,6 +6,7 @@ class UsModel:
         self.needs_reset = False  # Reset flag
         self.is_continuous = False  # Continuous mode state
         self.continuous_switch = None
+        self.numeric_value = 0  # Valeur numérique saisie par l'utilisateur
     
     def set_widgets(self, toggle_button, continuous_switch):
         """Store only the reference to the toggle button that needs to be updated."""
@@ -54,3 +55,17 @@ class UsModel:
             bool: True if continuous mode is enabled
         """
         return self.is_continuous
+        
+    def set_numeric_value(self, value):
+        """Définir la valeur numérique.
+        
+        Args:
+            value (int): La valeur numérique à stocker
+        """
+        try:
+            self.numeric_value = int(value)
+        except ValueError:
+            # Si la conversion échoue, garder la valeur actuelle
+            pass
+            
+    
