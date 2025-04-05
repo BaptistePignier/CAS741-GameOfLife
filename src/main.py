@@ -8,7 +8,7 @@ def main():
     """Main entry point of the application."""
     # Configuration of the simulation size
     grid_size = 100  # Grid size in cells
-    panel_width = 200  # Control panel width in pixels
+    panel_width = 300  # Control panel width in pixels
     
     # Creation of the main window
     root = tk.Tk()
@@ -38,6 +38,9 @@ def main():
         root.destroy()
     
     root.protocol("WM_DELETE_WINDOW", on_closing)
+    
+    # Démarrer en fenêtre maximisée
+    window_manager.maximize_window()
     
     # Launch of the main loop
     root.mainloop()

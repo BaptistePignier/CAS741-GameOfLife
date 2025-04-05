@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
+import sys
+import platform
 
 class WindowManager:
     def __init__(self, root, sim_size, panel_width):
@@ -13,6 +15,7 @@ class WindowManager:
         self.root = root
         self.sim_size = sim_size
         self.panel_width = panel_width
+        self.is_fullscreen = False
         
         # Configuration of the main window
         self.root.title("Game of Life")
@@ -20,11 +23,41 @@ class WindowManager:
         window_height = sim_size  # Square window for simulation
         self.root.geometry(f"{window_width}x{window_height}")
         
+        # Configuration du mode plein écran
+        self.root.bind("<F11>", lambda event: self.toggle_fullscreen())
+        self.root.bind("<Escape>", lambda event: self.exit_fullscreen())
+        
         # Configuration of main layout
         self.setup_main_layout()
         
         # Configuration of control panel
         self.setup_control_panel()
+    
+    def toggle_fullscreen(self):
+        """Toggle fullscreen mode."""
+        self.is_fullscreen = not self.is_fullscreen
+        self.root.attributes("-fullscreen", self.is_fullscreen)
+    
+    def exit_fullscreen(self):
+        """Exit fullscreen mode."""
+        self.is_fullscreen = False
+        self.root.attributes("-fullscreen", False)
+    
+    def maximize_window(self):
+        """Maximize the window without fullscreen mode.
+        
+        Uses platform-specific methods to maximize the window.
+        """
+        if platform.system() == "Windows":
+            self.root.state('zoomed')
+        else:  # Linux, macOS
+            # Pour les systèmes Unix, on maximise en utilisant les attributs de Tk
+            # qui sont plus largement supportés que '-zoomed'
+            self.root.attributes('-zoomed', True)  # Tente d'abord avec -zoomed
+            # Solution de repli - obtenir les dimensions de l'écran et les appliquer
+            screen_width = self.root.winfo_screenwidth()
+            screen_height = self.root.winfo_screenheight()
+            self.root.geometry(f"{screen_width}x{screen_height}+0+0")
     
     def setup_main_layout(self):
         """Configure the main layout of the window."""
