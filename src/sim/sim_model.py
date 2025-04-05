@@ -56,3 +56,5 @@ class SimModel:
         radius = 36
         y, x = np.ogrid[-N//2:N//2, -M//2:M//2]
         self.grid = np.exp(-0.5 * (x*x + y*y) / (radius*radius))
+
+    

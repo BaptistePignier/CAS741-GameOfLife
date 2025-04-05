@@ -1,7 +1,7 @@
 import numpy as np
 
 class FiModel:
-    def __init__(self, mu=0.5, sigma=0.15, growth_mu=0.5, growth_sigma=0.15):
+    def __init__(self, mu=0.5, sigma=0.15, growth_mu=0.15, growth_sigma=0.015):
         self.mu = mu        # Center of the ring
         self.sigma = sigma  # Width of the ring
         self.growth_mu = growth_mu
@@ -70,22 +70,21 @@ class FiModel:
         """Return the current connectivity neighborhood."""
         return self.dis_nhood
 
-    def set_parameters(self, mu=None, sigma=None, growth_mu=None, growth_sigma=None):
-        """Update parameters and recalculate the kernel if necessary."""
-        
+    def set_nhood_params(self, mu=None, sigma=None):
         if mu is not None:
             self.mu = float(mu)
             
         if sigma is not None:
             self.sigma = float(sigma)
-            
-        if growth_mu is not None:
-            self.growth_mu = float(growth_mu)
-            
-        if growth_sigma is not None:
-            self.growth_sigma = float(growth_sigma)
-        
         self._update_con_nhood()
+
+    def set_growth_params(self, g_mu=None, g_sigma=None):
+        if g_mu is not None:
+            self.growth_mu = float(g_mu)
+            
+        if g_sigma is not None:
+            self.growth_sigma = float(g_sigma)
+        
         
 
 

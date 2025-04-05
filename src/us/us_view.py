@@ -110,7 +110,7 @@ class UsView:
         self.growth_mu_slider.grid(row=1, column=0, pady=(0,5), padx=10, sticky='ew')
         
         # σ (sigma) parameter for growth
-        self.growth_sigma_label = ttk.Label(growth_frame, text="σ : 0.050")
+        self.growth_sigma_label = ttk.Label(growth_frame, text="σ : 0.015")
         self.growth_sigma_label.grid(row=2, column=0, pady=(5,0))
         
         self.growth_sigma_slider = ttk.Scale(
@@ -118,32 +118,12 @@ class UsView:
             from_=0.0,
             to=0.1,
             orient=tk.HORIZONTAL,
-            value=0.05
+            value=0.015
         )
         self.growth_sigma_slider.grid(row=3, column=0, pady=(0,5), padx=10, sticky='ew')
-    
-    def _update_speed_label(self, value):
-        """Update the speed label."""
-        self.speed_label.config(text=f"FPS : {int(float(value))}")
+
     
     def get_frame(self):
         """Return the internal frame."""
         return self.frame
-    
-    def get_widgets(self):
-        """Return a dictionary of widgets for the model."""
-        return {
-            'toggle_button': self.toggle_button,
-            'reset_button': self.reset_button,
-            'continuous_switch': self.continuous_switch,
-            'speed_slider': self.speed_slider,
-            'speed_label': self.speed_label,
-            'mu_slider': self.mu_slider,
-            'sigma_slider': self.sigma_slider,
-            'mu_label': self.mu_label,
-            'sigma_label': self.sigma_label,
-            'growth_mu_slider': self.growth_mu_slider,
-            'growth_sigma_slider': self.growth_sigma_slider,
-            'growth_mu_label': self.growth_mu_label,
-            'growth_sigma_label': self.growth_sigma_label
-        }
+

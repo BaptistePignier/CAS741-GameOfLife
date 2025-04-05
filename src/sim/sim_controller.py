@@ -40,12 +40,9 @@ class SimController:
         # Update the simulation if it's running
         if self.us_controller.is_running():
 
-            # Calculate a generation based on mode (continuous or discrete)
-            if self.us_controller.is_mode_continuous():
+            
 
-                self.model.update(self.fi_controller.get_growth_lenia(),self.fi_controller.get_con_nhood(),0.1)
-            else:
-                self.model.update(self.fi_controller.get_growth_GoL(),self.fi_controller.get_dis_nhood(),1)
+            self.model.update(self.fi_controller.get_growth_fct(),self.fi_controller.get_nhood(),self.fi_controller.get_step())
             
             # Update the display
             self.view.update_display(self.model.get_grid())

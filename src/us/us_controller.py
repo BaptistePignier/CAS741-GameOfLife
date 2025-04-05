@@ -6,20 +6,20 @@ class UsController:
         self.view = view
         
         # Get widgets
-        self.model.set_widgets(**view.get_widgets())
+        self.model.set_widgets(self.view.toggle_button, self.view.continuous_switch)
         
         # Configure commands
         self.view.toggle_button.config(command=self.model.toggle_running_state)
         self.view.reset_button.config(command=self.model.reset_state)
 
         def combined_command(value):
-            self.view._update_speed_label(value)
+            self.view.speed_label.config(text=f"FPS : {int(float(value))}")
             self.model.speed = float(value)
 
         self.view.speed_slider.config(command=combined_command)
     
     
-    def set_gaussian_commands(self, mu_command, sigma_command, growth_mu_command, growth_sigma_command, continuous_button_command):
+    def set_interface_commands(self, mu_command, sigma_command, growth_mu_command, growth_sigma_command, continuous_button_command):
         """Configure gaussian slider commands."""
         def update_mu(value):
             self.view.mu_label.config(text=f"μ : {float(value):.2f}")
