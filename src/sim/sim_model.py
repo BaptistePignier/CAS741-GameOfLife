@@ -17,33 +17,10 @@ class SimModel:
         self.height = height
         self.initial_alive_prob = initial_alive_prob
 
-
-        
-
-        self.growth_lenia = None
-
-    
-    def set_growth_lenia(self, growth_lenia):
-        self.growth_lenia = growth_lenia
-
-    def growth_GoL(self, u):
-        mask1 = (u >= 1) & (u <= 3)
-        mask2 = (u > 3) & (u <= 4)
-        return -1 + (u - 1) * mask1 + 8 * (1 - u/4) * mask2
-
-    def update_discrete(self,nhood):
-        
+    def update(self,fct,nhood,dt):
         neighbors = convolve2d(self.grid, nhood, mode='same', boundary='wrap')
-        
-        self.grid = self.grid + self.growth_GoL(neighbors)
+        self.grid = self.grid + dt * fct(neighbors)
         self.grid = np.clip(self.grid, 0, 1)
-    
-    def update_continuous(self,nhood):
-        neighbors = convolve2d(self.grid, nhood, mode='same', boundary='wrap')
-        self.grid = self.grid + 0.1 * self.growth_lenia(neighbors)
-        self.grid = np.clip(self.grid, 0, 1)
-
-    
     
     def get_grid(self):
         """Return the current grid.
@@ -52,3 +29,30 @@ class SimModel:
             numpy.ndarray: Current grid of cells (0 = dead, 1 = alive)
         """
         return self.grid
+
+
+    def reset_discrete(self, prob=None):
+        """Reset the grid with a new random configuration.
+        
+        Args:
+            prob (float, optional): New probability for live cells.
+                                  If None, uses the initial probability.
+        """
+        if prob is not None and 0 <= prob <= 1:
+            self.initial_alive_prob = prob
+            
+        # Optimized generation of the random grid
+        self.grid = np.random.choice(
+            [0, 1],
+            self.width * self.height,
+            p=[1-self.initial_alive_prob, self.initial_alive_prob]
+        ).reshape(self.height, self.width).astype(np.int8)
+
+    def reset_continuous(self):
+        N = 256
+        M = int(np.ceil((16*N)/9))
+        self.grid = np.ones((M, N))
+        # Gaussian spot centered in the middle
+        radius = 36
+        y, x = np.ogrid[-N//2:N//2, -M//2:M//2]
+        self.grid = np.exp(-0.5 * (x*x + y*y) / (radius*radius))

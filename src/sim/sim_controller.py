@@ -21,10 +21,7 @@ class SimController:
         
     def run(self):
         # Check mode (continuous or discrete) for initialization
-        if self.us_controller.is_mode_continuous():
-            self.reset_continuous()
-        else:
-            self.reset_discrete()
+        self.reset()
         
         # Initial display update
         self.view.update_display(self.model.get_grid())
@@ -37,22 +34,18 @@ class SimController:
         # Check if a reset is requested
         if self.us_controller.model.acknowledge_reset():
             # Check the mode (continuous or discrete) for reset
-            if self.us_controller.is_mode_continuous():
-                self.reset_continuous()
-            else:
-                self.reset_discrete()
+            self.reset()
             self.view.update_display(self.model.get_grid())
         
         # Update the simulation if it's running
         if self.us_controller.is_running():
-            
-            self.model.set_growth_lenia(self.fi_controller.get_growth_lenia())
 
             # Calculate a generation based on mode (continuous or discrete)
             if self.us_controller.is_mode_continuous():
-                self.model.update_continuous(self.fi_controller.get_con_nhood())
+
+                self.model.update(self.fi_controller.get_growth_lenia(),self.fi_controller.get_con_nhood(),0.1)
             else:
-                self.model.update_discrete(self.fi_controller.get_dis_nhood())
+                self.model.update(self.fi_controller.get_growth_GoL(),self.fi_controller.get_dis_nhood(),1)
             
             # Update the display
             self.view.update_display(self.model.get_grid())
@@ -67,29 +60,9 @@ class SimController:
         if self.update_timer:
             self.root.after_cancel(self.update_timer)
             self.update_timer = None
-
-    def reset_discrete(self, prob=None):
-        """Reset the grid with a new random configuration.
-        
-        Args:
-            prob (float, optional): New probability for live cells.
-                                  If None, uses the initial probability.
-        """
-        if prob is not None and 0 <= prob <= 1:
-            self.model.initial_alive_prob = prob
-            
-        # Optimized generation of the random grid
-        self.model.grid = np.random.choice(
-            [0, 1],
-            self.model.width * self.model.height,
-            p=[1-self.model.initial_alive_prob, self.model.initial_alive_prob]
-        ).reshape(self.model.height, self.model.width).astype(np.int8)
-
-    def reset_continuous(self):
-        N = 256
-        M = int(np.ceil((16*N)/9))
-        self.model.grid = np.ones((M, N))
-        # Gaussian spot centered in the middle
-        radius = 36
-        y, x = np.ogrid[-N//2:N//2, -M//2:M//2]
-        self.model.grid = np.exp(-0.5 * (x*x + y*y) / (radius*radius))
+    
+    def reset(self):
+        if self.us_controller.is_mode_continuous():
+            self.model.reset_continuous()
+        else:
+            self.model.reset_discrete()

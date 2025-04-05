@@ -97,15 +97,15 @@ class UsView:
         growth_frame.grid(row=4, column=0, pady=5, padx=5, sticky='ew')
         
         # μ (mu) parameter for growth
-        self.growth_mu_label = ttk.Label(growth_frame, text="μ : 0.50")
+        self.growth_mu_label = ttk.Label(growth_frame, text="μ : 0.15")
         self.growth_mu_label.grid(row=0, column=0, pady=(5,0))
         
         self.growth_mu_slider = ttk.Scale(
             growth_frame,
             from_=0.0,
-            to=1.0,
+            to=0.30,
             orient=tk.HORIZONTAL,
-            value=0.5
+            value=0.15
         )
         self.growth_mu_slider.grid(row=1, column=0, pady=(0,5), padx=10, sticky='ew')
         

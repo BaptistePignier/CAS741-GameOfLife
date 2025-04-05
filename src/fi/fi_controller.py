@@ -20,12 +20,14 @@ class FiController:
     def get_con_nhood(self):
         return self.model.get_con_nhood()
 
-
     def get_dis_nhood(self):
         return self.model.get_dis_nhood()
     
     def get_growth_lenia(self):
         return self.model.growth_lenia
+
+    def get_growth_GoL(self):
+        return self.model.growth_GoL
     
     def update_parameters(self, mu=None, sigma=None, growth_mu=None, growth_sigma=None):
         """Update parameters and refresh the display."""
@@ -38,7 +40,6 @@ class FiController:
     def _update_display(self):
         """Update all display elements."""
         # Create x values for growth graph
-        x = np.linspace(-2, 2, 1000)
         
         # Update the nhood plot
         if self.us_controller.is_mode_continuous():
@@ -48,7 +49,9 @@ class FiController:
             self.view.update_nhood_plot(self.model.get_dis_nhood())
         
         # Update the growth plot
-        y_growth = self.model._gauss(x, self.model.growth_mu, self.model.growth_sigma)
+        
+        x = np.arange(0, 0.3, 0.001)
+        y_growth = self.model.growth_lenia(x)
         self.view.update_growth_plot(x, y_growth)
-    
+       
         

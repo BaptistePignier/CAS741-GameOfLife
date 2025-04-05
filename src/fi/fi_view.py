@@ -5,7 +5,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 
 class FiView:
-    def __init__(self, master, figsize=(6, 6)):
+    def __init__(self, master):
         # Main frame
         self.frame = ttk.Frame(master)
         self.frame.grid(row=0, column=0, sticky='nsew')
@@ -14,10 +14,8 @@ class FiView:
         self.frame.grid_rowconfigure(1, weight=1)  # Growth
         
         # Figure unique avec deux sous-graphiques
-        self.fig, (self.ax_con_nhood, self.ax_growth) = plt.subplots(2, 1, figsize=(6, 6), 
-                                               gridspec_kw={'height_ratios': [2, 1]})
+        self.fig, (self.ax_con_nhood, self.ax_growth) = plt.subplots(2, 1)
         self.fig.set_facecolor('white')
-        self.fig.tight_layout(pad=3)
         
         # Configuration de l'axe pour le kernel
         self.ax_con_nhood.set_xticks([])
@@ -47,21 +45,20 @@ class FiView:
         self.ax_con_nhood.grid(True, linestyle='--', alpha=0.3)
         
         # Initialisation du graphique de croissance
-        x_init = [0, 1]
+        x_init = [0, 0.3]
         y_init = [0, 0]
         self.growth_line, = self.ax_growth.plot(x_init, y_init, 'g-', linewidth=2)
-        self.ax_growth.set_ylim(-0.2, 1.2)
+        self.ax_growth.set_ylim(-1.2, 1.2)
+        
         self.ax_growth.grid(True, linestyle='--', alpha=0.3)
         
         # Mise à jour initiale du canvas
         self.canvas.draw()
 
-    def update_growth_plot(self, x_values, y_values, y_max=None):
+    def update_growth_plot(self, x_values, y_values):
         """Met à jour le graphique de croissance."""
         self.growth_line.set_xdata(x_values)
         self.growth_line.set_ydata(y_values)
-        if y_max is not None:
-            self.ax_growth.set_ylim(-0.2, y_max * 1.2)
         self.canvas.draw_idle()
     
     def update_con_nhood_plot(self, kernel):
