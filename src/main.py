@@ -39,7 +39,7 @@ def main():
     
     root.protocol("WM_DELETE_WINDOW", on_closing)
     
-    # Démarrer en fenêtre maximisée
+    # Start in maximized window
     window_manager.maximize_window()
     
     # Launch of the main loop

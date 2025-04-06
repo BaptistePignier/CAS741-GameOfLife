@@ -33,20 +33,20 @@ class UsView:
         continuous_frame.grid_columnconfigure(0, weight=1)
         continuous_frame.grid_columnconfigure(1, weight=2)
         
-        # Sous-frame pour le champ de texte numérique
+        # Sub-frame for the numeric text field
         numeric_frame = ttk.Frame(continuous_frame)
         numeric_frame.grid(row=0, column=0, padx=(0, 10))
         
-        # Label pour le champ numérique
-        numeric_label = ttk.Label(numeric_frame, text="Numéro:")
+        # Label for the numeric field
+        numeric_label = ttk.Label(numeric_frame, text="Number:")
         numeric_label.pack(anchor=tk.CENTER, pady=(0, 3))
         
-        # Champ de texte pour saisir un numéro
+        # Text field for entering a number
         self.numeric_entry = ttk.Entry(numeric_frame, width=5)
-        self.numeric_entry.insert(0, "0")  # Valeur par défaut
+        self.numeric_entry.insert(0, "0")  # Default value
         self.numeric_entry.pack(anchor=tk.CENTER)
         
-        # Sous-frame pour la case à cocher continuous
+        # Sub-frame for the continuous checkbox
         cont_switch_frame = ttk.Frame(continuous_frame)
         cont_switch_frame.grid(row=0, column=1)
         
@@ -147,16 +147,16 @@ class UsView:
         return self.frame
     
     def set_numeric_entry_command(self, command):
-        """Configure la commande pour le champ de texte numérique.
+        """Configure the command for the numeric text field.
         
         Args:
-            command (function): La fonction à appeler quand le contenu change
+            command (function): The function to call when the content changes
         """
-        # Fonction intermédiaire qui sera appelée lors d'un changement
+        # Intermediate function to be called when a change occurs
         def on_value_change(*args):
             command(self.numeric_entry.get())
         
-        # Variable de contrôle pour surveiller les changements
+        # Control variable to track changes
         self.numeric_var = tk.StringVar()
         self.numeric_var.trace_add("write", on_value_change)
         self.numeric_entry.config(textvariable=self.numeric_var)

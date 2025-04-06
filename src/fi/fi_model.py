@@ -30,23 +30,23 @@ class FiModel:
 
     def growth_GoL(self, u):
 
-        """Fonction de croissance pour le Jeu de la Vie de Conway.
-        Règles classiques: survie avec 2-3 voisins, naissance avec 3 voisins.
-        Le paramètre u représente le nombre de voisins pour chaque cellule.
-        Retourne les changements d'état (-1=mort, 0=inchangé, +1=naissance).
+        """Growth function for Conway's Game of Life.
+        Classic rules: survival with 2-3 neighbors, birth with exactly 3 neighbors.
+        The parameter u represents the number of neighbors for each cell.
+        Returns state changes (-1=death, 0=unchanged, +1=birth).
 
         """
-        # Valeurs clés des règles du Jeu de la Vie
-        SURVIVAL_MIN = 2  # Une cellule vivante survit avec au moins 2 voisins
-        SURVIVAL_MAX = 3  # Une cellule vivante survit avec au plus 3 voisins
+        # Key values for Game of Life rules
+        SURVIVAL_MIN = 2  # A living cell survives with at least 2 neighbors
+        SURVIVAL_MAX = 3  # A living cell survives with at most 3 neighbors
 
-        BIRTH = 3         # Une cellule morte naît avec exactement 3 voisins
+        BIRTH = 3         # A dead cell is born with exactly 3 neighbors
 
-        # L'intervalle [1,3] capture les cas où u-1 génère le bon changement (+0 ou +1)
+        # The interval [1,3] captures cases where u-1 generates the correct change (+0 or +1)
 
         mask1 = (u >= 1) & (u <= SURVIVAL_MAX)
  
-        # L'intervalle ]3,4] capture le cas spécial entre 3 et 4 voisins
+        # The interval ]3,4] captures the special case between 3 and 4 neighbors
 
         mask2 = (u > BIRTH) & (u <= 4)
  

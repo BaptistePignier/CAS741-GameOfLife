@@ -2,22 +2,22 @@ import pytest
 import sys
 import os
 
-# Ajouter le dossier parent au PYTHONPATH pour permettre l'importation des modules
+# Add the parent directory to PYTHONPATH to allow module imports
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 @pytest.fixture(scope="session")
 def app_path():
-    """Retourne le chemin de base de l'application."""
+    """Returns the base path of the application."""
     return os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 @pytest.fixture(scope="session")
 def test_data_path():
-    """Retourne le chemin des données de test."""
+    """Returns the path to the test data."""
     return os.path.abspath(os.path.join(os.path.dirname(__file__), 'data'))
 
-# Configure pytest pour éviter les avertissements de ressources Tkinter
+# Configure pytest to avoid Tkinter resource warnings
 @pytest.fixture(autouse=True)
 def suppress_tk_warnings():
-    """Supprime les avertissements liés à Tkinter pendant les tests."""
+    """Suppresses Tkinter-related warnings during tests."""
     import warnings
     warnings.filterwarnings("ignore", category=ResourceWarning) 

@@ -6,7 +6,7 @@ class UsModel:
         self.needs_reset = False  # Reset flag
         self.is_continuous = False  # Continuous mode state
         self.continuous_switch = None
-        self.numeric_value = 0  # Valeur numérique saisie par l'utilisateur
+        self.numeric_value = 0  # Numeric value entered by the user
     
     def set_widgets(self, toggle_button, continuous_switch):
         """Store only the reference to the toggle button that needs to be updated."""
@@ -57,17 +57,30 @@ class UsModel:
         return self.is_continuous
         
     def set_numeric_value(self, value):
+        """Set the numeric value.
+        
+        Args:
+            value (int or str): The numeric value to store
+        """
+        if value is None:
+            # Do nothing if value is None
+            return
+            
         try:
-            if(int(value) == value):
+            # For strings containing decimal numbers, try to convert to float first
+            if isinstance(value, str) and ("." in value or "," in value):
+                self.numeric_value = int(float(value))
+            else:
                 self.numeric_value = int(value)
-        except:
+        except (ValueError, TypeError):
+            # If conversion fails, keep the current value
             pass
-         
+            
     def get_numeric_value(self):
-        """Obtenir la valeur numérique actuelle.
+        """Get the current numeric value.
         
         Returns:
-            int: La valeur numérique
+            int: The numeric value
         """
         return self.numeric_value
             

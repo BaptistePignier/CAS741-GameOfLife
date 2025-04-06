@@ -23,7 +23,7 @@ class WindowManager:
         window_height = sim_size  # Square window for simulation
         self.root.geometry(f"{window_width}x{window_height}")
         
-        # Configuration du mode plein écran
+        # Configuration of fullscreen mode
         self.root.bind("<F11>", lambda event: self.toggle_fullscreen())
         self.root.bind("<Escape>", lambda event: self.exit_fullscreen())
         
@@ -51,10 +51,10 @@ class WindowManager:
         if platform.system() == "Windows":
             self.root.state('zoomed')
         else:  # Linux, macOS
-            # Pour les systèmes Unix, on maximise en utilisant les attributs de Tk
-            # qui sont plus largement supportés que '-zoomed'
-            self.root.attributes('-zoomed', True)  # Tente d'abord avec -zoomed
-            # Solution de repli - obtenir les dimensions de l'écran et les appliquer
+            # For Unix systems, maximize using Tk attributes
+            # which are more widely supported than '-zoomed'
+            self.root.attributes('-zoomed', True)  # First try with -zoomed
+            # Fallback solution - get screen dimensions and apply them
             screen_width = self.root.winfo_screenwidth()
             screen_height = self.root.winfo_screenheight()
             self.root.geometry(f"{screen_width}x{screen_height}+0+0")
