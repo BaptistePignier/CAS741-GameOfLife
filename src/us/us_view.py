@@ -2,7 +2,27 @@ import tkinter as tk
 from tkinter import ttk
 
 class UsView:
+    """User simulation view component.
+    
+    This class represents the view component for the user simulation module.
+    It provides the user interface elements for controlling the simulation,
+    including buttons, sliders, and other input controls.
+    """
     def __init__(self, control_frame):
+        """Initialize the user simulation view.
+        
+        Creates the UI frame and adds all control elements including:
+        - Start/Stop toggle button
+        - Reset button
+        - Continuous mode checkbox
+        - Numeric entry field
+        - Speed control slider
+        - Gaussian function parameter sliders
+        - Growth function parameter sliders
+        
+        Args:
+            control_frame: The parent tkinter container widget
+        """
         # Creation of internal frame
         self.frame = ttk.Frame(control_frame)
         self.frame.grid_columnconfigure(0, weight=1)
@@ -143,7 +163,11 @@ class UsView:
 
     
     def get_frame(self):
-        """Return the internal frame."""
+        """Get the main frame of the view.
+        
+        Returns:
+            ttk.Frame: The main frame containing all view components
+        """
         return self.frame
     
     def set_numeric_entry_command(self, command):

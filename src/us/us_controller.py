@@ -1,7 +1,21 @@
 from . import UsModel
 
 class UsController:
+    """User simulation controller component.
+    
+    This class coordinates interactions between the UsModel and UsView components.
+    It handles user input events, updates the model, and ensures the view reflects 
+    the current state of the simulation.
+    """
     def __init__(self, view):
+        """Initialize the user simulation controller.
+        
+        Sets up the model, connects to the view, and configures the event handlers
+        for all user interface elements.
+        
+        Args:
+            view: The UsView instance to control
+        """
         self.model = UsModel()
         self.view = view
         
@@ -30,7 +44,18 @@ class UsController:
         self.model.set_numeric_value(value)
     
     def set_interface_commands(self, mu_command, sigma_command, growth_mu_command, growth_sigma_command, continuous_button_command):
-        """Configure gaussian slider commands."""
+        """Configure commands for the interface elements.
+        
+        Sets up callbacks for the Gaussian parameter sliders and continuous mode switch,
+        ensuring that both the view is updated and the external commands are called.
+        
+        Args:
+            mu_command: Function to call when mu value changes
+            sigma_command: Function to call when sigma value changes
+            growth_mu_command: Function to call when growth mu value changes
+            growth_sigma_command: Function to call when growth sigma value changes
+            continuous_button_command: Function to call when continuous mode changes
+        """
         def update_mu(value):
             self.view.mu_label.config(text=f"μ : {float(value):.2f}")
             mu_command(value)

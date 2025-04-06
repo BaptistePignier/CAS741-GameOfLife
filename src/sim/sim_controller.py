@@ -2,6 +2,12 @@ from . import SimModel
 import numpy as np
 
 class SimController:
+    """Simulation controller component.
+    
+    This class coordinates the simulation model and view components.
+    It manages the simulation loop, handles updates at the appropriate speed,
+    and responds to user interface events from other controllers.
+    """
     def __init__(self, view, root, us_controller, fi_controller):
         """Initialize the simulation controller.
         
@@ -20,6 +26,11 @@ class SimController:
         self.update_timer = None
         
     def run(self):
+        """Start the simulation.
+        
+        Initializes the grid based on the current mode (continuous or discrete),
+        updates the display, and starts the update timer to begin the simulation loop.
+        """
         # Check mode (continuous or discrete) for initialization
         self.reset()
         
@@ -59,6 +70,12 @@ class SimController:
             self.update_timer = None
     
     def reset(self):
+        """Reset the simulation grid.
+        
+        Resets the grid based on the current mode:
+        - In continuous mode: Uses the numeric value to select a pattern
+        - In discrete mode: Creates a random grid with the configured probability
+        """
         if self.us_controller.is_mode_continuous():
             self.model.reset_continuous(self.us_controller.get_numeric_value())
         else:

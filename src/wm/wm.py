@@ -4,6 +4,12 @@ import sys
 import platform
 
 class WindowManager:
+    """Window management component.
+    
+    This class manages the main application window, handling layout, 
+    window state (fullscreen, maximized), and the placement of different views.
+    It serves as the container for all visual components of the application.
+    """
     def __init__(self, root, sim_size, panel_width):
         """Initialize the window manager.
         

@@ -6,7 +6,21 @@ import numpy as np
 import matplotlib.ticker as ticker
 
 class FiView:
+    """Function influence view component.
+    
+    This class represents the view component for the function influence module.
+    It manages the visualization of neighborhood kernels and growth functions.
+    """
     def __init__(self, master):
+        """Initialize the function influence view.
+        
+        Creates a frame with two visualization plots:
+        - The top plot displays the neighborhood kernel
+        - The bottom plot displays the growth function
+        
+        Args:
+            master: The parent tkinter container widget
+        """
         # Main frame
         self.frame = ttk.Frame(master)
         self.frame.grid(row=0, column=0, sticky='nsew')
@@ -60,18 +74,29 @@ class FiView:
         self.canvas.draw()
 
     def update_growth_plot(self, x_values, y_values):
-        """Updates the growth function graph."""
+        """Update the growth function graph with new data.
+        
+        Args:
+            x_values (numpy.ndarray): Array of x-coordinates for the growth function
+            y_values (numpy.ndarray): Array of y-coordinates for the growth function
+        """
         self.growth_line.set_xdata(x_values)
         self.growth_line.set_ydata(y_values)
         self.canvas.draw_idle()
     
     def update_growth_axes(self, xmin, xmax, ymin, ymax, continuous=True):
-        """Updates the limits and tick marks of the growth function graph axes.
+        """Update the limits and tick marks of the growth function graph axes.
+        
+        Configures appropriate axis limits and tick marks based on whether
+        the simulation is in continuous (Lenia) or discrete (GoL) mode.
         
         Args:
-            xmin, xmax: limits of the x-axis
-            ymin, ymax: limits of the y-axis
-            continuous: if True, configures for continuous mode (Lenia), otherwise for discrete mode (GoL)
+            xmin (float): Minimum x-axis value
+            xmax (float): Maximum x-axis value
+            ymin (float): Minimum y-axis value
+            ymax (float): Maximum y-axis value
+            continuous (bool): If True, configures for continuous mode (Lenia),
+                               otherwise for discrete mode (GoL). Default is True.
         """
         self.ax_growth.set_xlim(xmin, xmax)
         self.ax_growth.set_ylim(ymin, ymax)
@@ -96,14 +121,30 @@ class FiView:
         self.canvas.draw_idle()
         
     def update_nhood_plot(self, kernel):
-        """Compatibility method that calls update_con_nhood_plot."""
+        """Update the neighborhood visualization with a new kernel.
+        
+        This is a compatibility method that updates the continuous neighborhood
+        visualization with the provided kernel data.
+        
+        Args:
+            kernel (numpy.ndarray): 2D array representing the neighborhood kernel
+        """
         self.con_nhood_image.set_array(kernel)
         self.canvas.draw_idle()
 
     def get_frame(self):
-        """Returns the main frame."""
+        """Get the main frame of the view.
+        
+        Returns:
+            ttk.Frame: The main frame containing all view components
+        """
         return self.frame
 
     def get_canvas(self):
-        """Returns the canvas widgets."""
+        """Get the canvas widgets for external access.
+        
+        Returns:
+            tuple: A tuple containing (None, canvas widget, canvas widget)
+                  The first element is None for compatibility with other interfaces
+        """
         return None, self.canvas.get_tk_widget(), self.canvas.get_tk_widget()

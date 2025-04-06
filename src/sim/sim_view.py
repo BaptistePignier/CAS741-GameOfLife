@@ -3,6 +3,12 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 
 class SimView:
+    """Simulation view component.
+    
+    This class represents the view component for the simulation module.
+    It manages the visualization of the cellular automaton grid using matplotlib
+    and provides methods to update the display when the grid state changes.
+    """
     def __init__(self, master, width, height):
         """Initialize the simulation view.
         

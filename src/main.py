@@ -1,3 +1,12 @@
+"""Game of Life application main module.
+
+This is the main entry point for the Game of Life application.
+It initializes all MVC components and starts the application.
+
+The application implements both Conway's Game of Life (discrete) and
+Lenia (continuous) cellular automata with a configurable user interface.
+"""
+
 import tkinter as tk
 from sim import SimView, SimController
 from fi import FiView, FiController

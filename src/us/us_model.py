@@ -1,5 +1,20 @@
 class UsModel:
+    """User simulation model component.
+    
+    This class represents the model component for the user simulation module.
+    It maintains the simulation state, manages running/paused status, continuous mode,
+    reset operations, and user-entered numeric values.
+    """
     def __init__(self):
+        """Initialize the user simulation model.
+        
+        Sets up the default state for simulation control:
+        - Default speed of 60 generations per second
+        - Simulation initially stopped
+        - No reset pending
+        - Discrete mode (not continuous) by default
+        - Initial numeric value of 0
+        """
         self.toggle_button = None
         self.speed = 60.0  # Default speed (generations per second)
         self.is_running = False  # Simulation state
