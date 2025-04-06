@@ -1,0 +1,61 @@
+site_name: Game of Life
+site_description: Documentation for the Game of Life Project - Cellular Automata
+site_author: Baptiste
+repo_url: https://github.com/BaptistePignier/CAS741-GameOfLife/
+
+docs_dir: mkdocs_docs
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.smartsymbols
+  - footnotes
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Architecture:
+    - Overview: architecture/overview.md
+    - MVC Model: architecture/mvc.md
+  - Modules:
+    - Influence Functions (fi): reference/fi.md
+    - Simulation (sim): reference/sim.md
+    - User Interface (us): reference/us.md
+    - Window Manager (wm): reference/wm.md
+  - User Guide: user_guide.md 
