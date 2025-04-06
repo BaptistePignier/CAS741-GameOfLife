@@ -57,15 +57,18 @@ class UsModel:
         return self.is_continuous
         
     def set_numeric_value(self, value):
-        """Définir la valeur numérique.
-        
-        Args:
-            value (int): La valeur numérique à stocker
-        """
         try:
-            self.numeric_value = int(value)
-        except ValueError:
-            # Si la conversion échoue, garder la valeur actuelle
+            if(int(value) == value):
+                self.numeric_value = int(value)
+        except:
             pass
+         
+    def get_numeric_value(self):
+        """Obtenir la valeur numérique actuelle.
+        
+        Returns:
+            int: La valeur numérique
+        """
+        return self.numeric_value
             
     
