@@ -103,8 +103,6 @@ class FiView:
         Args:
             xmin (float): Minimum x-axis value
             xmax (float): Maximum x-axis value
-            ymin (float): Minimum y-axis value
-            ymax (float): Maximum y-axis value
             continuous (bool): If True, configures for continuous mode (Lenia),
                                otherwise for discrete mode (GoL). Default is True.
         """

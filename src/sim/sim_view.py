@@ -44,7 +44,7 @@ class SimView:
         # Display configuration with optimized colormap
         self.grid_display = self.ax.imshow(
             np.zeros((height, width)),  # Initial grid size (will be updated)
-            cmap='binary',
+            cmap='inferno',
             interpolation='nearest',
             aspect='equal',
             vmin=0,

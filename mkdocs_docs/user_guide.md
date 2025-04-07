@@ -50,19 +50,6 @@ You can modify these rules using:
 - **Neighborhood Parameters**: Control the shape of the neighborhood kernel
 - **Growth Parameters**: Control the response of cells to their neighborhoods
 
-## Interacting with the Grid
-
-- **Left-click**: Draw/place cells when the simulation is paused
-- **Right-click**: Erase cells when the simulation is paused
-- **Mouse wheel**: Zoom in/out (if implemented)
-
-## Keyboard Shortcuts
-
-- **Space**: Start/Stop simulation
-- **R**: Reset simulation
-- **F11**: Toggle fullscreen mode
-- **Escape**: Exit fullscreen mode
-
 ## Troubleshooting
 
 ### Common Issues

@@ -94,11 +94,8 @@ class FiController:
         """Update growth function parameters in the model and refresh display.
         
         Args:
-            g_mu (float, optional): New center value for growth function. 
-            If None, keeps current value.
-
-            g_sigma (float, optional): New width value for growth function. 
-            If None, keeps current value.
+            g_mu (float, optional): New center value for growth function.
+            g_sigma (float, optional): New width value for growth function.
         """
         self.model.set_growth_params(g_mu,g_sigma)
         self.update_growth_display()

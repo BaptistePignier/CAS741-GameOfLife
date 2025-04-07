@@ -81,7 +81,7 @@ class FiModel:
         # Baseline -1, peak +1
         return -1 + 2 * self._gauss(u, self.growth_mu, self.growth_sigma)
         
-    def growth_gol(self,u):
+    def growth_gol(self,u : np.ndarray) -> np.ndarray:
 
         """Compute the Game of Life growth function.
         
@@ -166,11 +166,8 @@ class FiModel:
         Updates the growth_mu and/or growth_sigma parameters used by the growth functions.
         
         Args:
-            g_mu (float, optional): New center value for growth function. 
-            If None, keeps current value.
-
-            g_sigma (float, optional): New width value for growth function. 
-            If None, keeps current value.
+            g_mu (float, optional): New center value for growth function.
+            g_sigma (float, optional): New width value for growth function.
         """
         if g_mu is not None:
             self.growth_mu = float(g_mu)

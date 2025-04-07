@@ -1,10 +1,13 @@
-Instructions for installing your software.  
-
-
 # Install the requirements in venv
 
 ```bash
-source setup.sh
+python3 -m venv .venv
+```
+```bash
+source .venv/bin/activate
+```
+```bash
+pip install -r requirements.txt
 ```
 
 # Launch 
