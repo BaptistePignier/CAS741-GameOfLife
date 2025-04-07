@@ -13,14 +13,14 @@ This project implements a graphical application for visualizing and interacting 
 
 The project is organized according to the MVC (Model-View-Controller) pattern and divided into several modules:
 
-- **fi**: Influence Functions module (neighborhood and growth functions)
+- **fi**: Functional Input module (neighborhood and growth functions)
 - **sim**: Simulation module (grid management and temporal evolution)
-- **us**: User Interface module (controls and parameters)
+- **us**: User Settings module (controls and parameters)
 - **wm**: Window Manager module (layout and display)
 
 ## Installation
 
-Pour installer l'outil:
+To install the tool:
 
 ```bash
 source setup.sh

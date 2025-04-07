@@ -3,7 +3,7 @@ from typing import Optional, Union, Tuple
 
 class FiModel:
     def __init__(self, mu: float = 0.5, sigma: float = 0.15, growth_mu: float = 0.15, growth_sigma: float = 0.015) -> None:
-        """Initialize the function influence model.
+        """Initialize the functional input model.
         
         Args:
             mu (float): Center of the kernel ring. Default is 0.5.

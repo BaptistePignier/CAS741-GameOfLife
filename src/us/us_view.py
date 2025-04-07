@@ -3,14 +3,14 @@ from tkinter import ttk
 from typing import Any, Callable
 
 class UsView:
-    """User simulation view component.
+    """User settings view component.
     
-    This class represents the view component for the user simulation module.
-    It provides the user interface elements for controlling the simulation,
+    This class represents the view component for the user settings module.
+    It provides the user interface elements for controlling the settings,
     including buttons, sliders, and other input controls.
     """
     def __init__(self, control_frame: Any) -> None:
-        """Initialize the user simulation view.
+        """Initialize the user settings view.
         
         Creates the UI frame and adds all control elements including:
         - Start/Stop toggle button

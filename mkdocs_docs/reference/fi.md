@@ -1,17 +1,17 @@
-# Influence Functions Module (fi)
+# Functional Input Module (fi)
 
-Le module Influence Functions gère les règles qui déterminent l'évolution des cellules dans l'automate cellulaire. Il comprend deux composants principaux:
+The Functional Input module manages the rules that determine cell evolution in the cellular automaton. It includes two main components:
 
-1. **Fonctions de voisinage**: Définissent comment les cellules interagissent avec leurs voisines
-2. **Fonctions de croissance**: Déterminent comment l'état d'une cellule évolue en fonction de son voisinage
+1. **Neighborhood Functions**: Define how cells interact with their neighbors
+2. **Growth Functions**: Determine how a cell's state evolves based on its neighborhood
 
-## Structure du Module
+## Module Structure
 
 ### Classes
 
 #### FiModel
 
-La classe `FiModel` gère tous les calculs liés aux voisinages et aux fonctions de croissance.
+The `FiModel` class manages all calculations related to neighborhoods and growth functions.
 
 ```python
 class FiModel:
@@ -27,27 +27,27 @@ class FiModel:
         """
 ```
 
-Méthodes principales:
+Main methods:
 
-- `_gauss(x: Union[float, np.ndarray], mu: float, sigma: float) -> Union[float, np.ndarray]`: Fonction gaussienne utilisée pour les voisinages continus
-- `growth_lenia(u: Union[float, np.ndarray]) -> Union[float, np.ndarray]`: Fonction de croissance Lenia pour le mode continu
-- `growth_GoL(u: Union[float, np.ndarray]) -> Union[float, np.ndarray]`: Fonction de croissance du Jeu de la Vie de Conway
-- `_update_con_nhood() -> None`: Met à jour le noyau de voisinage continu
-- `get_con_nhood() -> np.ndarray`: Renvoie le noyau de voisinage continu actuel
-- `get_dis_nhood() -> np.ndarray`: Renvoie le noyau de voisinage discret actuel
-- `set_nhood_params(mu: Optional[float] = None, sigma: Optional[float] = None) -> None`: Définit les paramètres pour la fonction de voisinage
-- `set_growth_params(g_mu: Optional[float] = None, g_sigma: Optional[float] = None) -> None`: Définit les paramètres pour la fonction de croissance
+- `_gauss(x: Union[float, np.ndarray], mu: float, sigma: float) -> Union[float, np.ndarray]`: Gaussian function used for continuous neighborhoods
+- `growth_lenia(u: Union[float, np.ndarray]) -> Union[float, np.ndarray]`: Lenia growth function for continuous mode
+- `growth_GoL(u: Union[float, np.ndarray]) -> Union[float, np.ndarray]`: Conway's Game of Life growth function
+- `_update_con_nhood() -> None`: Updates the continuous neighborhood kernel
+- `get_con_nhood() -> np.ndarray`: Returns the current continuous neighborhood kernel
+- `get_dis_nhood() -> np.ndarray`: Returns the current discrete neighborhood kernel
+- `set_nhood_params(mu: Optional[float] = None, sigma: Optional[float] = None) -> None`: Sets parameters for the neighborhood function
+- `set_growth_params(g_mu: Optional[float] = None, g_sigma: Optional[float] = None) -> None`: Sets parameters for the growth function
 
 #### FiController
 
-La classe `FiController` gère les interactions de l'utilisateur avec les fonctions de croissance et de voisinage.
+The `FiController` class handles user interactions with growth and neighborhood functions.
 
 ```python
 class FiController:
     def __init__(self, view: Any, us_controller: Any) -> None:
         """Initialize the function influence controller.
         
-        Sets up the model, connects to the view, and registers with the user simulation controller.
+        Sets up the model, connects to the view, and registers with the user settings controller.
         
         Args:
             view: The FiView instance to control
@@ -55,20 +55,20 @@ class FiController:
         """
 ```
 
-Méthodes principales:
+Main methods:
 
-- `get_nhood() -> np.ndarray`: Obtient le noyau de voisinage approprié en fonction du mode actuel
-- `get_growth_fct() -> Callable[[np.ndarray], np.ndarray]`: Obtient la fonction de croissance appropriée en fonction du mode actuel
-- `get_step() -> float`: Obtient la valeur d'étape de simulation appropriée en fonction du mode actuel
-- `update_nhood_params(mu: Optional[float] = None, sigma: Optional[float] = None) -> None`: Met à jour les paramètres de voisinage dans le modèle et rafraîchit l'affichage
-- `update_growth_params(g_mu: Optional[float] = None, g_sigma: Optional[float] = None) -> None`: Met à jour les paramètres de la fonction de croissance dans le modèle et rafraîchit l'affichage
-- `update_nhood_display() -> None`: Met à jour la visualisation du voisinage dans la vue
-- `update_growth_display() -> None`: Met à jour la visualisation de la fonction de croissance dans la vue
-- `update_displays() -> None`: Met à jour tous les éléments d'affichage dans la vue
+- `get_nhood() -> np.ndarray`: Gets the appropriate neighborhood kernel based on current mode
+- `get_growth_fct() -> Callable[[np.ndarray], np.ndarray]`: Gets the appropriate growth function based on current mode
+- `get_step() -> float`: Gets the appropriate simulation step value based on current mode
+- `update_nhood_params(mu: Optional[float] = None, sigma: Optional[float] = None) -> None`: Updates neighborhood parameters in the model and refreshes display
+- `update_growth_params(g_mu: Optional[float] = None, g_sigma: Optional[float] = None) -> None`: Updates growth function parameters in the model and refreshes display
+- `update_nhood_display() -> None`: Updates the neighborhood visualization in the view
+- `update_growth_display() -> None`: Updates the growth function visualization in the view
+- `update_displays() -> None`: Updates all display elements in the view
 
 #### FiView
 
-La classe `FiView` affiche des visualisations des fonctions de voisinage et de croissance.
+The `FiView` class displays visualizations of neighborhood and growth functions.
 
 ```python
 class FiView:
@@ -84,58 +84,58 @@ class FiView:
         """
 ```
 
-Méthodes principales:
+Main methods:
 
-- `update_growth_plot(x_values: np.ndarray, y_values: np.ndarray) -> None`: Met à jour le graphique de la fonction de croissance avec de nouvelles données
-- `update_growth_axes(xmin: float, xmax: float, ymin: float, ymax: float, continuous: bool = True) -> None`: Met à jour les limites et les graduations des axes du graphique de la fonction de croissance
-- `update_nhood_plot(kernel: np.ndarray) -> None`: Met à jour la visualisation du voisinage avec un nouveau noyau
-- `get_frame() -> ttk.Frame`: Obtient le cadre principal de la vue
-- `get_canvas() -> Tuple[None, Any, Any]`: Obtient les widgets de canevas pour un accès externe
+- `update_growth_plot(x_values: np.ndarray, y_values: np.ndarray) -> None`: Updates the growth function graph with new data
+- `update_growth_axes(xmin: float, xmax: float, ymin: float, ymax: float, continuous: bool = True) -> None`: Updates the limits and tick marks of the growth function graph axes
+- `update_nhood_plot(kernel: np.ndarray) -> None`: Updates the neighborhood visualization with a new kernel
+- `get_frame() -> ttk.Frame`: Gets the main frame of the view
+- `get_canvas() -> Tuple[None, Any, Any]`: Gets the canvas widgets for external access
 
-## Concepts Clés
+## Key Concepts
 
-### Fonction de Voisinage
+### Neighborhood Function
 
-La fonction de voisinage définit comment chaque cellule interagit avec les cellules environnantes. Dans notre implémentation:
+The neighborhood function defines how each cell interacts with surrounding cells. In our implementation:
 
-- **Mode Continu**: Utilise une fonction gaussienne pour créer un noyau de voisinage lisse
-- **Mode Discret**: Utilise un simple noyau binaire (vivant/mort)
+- **Continuous Mode**: Uses a Gaussian function to create a smooth neighborhood kernel
+- **Discrete Mode**: Uses a simple binary kernel (alive/dead)
 
-### Fonction de Croissance
+### Growth Function
 
-La fonction de croissance détermine comment l'état d'une cellule change en fonction de son voisinage:
+The growth function determines how a cell's state changes based on its neighborhood:
 
-- **Lenia**: Une fonction de croissance continue où:
-  - u est la valeur actuelle du voisinage
-  - growth_mu et growth_sigma déterminent la position et la largeur de la courbe de réponse
+- **Lenia**: A continuous growth function where:
+  - u is the current neighborhood value
+  - growth_mu and growth_sigma determine the position and width of the response curve
   
-- **Jeu de la Vie**: Une fonction de croissance discrète où:
-  - Une cellule vivante survit si elle a entre 2 et 3 voisines vivantes
-  - Une cellule morte devient vivante si elle a exactement 3 voisines vivantes
+- **Game of Life**: A discrete growth function where:
+  - A living cell survives if it has between 2 and 3 living neighbors
+  - A dead cell becomes alive if it has exactly 3 living neighbors
 
-## Exemples d'Utilisation
+## Usage Examples
 
-### Configuration du mode Lenia (continu)
-
-```python
-# Obtenir la fonction de croissance et le noyau de voisinage pour Lenia
-growth_function = fi_controller.get_growth_fct()  # Renvoie la fonction growth_lenia
-nhood = fi_controller.get_nhood()  # Renvoie le noyau continu
-step = fi_controller.get_step()  # Renvoie 0.1 pour le mode continu
-```
-
-### Configuration du mode Game of Life (discret)
+### Setting up Lenia mode (continuous)
 
 ```python
-# Obtenir la fonction de croissance et le noyau de voisinage pour Game of Life
-growth_function = fi_controller.get_growth_fct()  # Renvoie la fonction growth_GoL
-nhood = fi_controller.get_nhood()  # Renvoie le noyau discret
-step = fi_controller.get_step()  # Renvoie 1 pour le mode discret
+# Get the growth function and neighborhood kernel for Lenia
+growth_function = fi_controller.get_growth_fct()  # Returns the growth_lenia function
+nhood = fi_controller.get_nhood()  # Returns the continuous kernel
+step = fi_controller.get_step()  # Returns 0.1 for continuous mode
 ```
 
-## Intégration avec les Autres Modules
+### Setting up Game of Life mode (discrete)
 
-Le module Influence Functions interagit principalement avec:
+```python
+# Get the growth function and neighborhood kernel for Game of Life
+growth_function = fi_controller.get_growth_fct()  # Returns the growth_GoL function
+nhood = fi_controller.get_nhood()  # Returns the discrete kernel
+step = fi_controller.get_step()  # Returns 1 for discrete mode
+```
 
-- **Module User Simulation**: Reçoit les paramètres de configuration des entrées utilisateur
-- **Module Simulation**: Fournit les fonctions de croissance et de voisinage pour les mises à jour de la grille 
+## Integration with Other Modules
+
+The Functional Input module interacts primarily with:
+
+- **User Settings Module**: Receives configuration parameters from user inputs
+- **Simulation Module**: Provides growth and neighborhood functions for grid updates 

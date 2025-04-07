@@ -29,7 +29,7 @@ The Controller handles user interaction. It:
 
 The MVC pattern is implemented across different modules:
 
-### Functions Module (fi)
+### Functional Input Module (fi)
 - **Model**: `FiModel` - Manages neighborhood and growth function calculations
 - **View**: `FiView` - Displays controls for function parameters
 - **Controller**: `FiController` - Handles user interactions with function parameters
@@ -39,7 +39,7 @@ The MVC pattern is implemented across different modules:
 - **View**: Rendering of the grid (part of the main View)
 - **Controller**: `SimController` - Controls simulation flow (start, pause, step)
 
-### User Interface Module (us)
+### User Settings Module (us)
 - **Model**: `UsModel` - Stores user settings and preferences
 - **View**: `UsView` - Displays controls for user settings
 - **Controller**: `UsController` - Processes user input for settings

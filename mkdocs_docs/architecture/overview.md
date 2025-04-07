@@ -6,7 +6,7 @@ The Game of Life project is structured according to a modular architecture that 
 
 The application is divided into four main modules:
 
-### Influence Functions Module (fi)
+### Functional Input Module (fi)
 
 This module manages the rules that determine the evolution of cells in the cellular automaton:
 
@@ -20,7 +20,7 @@ This module manages the state of the simulation grid and its evolution over time
 - **Grid**: Two-dimensional representation of cells
 - **Update**: Application of evolution rules at each step of the simulation
 
-### User Interface Module (us)
+### User Settings Module (us)
 
 This module manages the controls and parameters that the user can adjust:
 

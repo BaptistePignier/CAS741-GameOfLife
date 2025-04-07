@@ -1,6 +1,6 @@
-# API du Module Window Manager (wm)
+# API of the Window Manager Module (wm)
 
-Cette page présente la documentation API générée automatiquement à partir des docstrings et des type hints du code source du module `wm`.
+This page presents the API documentation automatically generated from the docstrings and type hints of the `wm` module source code.
 
 ## Module wm
 

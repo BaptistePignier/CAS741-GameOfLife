@@ -1,6 +1,6 @@
-# API du Module User Simulation (us)
+# API of the User Settings Module (us)
 
-Cette page présente la documentation API générée automatiquement à partir des docstrings et des type hints du code source du module `us`.
+This page presents the API documentation automatically generated from the docstrings and type hints of the `us` module source code.
 
 ## Module us
 

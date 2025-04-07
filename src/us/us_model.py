@@ -1,14 +1,14 @@
 from typing import Any, Optional, Union
 
 class UsModel:
-    """User simulation model component.
+    """User settings model component.
     
-    This class represents the model component for the user simulation module.
+    This class represents the model component for the user settings module.
     It maintains the simulation state, manages running/paused status, continuous mode,
     reset operations, and user-entered numeric values.
     """
     def __init__(self) -> None:
-        """Initialize the user simulation model.
+        """Initialize the user settings model.
         
         Sets up the default state for simulation control:
         - Default speed of 60 generations per second

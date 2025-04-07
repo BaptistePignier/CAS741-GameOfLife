@@ -1,14 +1,14 @@
-# Module Simulation (sim)
+# Simulation Module (sim)
 
-Le module Simulation gère l'automate cellulaire lui-même, y compris la grille, les règles d'évolution et la boucle de mise à jour. Il prend en charge à la fois le Jeu de la Vie traditionnel (mode discret) et Lenia (mode continu).
+The Simulation module manages the cellular automaton itself, including the grid, evolution rules, and update loop. It supports both the traditional Game of Life (discrete mode) and Lenia (continuous mode).
 
-## Structure du Module
+## Module Structure
 
 ### Classes
 
 #### SimModel
 
-La classe `SimModel` est responsable de la grille et de la logique de l'automate cellulaire.
+The `SimModel` class is responsible for the grid and cellular automaton logic.
 
 ```python
 class SimModel:
@@ -22,18 +22,18 @@ class SimModel:
         """
 ```
 
-Méthodes principales:
+Main methods:
 
-- `update(fct: Callable[[np.ndarray], np.ndarray], nhood: np.ndarray, dt: float) -> None`: Met à jour l'état de la grille pour une génération
-- `get_grid() -> np.ndarray`: Renvoie la grille actuelle
-- `reset_discrete(prob: Optional[float] = None) -> None`: Réinitialise la grille avec une nouvelle configuration aléatoire
-- `reset_continuous(num: int) -> None`: Réinitialise la grille avec un modèle continu basé sur la valeur numérique
-- `stain() -> None`: Crée un motif de tache gaussienne centrée
-- `orbium() -> None`: Crée un motif d'Orbium (vaisseau spatial Lenia)
+- `update(fct: Callable[[np.ndarray], np.ndarray], nhood: np.ndarray, dt: float) -> None`: Updates the grid state for one generation
+- `get_grid() -> np.ndarray`: Returns the current grid
+- `reset_discrete(prob: Optional[float] = None) -> None`: Resets the grid with a new random configuration
+- `reset_continuous(num: int) -> None`: Resets the grid with a continuous pattern based on the numeric value
+- `stain() -> None`: Creates a centered Gaussian stain pattern
+- `orbium() -> None`: Creates an Orbium pattern (Lenia spaceship)
 
 #### SimController
 
-La classe `SimController` coordonne le modèle et la vue, gérant la boucle d'animation.
+The `SimController` class coordinates the model and view, managing the animation loop.
 
 ```python
 class SimController:
@@ -48,16 +48,16 @@ class SimController:
         """
 ```
 
-Méthodes principales:
+Main methods:
 
-- `run() -> None`: Démarre la simulation
-- `update() -> None`: Met à jour le modèle et la vue si la simulation est en cours
-- `stop() -> None`: Arrête le minuteur de mise à jour
-- `reset() -> None`: Réinitialise la grille de simulation
+- `run() -> None`: Starts the simulation
+- `update() -> None`: Updates the model and view if the simulation is running
+- `stop() -> None`: Stops the update timer
+- `reset() -> None`: Resets the simulation grid
 
 #### SimView
 
-La classe `SimView` gère la visualisation de la grille de l'automate cellulaire.
+The `SimView` class manages the visualization of the cellular automaton grid.
 
 ```python
 class SimView:
@@ -71,83 +71,83 @@ class SimView:
         """
 ```
 
-Méthodes principales:
+Main methods:
 
-- `update_display(grid: np.ndarray) -> None`: Met à jour l'affichage de la grille
-- `get_canvas() -> Any`: Renvoie le widget de canevas
-- `__del__() -> None`: Nettoie les ressources matplotlib
+- `update_display(grid: np.ndarray) -> None`: Updates the grid display
+- `get_canvas() -> Any`: Returns the canvas widget
+- `__del__() -> None`: Cleans up matplotlib resources
 
-## Flux de Simulation
+## Simulation Flow
 
-1. Initialisation:
-   - `SimController` initialise le modèle et la vue
-   - La grille est configurée en fonction du mode actuel (continu ou discret)
+1. Initialization:
+   - `SimController` initializes the model and view
+   - The grid is configured based on the current mode (continuous or discrete)
 
-2. Boucle de mise à jour:
-   - `SimController.update()` est appelé périodiquement
-   - Si la simulation est en cours d'exécution, le modèle est mis à jour
-   - La vue est rafraîchie avec le nouvel état de la grille
+2. Update loop:
+   - `SimController.update()` is called periodically
+   - If the simulation is running, the model is updated
+   - The view is refreshed with the new grid state
 
-3. Réinitialisation:
-   - Lorsque l'utilisateur déclenche une réinitialisation, `SimController.reset()` est appelé
-   - Une nouvelle grille est générée en fonction du mode actuel
+3. Reset:
+   - When the user triggers a reset, `SimController.reset()` is called
+   - A new grid is generated based on the current mode
 
-## Algorithme d'Automate Cellulaire
+## Cellular Automaton Algorithm
 
-### Mode Discret (Jeu de la Vie)
+### Discrete Mode (Game of Life)
 
-1. Pour chaque cellule, compter le nombre de voisines vivantes
-2. Appliquer la fonction de croissance du Game of Life:
-   - Une cellule vivante survit si elle a 2 ou 3 voisines vivantes
-   - Une cellule morte devient vivante si elle a exactement 3 voisines vivantes
+1. For each cell, count the number of live neighbors
+2. Apply the Game of Life growth function:
+   - A living cell survives if it has 2 or 3 living neighbors
+   - A dead cell becomes alive if it has exactly 3 living neighbors
 
-### Mode Continu (Lenia)
+### Continuous Mode (Lenia)
 
-1. Convoluer la grille avec le noyau de voisinage
-2. Appliquer la fonction de croissance Lenia qui dépend des paramètres mu et sigma
-3. Mettre à jour la grille avec un petit pas temporel (dt) pour une transition fluide
+1. Convolve the grid with the neighborhood kernel
+2. Apply the Lenia growth function which depends on mu and sigma parameters
+3. Update the grid with a small time step (dt) for a smooth transition
 
-## Schémas d'Initialisation
+## Initialization Patterns
 
-### Mode Discret
+### Discrete Mode
 
-- Initialisation aléatoire avec une probabilité configurable pour les cellules vivantes
+- Random initialization with a configurable probability for live cells
 
-### Mode Continu
+### Continuous Mode
 
-Deux modèles prédéfinis:
+Two predefined patterns:
 
-1. **Stain**: Une tache gaussienne centrée qui se développe de manière organique
-2. **Orbium**: Un "glisseur" Lenia qui se déplace à travers la grille
+1. **Stain**: A centered Gaussian stain that develops organically
+2. **Orbium**: A Lenia "glider" that moves across the grid
 
-## Exemples d'Utilisation
+## Usage Examples
 
-### Mise à jour de la grille de simulation
+### Updating the simulation grid
 
 ```python
-# Obtenir la fonction de croissance et le noyau de voisinage
+# Get the growth function and neighborhood kernel
 growth_function = fi_controller.get_growth_fct()
 neighborhood = fi_controller.get_nhood()
 step = fi_controller.get_step()
 
-# Mettre à jour la grille
+# Update the grid
 sim_model.update(growth_function, neighborhood, step)
 ```
 
-### Réinitialisation de la simulation
+### Resetting the simulation
 
 ```python
-# Réinitialisation en mode discret
-sim_model.reset_discrete(prob=0.2)  # 20% de probabilité pour les cellules vivantes
+# Reset in discrete mode
+sim_model.reset_discrete(prob=0.2)  # 20% probability for live cells
 
-# Réinitialisation en mode continu avec un motif spécifique
-sim_model.reset_continuous(num=1)  # Utiliser le motif Orbium
+# Reset in continuous mode with a specific pattern
+sim_model.reset_continuous(num=1)  # Use the Orbium pattern
 ```
 
-## Intégration avec les Autres Modules
+## Integration with Other Modules
 
-Le module Simulation interagit avec:
+The Simulation module interacts with:
 
-- **Module Function Influence**: Obtient les fonctions de voisinage et de croissance
-- **Module User Simulation**: Reçoit les commandes de contrôle de la simulation (démarrer/arrêter/réinitialiser)
-- **Module Window Manager**: S'intègre dans l'interface utilisateur globale de l'application 
+- **Functional Input Module**: Gets the neighborhood and growth functions
+- **User Settings Module**: Receives simulation control commands (start/stop/reset)
+- **Window Manager Module**: Integrates into the global application user interface 

@@ -1,6 +1,6 @@
-# API du Module Influence Functions (fi)
+# API of the Functional Input Module (fi)
 
-Cette page présente la documentation API générée automatiquement à partir des docstrings et des type hints du code source du module `fi`.
+This page presents the API documentation automatically generated from the docstrings and type hints of the `fi` module source code.
 
 ## Module fi
 

@@ -2,14 +2,14 @@ from . import UsModel
 from typing import Any, Callable, Optional, Union
 
 class UsController:
-    """User simulation controller component.
+    """User settings controller component.
     
     This class coordinates interactions between the UsModel and UsView components.
     It handles user input events, updates the model, and ensures the view reflects 
     the current state of the simulation.
     """
     def __init__(self, view: Any) -> None:
-        """Initialize the user simulation controller.
+        """Initialize the user settings controller.
         
         Sets up the model, connects to the view, and configures the event handlers
         for all user interface elements.

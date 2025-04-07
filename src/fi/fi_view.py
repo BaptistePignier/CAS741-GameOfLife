@@ -7,13 +7,13 @@ import matplotlib.ticker as ticker
 from typing import Any, Tuple, Optional, Union
 
 class FiView:
-    """Function influence view component.
+    """Functional input view component.
     
-    This class represents the view component for the function influence module.
+    This class represents the view component for the functional input module.
     It manages the visualization of neighborhood kernels and growth functions.
     """
     def __init__(self, master: Any) -> None:
-        """Initialize the function influence view.
+        """Initialize the functional input view.
         
         Creates a frame with two visualization plots:
         - The top plot displays the neighborhood kernel

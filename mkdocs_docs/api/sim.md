@@ -1,6 +1,6 @@
-# API du Module Simulation (sim)
+# API of the Simulation Module (sim)
 
-Cette page présente la documentation API générée automatiquement à partir des docstrings et des type hints du code source du module `sim`.
+This page presents the API documentation automatically generated from the docstrings and type hints of the `sim` module source code.
 
 ## Module sim
 

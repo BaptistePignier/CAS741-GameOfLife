@@ -3,16 +3,16 @@ from . import FiModel
 from typing import Callable, Any, Optional, Union, Tuple
 
 class FiController:
-    """Function influence controller component.
+    """Functional input controller component.
     
     This class coordinates interactions between the FiModel and FiView components.
     It manages updates to neighborhood and growth function parameters and ensures
     the view is synchronized with the model.
     """
     def __init__(self, view: Any, us_controller: Any) -> None:
-        """Initialize the function influence controller.
+        """Initialize the functional input controller.
         
-        Sets up the model, connects to the view, and registers with the user simulation controller.
+        Sets up the model, connects to the view, and registers with the user settings controller.
         
         Args:
             view: The FiView instance to control
