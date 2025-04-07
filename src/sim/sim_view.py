@@ -1,7 +1,16 @@
+"""Simulation view module.
+
+This module provides the view component for the cellular automata simulation.
+It handles the visualization of the simulation grid using matplotlib, wrapped
+in a Tkinter widget for display. The view is optimized for performance, allowing
+smooth updates of the grid state as the simulation progresses.
+"""
+
+from typing import Any
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
-from typing import Any
+
 
 class SimView:
     """Simulation view component.
@@ -18,8 +27,6 @@ class SimView:
             width (int): Grid width in cells
             height (int): Grid height in cells
         """
-        self.width = width
-        self.height = height
         self.master = master
         self.current_grid = None
         
@@ -46,7 +53,6 @@ class SimView:
         
         # Creation of Tkinter canvas with fixed size
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
-        self.canvas_widget = self.canvas.get_tk_widget()
         
         # Configuration of view limits
         self.ax.set_xlim(-0.5, width-0.5)  # Grid centering
@@ -74,7 +80,7 @@ class SimView:
         Returns:
             tkinter.Widget: Tkinter canvas widget
         """
-        return self.canvas_widget
+        return self.canvas.get_tk_widget()
     
     def __del__(self) -> None:
         """Clean up matplotlib resources."""

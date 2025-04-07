@@ -1,6 +1,15 @@
+"""Simulation controller module.
+
+This module provides the controller component for the simulation module.
+It coordinates interactions between the model (SimModel) and view (SimView) components,
+managing the simulation loop, handling updates at the appropriate speed based on
+user settings, and responding to events from the user interface and function inputs
+controllers.
+"""
+
+from typing import Any
 from . import SimModel
-import numpy as np
-from typing import Any, Optional
+
 
 class SimController:
     """Simulation controller component.
@@ -18,7 +27,7 @@ class SimController:
             us_controller: UsController instance
             fi_controller: FiController instance
         """
-        self.model = SimModel(view.width, view.height)
+        self.model = SimModel()
         self.view = view
         self.root = root
         self.us_controller = us_controller
@@ -52,9 +61,10 @@ class SimController:
         # Update the simulation if it's running
         if self.us_controller.is_running():
 
-            
-
-            self.model.update(self.fi_controller.get_growth_fct(),self.fi_controller.get_nhood(),self.fi_controller.get_step())
+            self.model.update(
+                self.fi_controller.get_growth_fct(),
+                self.fi_controller.get_nhood(),
+                self.fi_controller.get_step())
             
             # Update the display
             self.view.update_display(self.model.get_grid())

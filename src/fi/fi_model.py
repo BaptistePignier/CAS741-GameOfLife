@@ -1,8 +1,24 @@
+"""Functional inputs model module.
+
+This module provides the implementation of the growth and neighborhood functions
+used in the cellular automata simulation. It handles both discrete (Game of Life)
+and continuous (Lenia) function implementations.
+"""
+
 from typing import Optional, Union
 import numpy as np
 
 
 class FiModel:
+    """Functional inputs model component.
+    
+    This class manages all calculations related to neighborhoods and growth functions
+    used in the cellular automaton. It provides both continuous (Lenia) and discrete
+    (Game of Life) implementations of these functions.
+    
+    The neighborhood functions define how cells interact with their surroundings,
+    while growth functions determine how a cell's state evolves based on its neighborhood.
+    """
     def __init__(self,  mu: float = 0.5, 
                         sigma: float = 0.15, 
                         growth_mu: float = 0.15, 

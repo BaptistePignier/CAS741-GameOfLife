@@ -1,10 +1,19 @@
-import tkinter as tk
+"""Functional inputs view module.
+
+This module provides the visualization components for the neighborhood kernels 
+and growth functions used in the cellular automata simulation. It handles the 
+UI representation and user interaction with both discrete (Game of Life) and 
+continuous (Lenia) functions.
+"""
+
+from typing import Any, Tuple
 from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib import ticker
 import numpy as np
-import matplotlib.ticker as ticker
-from typing import Any, Tuple, Optional, Union
+
+
 
 class FiView:
     """Functional input view component.
@@ -85,7 +94,7 @@ class FiView:
         self.growth_line.set_ydata(y_values)
         self.canvas.draw_idle()
     
-    def update_growth_axes(self, xmin: float, xmax: float, ymin: float, ymax: float, continuous: bool = True) -> None:
+    def update_growth_axes(self, xmin: float, xmax: float, continuous: bool = True) -> None:
         """Update the limits and tick marks of the growth function graph axes.
         
         Configures appropriate axis limits and tick marks based on whether
@@ -100,7 +109,6 @@ class FiView:
                                otherwise for discrete mode (GoL). Default is True.
         """
         self.ax_growth.set_xlim(xmin, xmax)
-        self.ax_growth.set_ylim(ymin, ymax)
         
         if continuous:
             # Tick marks for continuous mode (Lenia)

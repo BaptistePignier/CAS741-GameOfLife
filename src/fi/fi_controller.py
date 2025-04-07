@@ -1,6 +1,16 @@
+"""Functional inputs controller module.
+
+This module provides the controller component for the functional inputs module.
+It coordinates interactions between the model (FiModel) and view (FiView) components,
+and handles communications with the user settings controller. It manages updates
+to neighborhood and growth function parameters based on user interactions.
+"""
+
+from typing import Callable, Any, Optional
 import numpy as np
 from . import FiModel
-from typing import Callable, Any, Optional, Union, Tuple
+
+
 
 class FiController:
     """Functional input controller component.
@@ -64,7 +74,10 @@ class FiController:
             return 0.1
         return 1
 
-    def update_nhood_params(self, mu: Optional[float] = None, sigma: Optional[float] = None) -> None:
+    def update_nhood_params(self, 
+                            mu: Optional[float] = None, 
+                            sigma: Optional[float] = None) -> None:
+        
         """Update neighborhood parameters in the model and refresh display.
         
         Args:
@@ -74,12 +87,18 @@ class FiController:
         self.model.set_nhood_params(mu,sigma)
         self.update_nhood_display()
 
-    def update_growth_params(self, g_mu: Optional[float] = None, g_sigma: Optional[float] = None) -> None:
+    def update_growth_params(self, 
+                             g_mu: Optional[float] = None, 
+                             g_sigma: Optional[float] = None) -> None:
+        
         """Update growth function parameters in the model and refresh display.
         
         Args:
-            g_mu (float, optional): New center value for growth function. If None, keeps current value.
-            g_sigma (float, optional): New width value for growth function. If None, keeps current value.
+            g_mu (float, optional): New center value for growth function. 
+            If None, keeps current value.
+
+            g_sigma (float, optional): New width value for growth function. 
+            If None, keeps current value.
         """
         self.model.set_growth_params(g_mu,g_sigma)
         self.update_growth_display()
@@ -108,12 +127,12 @@ class FiController:
             x = np.arange(0, 0.3, 0.001)
             y_growth = self.model.growth_lenia(x)
             self.view.update_growth_plot(x, y_growth)
-            self.view.update_growth_axes(0, 0.3, -1.2, 1.2, continuous=True)
+            self.view.update_growth_axes(0, 0.3, continuous=True)
         else:
             x = np.asarray([0,1,2,3,4,5,6,7,8])
             y_growth = self.model.growth_gol(x)
             self.view.update_growth_plot(x, y_growth)
-            self.view.update_growth_axes(0, 8, -1.2, 1.2, continuous=False)
+            self.view.update_growth_axes(0, 8,  continuous=False)
 
     def update_displays(self) -> None:
         """Update all display elements in the view.

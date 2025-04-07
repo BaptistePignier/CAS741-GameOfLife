@@ -1,5 +1,14 @@
+"""User settings controller module.
+
+This module provides the controller component for the user settings interface.
+It coordinates interactions between the model (UsModel) and view (UsView) components,
+handling user input events, managing simulation controls like start/stop, reset,
+and continuous mode, and configuring parameter sliders for the simulation functions.
+"""
+
+from typing import Any, Callable
 from . import UsModel
-from typing import Any, Callable, Optional, Union
+
 
 class UsController:
     """User settings controller component.
@@ -21,7 +30,7 @@ class UsController:
         self.view = view
         
         # Get widgets
-        self.model.set_widgets(self.view.toggle_button, self.view.continuous_switch)
+        self.model.set_widgets(self.view.toggle_button)
         
         # Configure commands
         self.view.toggle_button.config(command=self.model.toggle_running_state)
@@ -44,9 +53,13 @@ class UsController:
         """
         self.model.set_numeric_value(value)
     
-    def set_interface_commands(self, mu_command: Callable[[float], None], sigma_command: Callable[[float], None], 
-                             growth_mu_command: Callable[[float], None], growth_sigma_command: Callable[[float], None], 
-                             continuous_button_command: Callable[[], None]) -> None:
+    def set_interface_commands(self, 
+                               mu_command: Callable[[float], None], 
+                               sigma_command: Callable[[float], None], 
+                               growth_mu_command: Callable[[float], None], 
+                               growth_sigma_command: Callable[[float], None], 
+                               continuous_button_command: Callable[[], None]) -> None:
+        
         """Configure commands for the interface elements.
         
         Sets up callbacks for the Gaussian parameter sliders and continuous mode switch,
@@ -122,12 +135,3 @@ class UsController:
             int: The numeric value entered by the user
         """
         return self.model.get_numeric_value()
-
-
-    def get_numeric_value(self) -> int:
-        """Retourner la valeur numérique stockée.
-        
-        Returns:
-            int: La valeur numérique
-        """
-        return self.model.numeric_value

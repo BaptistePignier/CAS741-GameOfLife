@@ -1,4 +1,13 @@
-from typing import Any, Optional, Union
+"""User settings model module.
+
+This module provides the model component for the user settings interface.
+It maintains the state of simulation controls such as running/paused status,
+simulation speed, continuous/discrete mode selection, and tracks user-entered
+numeric values. The model also manages the reset operation and synchronizes 
+with the user interface elements.
+"""
+
+from typing import Any, Union
 
 class UsModel:
     """User settings model component.
@@ -22,13 +31,11 @@ class UsModel:
         self.is_running = False  # Simulation state
         self.needs_reset = False  # Reset flag
         self.is_continuous = False  # Continuous mode state
-        self.continuous_switch = None
         self.numeric_value = 0  # Numeric value entered by the user
     
-    def set_widgets(self, toggle_button: Any, continuous_switch: Any) -> None:
+    def set_widgets(self, toggle_button: Any) -> None:
         """Store only the reference to the toggle button that needs to be updated."""
         self.toggle_button = toggle_button
-        self.continuous_switch = continuous_switch
     
     def toggle_running_state(self) -> bool:
         """Toggle the simulation state.
