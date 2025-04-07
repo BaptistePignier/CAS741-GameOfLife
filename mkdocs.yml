@@ -47,6 +47,24 @@ markdown_extensions:
 
 plugins:
   - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_category_heading: true
+            show_if_no_docstring: false
+            heading_level: 3
+            merge_init_into_class: true
+            inherited_members: true
+            docstring_section_style: list
+            show_signature_annotations: true
+            separate_signature: true
+            show_signature: true
+            show_submodules: false
 
 nav:
   - Home: index.md
@@ -58,4 +76,9 @@ nav:
     - Simulation (sim): reference/sim.md
     - User Interface (us): reference/us.md
     - Window Manager (wm): reference/wm.md
-  - User Guide: user_guide.md 
+  - User Guide: user_guide.md
+  - API:
+    - Module fi: api/fi.md
+    - Module sim: api/sim.md
+    - Module us: api/us.md
+    - Module wm: api/wm.md 

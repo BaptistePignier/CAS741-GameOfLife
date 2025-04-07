@@ -1,126 +1,141 @@
 # Influence Functions Module (fi)
 
-The Influence Functions module manages the rules that determine cell evolution in the cellular automaton. It includes two main components:
+Le module Influence Functions gère les règles qui déterminent l'évolution des cellules dans l'automate cellulaire. Il comprend deux composants principaux:
 
-1. **Neighborhood Functions**: Define how cells interact with their neighbors
-2. **Growth Functions**: Determine how a cell's state evolves based on its neighborhood
+1. **Fonctions de voisinage**: Définissent comment les cellules interagissent avec leurs voisines
+2. **Fonctions de croissance**: Déterminent comment l'état d'une cellule évolue en fonction de son voisinage
 
-## Module Structure
+## Structure du Module
 
 ### Classes
 
 #### FiModel
 
-The `FiModel` class manages all calculations related to neighborhoods and growth functions.
+La classe `FiModel` gère tous les calculs liés aux voisinages et aux fonctions de croissance.
 
 ```python
 class FiModel:
-    def __init__(self, us_model):
-        """
-        Initialize the FiModel with a reference to the user settings model.
+    def __init__(self, mu: float = 0.5, sigma: float = 0.15, 
+                 growth_mu: float = 0.15, growth_sigma: float = 0.015) -> None:
+        """Initialize the function influence model.
         
         Args:
-            us_model: Reference to the UsModel containing user settings
+            mu (float): Center of the kernel ring. Default is 0.5.
+            sigma (float): Width of the kernel ring. Default is 0.15.
+            growth_mu (float): Center parameter for growth function. Default is 0.15.
+            growth_sigma (float): Width parameter for growth function. Default is 0.015.
         """
 ```
 
-Key methods:
+Méthodes principales:
 
-- `_gauss(x, mu, sigma)`: Gaussian function used for continuous neighborhoods
-- `growth_lenia(U, mu, sigma, b)`: Lenia growth function for continuous mode
-- `growth_GoL(U, b_low, b_high, s_low, s_high)`: Conway's Game of Life growth function
-- `_update_con_nhood()`: Updates the continuous neighborhood kernel
-- `get_con_nhood()`: Returns the current continuous neighborhood kernel
-- `get_dis_nhood()`: Returns the current discrete neighborhood kernel
-- `set_nhood_params(radius, mu, sigma)`: Sets parameters for the neighborhood function
-- `set_growth_params(b_low, b_high, s_low, s_high, mu, sigma, b)`: Sets parameters for the growth function
+- `_gauss(x: Union[float, np.ndarray], mu: float, sigma: float) -> Union[float, np.ndarray]`: Fonction gaussienne utilisée pour les voisinages continus
+- `growth_lenia(u: Union[float, np.ndarray]) -> Union[float, np.ndarray]`: Fonction de croissance Lenia pour le mode continu
+- `growth_GoL(u: Union[float, np.ndarray]) -> Union[float, np.ndarray]`: Fonction de croissance du Jeu de la Vie de Conway
+- `_update_con_nhood() -> None`: Met à jour le noyau de voisinage continu
+- `get_con_nhood() -> np.ndarray`: Renvoie le noyau de voisinage continu actuel
+- `get_dis_nhood() -> np.ndarray`: Renvoie le noyau de voisinage discret actuel
+- `set_nhood_params(mu: Optional[float] = None, sigma: Optional[float] = None) -> None`: Définit les paramètres pour la fonction de voisinage
+- `set_growth_params(g_mu: Optional[float] = None, g_sigma: Optional[float] = None) -> None`: Définit les paramètres pour la fonction de croissance
 
 #### FiController
 
-The `FiController` class handles user interactions with growth and neighborhood functions.
+La classe `FiController` gère les interactions de l'utilisateur avec les fonctions de croissance et de voisinage.
 
 ```python
 class FiController:
-    def __init__(self, fi_model, fi_view, us_model):
-        """
-        Initialize the FiController.
+    def __init__(self, view: Any, us_controller: Any) -> None:
+        """Initialize the function influence controller.
+        
+        Sets up the model, connects to the view, and registers with the user simulation controller.
         
         Args:
-            fi_model: Reference to the FiModel
-            fi_view: Reference to the FiView
-            us_model: Reference to the UsModel
+            view: The FiView instance to control
+            us_controller: The UsController instance to interact with
         """
 ```
 
-Key methods:
+Méthodes principales:
 
-- `update_nhood()`: Updates the neighborhood based on current parameters
-- `update_growth()`: Updates the growth function based on current parameters
+- `get_nhood() -> np.ndarray`: Obtient le noyau de voisinage approprié en fonction du mode actuel
+- `get_growth_fct() -> Callable[[np.ndarray], np.ndarray]`: Obtient la fonction de croissance appropriée en fonction du mode actuel
+- `get_step() -> float`: Obtient la valeur d'étape de simulation appropriée en fonction du mode actuel
+- `update_nhood_params(mu: Optional[float] = None, sigma: Optional[float] = None) -> None`: Met à jour les paramètres de voisinage dans le modèle et rafraîchit l'affichage
+- `update_growth_params(g_mu: Optional[float] = None, g_sigma: Optional[float] = None) -> None`: Met à jour les paramètres de la fonction de croissance dans le modèle et rafraîchit l'affichage
+- `update_nhood_display() -> None`: Met à jour la visualisation du voisinage dans la vue
+- `update_growth_display() -> None`: Met à jour la visualisation de la fonction de croissance dans la vue
+- `update_displays() -> None`: Met à jour tous les éléments d'affichage dans la vue
 
 #### FiView
 
-The `FiView` class displays visualizations of neighborhood and growth functions.
+La classe `FiView` affiche des visualisations des fonctions de voisinage et de croissance.
 
 ```python
 class FiView:
-    def __init__(self, parent, fi_model, us_model):
-        """
-        Initialize the FiView.
+    def __init__(self, master: Any) -> None:
+        """Initialize the function influence view.
+        
+        Creates a frame with two visualization plots:
+        - The top plot displays the neighborhood kernel
+        - The bottom plot displays the growth function
         
         Args:
-            parent: Parent widget
-            fi_model: Reference to the FiModel
-            us_model: Reference to the UsModel
+            master: The parent tkinter container widget
         """
 ```
 
-Key methods:
+Méthodes principales:
 
-- `create_widgets()`: Creates all visualization widgets
-- `update_nhood_plot()`: Updates the visualization of the neighborhood function
-- `update_growth_plot()`: Updates the visualization of the growth function
+- `update_growth_plot(x_values: np.ndarray, y_values: np.ndarray) -> None`: Met à jour le graphique de la fonction de croissance avec de nouvelles données
+- `update_growth_axes(xmin: float, xmax: float, ymin: float, ymax: float, continuous: bool = True) -> None`: Met à jour les limites et les graduations des axes du graphique de la fonction de croissance
+- `update_nhood_plot(kernel: np.ndarray) -> None`: Met à jour la visualisation du voisinage avec un nouveau noyau
+- `get_frame() -> ttk.Frame`: Obtient le cadre principal de la vue
+- `get_canvas() -> Tuple[None, Any, Any]`: Obtient les widgets de canevas pour un accès externe
 
-## Key Concepts
+## Concepts Clés
 
-### Neighborhood Function
+### Fonction de Voisinage
 
-The neighborhood function defines how each cell interacts with surrounding cells. In our implementation:
+La fonction de voisinage définit comment chaque cellule interagit avec les cellules environnantes. Dans notre implémentation:
 
-- **Continuous Mode**: Uses a Gaussian function to create a smooth neighborhood kernel
-- **Discrete Mode**: Uses a simple binary kernel (alive/dead)
+- **Mode Continu**: Utilise une fonction gaussienne pour créer un noyau de voisinage lisse
+- **Mode Discret**: Utilise un simple noyau binaire (vivant/mort)
 
-### Growth Function
+### Fonction de Croissance
 
-The growth function determines how a cell's state changes based on its neighborhood:
+La fonction de croissance détermine comment l'état d'une cellule change en fonction de son voisinage:
 
-- **Lenia**: A continuous growth function where:
-  - U is the current neighborhood value
-  - mu and sigma determine the position and width of the response curve
-  - b is a growth parameter
+- **Lenia**: Une fonction de croissance continue où:
+  - u est la valeur actuelle du voisinage
+  - growth_mu et growth_sigma déterminent la position et la largeur de la courbe de réponse
   
-- **Game of Life**: A discrete growth function where:
-  - A living cell survives if it has between s_low and s_high living neighbors
-  - A dead cell becomes alive if it has between b_low and b_high living neighbors
+- **Jeu de la Vie**: Une fonction de croissance discrète où:
+  - Une cellule vivante survit si elle a entre 2 et 3 voisines vivantes
+  - Une cellule morte devient vivante si elle a exactement 3 voisines vivantes
 
-## Usage Examples
+## Exemples d'Utilisation
 
-### Setting up the Game of Life rule
-
-```python
-# Standard Conway's Game of Life
-fi_model.set_growth_params(b_low=3, b_high=3, s_low=2, s_high=3)
-```
-
-### Setting up a continuous neighborhood
+### Configuration du mode Lenia (continu)
 
 ```python
-# Gaussian neighborhood with radius 3
-fi_model.set_nhood_params(radius=3, mu=0.5, sigma=0.15)
+# Obtenir la fonction de croissance et le noyau de voisinage pour Lenia
+growth_function = fi_controller.get_growth_fct()  # Renvoie la fonction growth_lenia
+nhood = fi_controller.get_nhood()  # Renvoie le noyau continu
+step = fi_controller.get_step()  # Renvoie 0.1 pour le mode continu
 ```
 
-## Integration with Other Modules
+### Configuration du mode Game of Life (discret)
 
-The Influence Functions module interacts primarily with:
+```python
+# Obtenir la fonction de croissance et le noyau de voisinage pour Game of Life
+growth_function = fi_controller.get_growth_fct()  # Renvoie la fonction growth_GoL
+nhood = fi_controller.get_nhood()  # Renvoie le noyau discret
+step = fi_controller.get_step()  # Renvoie 1 pour le mode discret
+```
 
-- **User Interface Module**: Receives parameter settings from user inputs
-- **Simulation Module**: Provides growth and neighborhood functions for grid updates 
+## Intégration avec les Autres Modules
+
+Le module Influence Functions interagit principalement avec:
+
+- **Module User Simulation**: Reçoit les paramètres de configuration des entrées utilisateur
+- **Module Simulation**: Fournit les fonctions de croissance et de voisinage pour les mises à jour de la grille 

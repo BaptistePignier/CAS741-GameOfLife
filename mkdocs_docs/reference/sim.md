@@ -1,115 +1,153 @@
-# Simulation Module (sim)
+# Module Simulation (sim)
 
-The Simulation module manages the cellular automaton grid and its evolution over time. It handles the application of rules to update the state of cells at each step.
+Le module Simulation gère l'automate cellulaire lui-même, y compris la grille, les règles d'évolution et la boucle de mise à jour. Il prend en charge à la fois le Jeu de la Vie traditionnel (mode discret) et Lenia (mode continu).
 
-## Module Structure
+## Structure du Module
 
 ### Classes
 
 #### SimModel
 
-The `SimModel` class manages the grid's state and handles all simulation calculations.
+La classe `SimModel` est responsable de la grille et de la logique de l'automate cellulaire.
 
 ```python
 class SimModel:
-    def __init__(self, us_model, fi_model):
-        """
-        Initialize the simulation model.
+    def __init__(self, width: int = 500, height: int = 500, initial_alive_prob: float = 0.2) -> None:
+        """Initialize the simulation model.
         
         Args:
-            us_model: Reference to the UsModel containing user settings
-            fi_model: Reference to the FiModel for evolution rules
+            width (int): Grid width in cells
+            height (int): Grid height in cells
+            initial_alive_prob (float): Initial probability for a cell to be alive
         """
 ```
 
-Key methods:
+Méthodes principales:
 
-- `initialize_grid(width, height)`: Creates and initializes the cell grid
-- `set_cell(x, y, value)`: Sets the value of a specific cell
-- `get_cell(x, y)`: Gets the value of a specific cell
-- `randomize_grid(density)`: Randomizes the grid with a given density of live cells
-- `clear_grid()`: Sets all cells to dead/zero
-- `compute_fft()`: Computes the Fast Fourier Transform for continuous mode
-- `update()`: Updates the entire grid based on the current mode and rules
-- `reset()`: Resets the simulation to its initial state
+- `update(fct: Callable[[np.ndarray], np.ndarray], nhood: np.ndarray, dt: float) -> None`: Met à jour l'état de la grille pour une génération
+- `get_grid() -> np.ndarray`: Renvoie la grille actuelle
+- `reset_discrete(prob: Optional[float] = None) -> None`: Réinitialise la grille avec une nouvelle configuration aléatoire
+- `reset_continuous(num: int) -> None`: Réinitialise la grille avec un modèle continu basé sur la valeur numérique
+- `stain() -> None`: Crée un motif de tache gaussienne centrée
+- `orbium() -> None`: Crée un motif d'Orbium (vaisseau spatial Lenia)
 
 #### SimController
 
-The `SimController` class manages the simulation flow and timing.
+La classe `SimController` coordonne le modèle et la vue, gérant la boucle d'animation.
 
 ```python
 class SimController:
-    def __init__(self, sim_model, us_model):
-        """
-        Initialize the simulation controller.
+    def __init__(self, view: Any, root: Any, us_controller: Any, fi_controller: Any) -> None:
+        """Initialize the simulation controller.
         
         Args:
-            sim_model: Reference to the SimModel
-            us_model: Reference to the UsModel containing user settings
+            view: SimView instance
+            root: Main Tkinter window
+            us_controller: UsController instance
+            fi_controller: FiController instance
         """
 ```
 
-Key methods:
+Méthodes principales:
 
-- `start()`: Starts the simulation
-- `stop()`: Stops the simulation
-- `step()`: Advances the simulation by one step
-- `reset()`: Resets the simulation to its initial state
-- `update()`: Updates the simulation based on current time and speed settings
+- `run() -> None`: Démarre la simulation
+- `update() -> None`: Met à jour le modèle et la vue si la simulation est en cours
+- `stop() -> None`: Arrête le minuteur de mise à jour
+- `reset() -> None`: Réinitialise la grille de simulation
 
-## Simulation Modes
+#### SimView
 
-The module supports two simulation modes:
-
-### Discrete Mode (Conway's Game of Life)
-
-In discrete mode:
-- Each cell has a binary state (0 = dead, 1 = alive)
-- The update rule is based on counting live neighbors
-- For a cell at position (i,j):
-  - If alive and has fewer than `survival_min` live neighbors, it dies
-  - If alive and has more than `survival_max` live neighbors, it dies
-  - If dead and has between `birth_min` and `birth_max` live neighbors, it becomes alive
-
-### Continuous Mode (Lenia)
-
-In continuous mode:
-- Each cell has a value between 0 and 1
-- Updates are calculated using convolution operations with:
-  - A neighborhood kernel defining how cells interact
-  - A growth function determining how neighborhoods affect cell states
-- The Fast Fourier Transform (FFT) is used to efficiently compute convolutions
-
-## Grid Management
-
-The grid is implemented as a 2D NumPy array, providing efficient operations for both types of cellular automata:
+La classe `SimView` gère la visualisation de la grille de l'automate cellulaire.
 
 ```python
-# Create a grid of 100x100 cells
-sim_model.initialize_grid(100, 100)
-
-# Randomize with 30% live cells
-sim_model.randomize_grid(0.3)
-
-# Get the value of a specific cell
-value = sim_model.get_cell(10, 20)
-
-# Set a specific cell
-sim_model.set_cell(15, 25, 1)
+class SimView:
+    def __init__(self, master: Any, width: int, height: int) -> None:
+        """Initialize the simulation view.
+        
+        Args:
+            master: Parent Tkinter widget
+            width (int): Grid width in cells
+            height (int): Grid height in cells
+        """
 ```
 
-## Performance Considerations
+Méthodes principales:
 
-For optimal performance, the simulation uses:
+- `update_display(grid: np.ndarray) -> None`: Met à jour l'affichage de la grille
+- `get_canvas() -> Any`: Renvoie le widget de canevas
+- `__del__() -> None`: Nettoie les ressources matplotlib
 
-- NumPy arrays for grid representation and mathematical operations
-- FFT-based convolution for continuous mode (much faster than direct convolution)
-- Time-step management based on the current mode and user settings
+## Flux de Simulation
 
-## Integration with Other Modules
+1. Initialisation:
+   - `SimController` initialise le modèle et la vue
+   - La grille est configurée en fonction du mode actuel (continu ou discret)
 
-The Simulation module interacts primarily with:
+2. Boucle de mise à jour:
+   - `SimController.update()` est appelé périodiquement
+   - Si la simulation est en cours d'exécution, le modèle est mis à jour
+   - La vue est rafraîchie avec le nouvel état de la grille
 
-- **Influence Functions Module**: Provides the rules and functions for determining cell evolution
-- **User Interface Module**: Receives control commands and simulation parameters
-- **Window Manager**: Coordinates the display of the simulation grid 
+3. Réinitialisation:
+   - Lorsque l'utilisateur déclenche une réinitialisation, `SimController.reset()` est appelé
+   - Une nouvelle grille est générée en fonction du mode actuel
+
+## Algorithme d'Automate Cellulaire
+
+### Mode Discret (Jeu de la Vie)
+
+1. Pour chaque cellule, compter le nombre de voisines vivantes
+2. Appliquer la fonction de croissance du Game of Life:
+   - Une cellule vivante survit si elle a 2 ou 3 voisines vivantes
+   - Une cellule morte devient vivante si elle a exactement 3 voisines vivantes
+
+### Mode Continu (Lenia)
+
+1. Convoluer la grille avec le noyau de voisinage
+2. Appliquer la fonction de croissance Lenia qui dépend des paramètres mu et sigma
+3. Mettre à jour la grille avec un petit pas temporel (dt) pour une transition fluide
+
+## Schémas d'Initialisation
+
+### Mode Discret
+
+- Initialisation aléatoire avec une probabilité configurable pour les cellules vivantes
+
+### Mode Continu
+
+Deux modèles prédéfinis:
+
+1. **Stain**: Une tache gaussienne centrée qui se développe de manière organique
+2. **Orbium**: Un "glisseur" Lenia qui se déplace à travers la grille
+
+## Exemples d'Utilisation
+
+### Mise à jour de la grille de simulation
+
+```python
+# Obtenir la fonction de croissance et le noyau de voisinage
+growth_function = fi_controller.get_growth_fct()
+neighborhood = fi_controller.get_nhood()
+step = fi_controller.get_step()
+
+# Mettre à jour la grille
+sim_model.update(growth_function, neighborhood, step)
+```
+
+### Réinitialisation de la simulation
+
+```python
+# Réinitialisation en mode discret
+sim_model.reset_discrete(prob=0.2)  # 20% de probabilité pour les cellules vivantes
+
+# Réinitialisation en mode continu avec un motif spécifique
+sim_model.reset_continuous(num=1)  # Utiliser le motif Orbium
+```
+
+## Intégration avec les Autres Modules
+
+Le module Simulation interagit avec:
+
+- **Module Function Influence**: Obtient les fonctions de voisinage et de croissance
+- **Module User Simulation**: Reçoit les commandes de contrôle de la simulation (démarrer/arrêter/réinitialiser)
+- **Module Window Manager**: S'intègre dans l'interface utilisateur globale de l'application 

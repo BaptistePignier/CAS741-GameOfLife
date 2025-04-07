@@ -1,150 +1,166 @@
-# User Interface Module (us)
+# Module User Simulation (us)
 
-The User Interface module manages all user controls and settings that affect the simulation. It handles user inputs and maintains the current state of simulation parameters.
+Le module User Simulation gère l'interface utilisateur pour le contrôle de la simulation. Il permet à l'utilisateur de:
 
-## Module Structure
+1. Démarrer, arrêter et réinitialiser la simulation
+2. Ajuster la vitesse de simulation
+3. Basculer entre les modes continu (Lenia) et discret (Jeu de la Vie)
+4. Configurer les paramètres des fonctions de voisinage et de croissance
+
+## Structure du Module
 
 ### Classes
 
 #### UsModel
 
-The `UsModel` class stores all user-configurable settings for the application.
+La classe `UsModel` stocke l'état de la simulation et les paramètres utilisateur.
 
 ```python
 class UsModel:
-    def __init__(self):
-        """
-        Initialize the user settings model with default values.
+    def __init__(self) -> None:
+        """Initialize the user simulation model.
+        
+        Sets up the default state for simulation control:
+        - Default speed of 60 generations per second
+        - Simulation initially stopped
+        - No reset pending
+        - Discrete mode (not continuous) by default
+        - Initial numeric value of 0
         """
 ```
 
-Key attributes:
+Méthodes principales:
 
-- `is_running`: Whether the simulation is currently running
-- `is_continuous`: Whether the simulation is in continuous mode (Lenia) or discrete mode (Game of Life)
-- `speed`: The simulation speed factor
-- `numeric_value`: A generic numeric value for various settings
-- `width`: Grid width in cells
-- `height`: Grid height in cells
-- Various parameters for both continuous and discrete modes
-
-Key methods:
-
-- `toggle_running()`: Switches between running and paused states
-- `toggle_mode()`: Switches between continuous and discrete modes
-- `set_speed(value)`: Sets the simulation speed
-- `set_numeric_value(value)`: Sets a generic numeric value
-- `reset()`: Resets all settings to default values
+- `set_widgets(toggle_button: Any, continuous_switch: Any) -> None`: Stocke les références aux widgets qui doivent être mis à jour
+- `toggle_running_state() -> bool`: Bascule l'état de la simulation et renvoie le nouvel état
+- `reset_state() -> None`: Réinitialise l'état de la simulation
+- `acknowledge_reset() -> bool`: Confirme la demande de réinitialisation et renvoie l'état précédent
+- `toggle_continuous_mode() -> bool`: Bascule le mode continu et renvoie le nouvel état
+- `is_mode_continuous() -> bool`: Renvoie l'état du mode continu
+- `set_numeric_value(value: Union[int, str, None]) -> None`: Définit la valeur numérique
+- `get_numeric_value() -> int`: Renvoie la valeur numérique actuelle
 
 #### UsController
 
-The `UsController` class handles user interactions with the interface controls.
+La classe `UsController` coordonne les interactions entre le modèle et la vue.
 
 ```python
 class UsController:
-    def __init__(self, us_model, us_view):
-        """
-        Initialize the user interface controller.
+    def __init__(self, view: Any) -> None:
+        """Initialize the user simulation controller.
+        
+        Sets up the model, connects to the view, and configures the event handlers
+        for all user interface elements.
         
         Args:
-            us_model: Reference to the UsModel
-            us_view: Reference to the UsView
+            view: The UsView instance to control
         """
 ```
 
-Key methods:
+Méthodes principales:
 
-- `toggle_running()`: Handles start/stop button clicks
-- `toggle_mode()`: Handles mode switch button clicks
-- `update_speed(value)`: Handles speed slider changes
-- `update_numeric(value)`: Handles generic numeric value changes
-- `reset()`: Handles reset button clicks
+- `update_numeric_value(value: str) -> None`: Met à jour la valeur numérique dans le modèle
+- `set_interface_commands(mu_command: Callable[[float], None], sigma_command: Callable[[float], None], growth_mu_command: Callable[[float], None], growth_sigma_command: Callable[[float], None], continuous_button_command: Callable[[], None]) -> None`: Configure les commandes pour les éléments d'interface
+- `get_speed() -> float`: Renvoie la vitesse de simulation actuelle
+- `is_running() -> bool`: Renvoie l'état actuel de la simulation
+- `is_mode_continuous() -> bool`: Renvoie l'état du mode continu
+- `get_numeric_value() -> int`: Renvoie la valeur numérique actuelle
 
 #### UsView
 
-The `UsView` class displays all user interface controls and updates them based on the current model state.
+La classe `UsView` gère l'interface utilisateur pour les contrôles de simulation.
 
 ```python
 class UsView:
-    def __init__(self, parent):
-        """
-        Initialize the user interface view.
+    def __init__(self, control_frame: Any) -> None:
+        """Initialize the user simulation view.
+        
+        Creates the UI frame and adds all control elements including:
+        - Start/Stop toggle button
+        - Reset button
+        - Continuous mode checkbox
+        - Numeric entry field
+        - Speed control slider
+        - Gaussian function parameter sliders
+        - Growth function parameter sliders
         
         Args:
-            parent: Parent widget
+            control_frame: The parent tkinter container widget
         """
 ```
 
-Key methods:
+Méthodes principales:
 
-- `create_widgets()`: Creates all interface controls
-- `update_running_display()`: Updates the start/stop button display
-- `update_mode_display()`: Updates the mode switch button display
-- `update_speed_display()`: Updates the speed slider display
-- `update_display()`: Updates all interface elements based on the current model state
+- `_create_control_buttons() -> None`: Crée les boutons de contrôle
+- `_create_speed_frame() -> None`: Crée le cadre de contrôle de la vitesse
+- `_create_gaussian_frame() -> None`: Crée le cadre des paramètres gaussiens
+- `get_frame() -> ttk.Frame`: Obtient le cadre principal de la vue
+- `set_numeric_entry_command(command: Callable[[str], None]) -> None`: Configure la commande pour le champ de texte numérique
 
-## User Controls
+## Flux d'Interaction
 
-### Simulation Flow Controls
+1. L'utilisateur interagit avec les contrôles dans `UsView`
+2. `UsController` reçoit ces interactions et met à jour `UsModel`
+3. `UsController` notifie également les autres contrôleurs de l'application des changements pertinents
 
-- **Start/Stop Button**: Toggle the simulation between running and paused states
-- **Step Button**: Advance the simulation by one step (only active when paused)
-- **Reset Button**: Reset the simulation to its initial state
+## Événements Principaux
 
-### Mode Controls
+### Contrôle de l'Exécution
 
-- **Mode Switch**: Toggle between discrete (Game of Life) and continuous (Lenia) modes
-- **Randomize Button**: Reset the grid with random cell states
+- **Démarrer/Arrêter**: Démarre ou arrête le déroulement de la simulation
+- **Réinitialiser**: Efface la grille actuelle et configure une nouvelle grille initiale
+- **Vitesse**: Ajuste le nombre de générations par seconde
 
-### Parameter Controls
+### Configuration du Mode
 
-#### Common Parameters
+- **Mode Continu**: Bascule entre:
+  - Mode discret (Jeu de la Vie traditionnel avec cellules vivantes/mortes)
+  - Mode continu (Lenia avec valeurs d'état entre 0 et 1)
 
-- **Speed Slider**: Adjust the simulation speed
-- **Grid Size Controls**: Set the width and height of the simulation grid
+### Paramètres des Fonctions
 
-#### Discrete Mode Parameters
+- **Paramètres de Voisinage**:
+  - μ (mu): Centre de l'anneau du noyau (de 0 à 1)
+  - σ (sigma): Largeur de l'anneau du noyau (de 0.05 à 0.5)
 
-- **Birth Range**: Set the number of live neighbors required for a dead cell to become alive
-- **Survival Range**: Set the number of live neighbors required for a live cell to remain alive
+- **Paramètres de Croissance**:
+  - μ (mu): Centre de la fonction de croissance (de 0 à 0.30)
+  - σ (sigma): Largeur de la fonction de croissance (de 0 à 0.1)
 
-#### Continuous Mode Parameters
+## Exemples d'Utilisation
 
-- **Neighborhood Parameters**: Control the Gaussian kernel parameters
-- **Growth Parameters**: Control the growth function parameters
-
-## Integration with Other Modules
-
-The User Interface module interacts primarily with:
-
-- **Simulation Module**: Sends commands to control the simulation flow
-- **Influence Functions Module**: Provides parameter values that affect the evolution rules
-
-## Usage Examples
-
-### Controlling the simulation
+### Démarrer et arrêter la simulation
 
 ```python
-# Toggle the simulation state (start/stop)
-us_controller.toggle_running()
+# Vérifier si la simulation est en cours d'exécution
+is_running = us_controller.is_running()
 
-# Reset the simulation
-us_controller.reset()
-
-# Change the simulation speed
-us_controller.update_speed(2.0)
+# La simulation démarrera ou s'arrêtera lorsque l'utilisateur appuie sur le bouton toggle
+# le contrôleur appelle alors:
+us_model.toggle_running_state()
 ```
 
-### Changing simulation parameters
+### Basculer entre les modes continu et discret
 
 ```python
-# Switch to continuous mode
-us_model.is_continuous = True
+# Vérifier le mode actuel
+is_continuous = us_controller.is_mode_continuous()
 
-# Set specific parameters
-us_model.growth_mean = 0.15
-us_model.growth_variance = 0.015
-
-# Update the UI to reflect these changes
-us_view.update_display()
+# Basculer le mode lorsque l'utilisateur appuie sur le switch
+# le contrôleur appelle alors:
+us_model.toggle_continuous_mode()
 ```
+
+### Obtenir la valeur numérique entrée par l'utilisateur
+
+```python
+# Obtenir la valeur numérique actuelle
+num_value = us_controller.get_numeric_value()
+```
+
+## Intégration avec les Autres Modules
+
+Le module User Simulation interagit avec:
+
+- **Module Function Influence**: Fournit les paramètres utilisateur pour les fonctions de voisinage et de croissance
+- **Module Simulation**: Contrôle l'exécution de la simulation et fournit les paramètres de vitesse et de mode

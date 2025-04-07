@@ -1,122 +1,118 @@
-# Window Manager Module (wm)
+# Module Window Manager (wm)
 
-The Window Manager module is responsible for managing the application's main window, organizing the layout of interface elements, and coordinating the interactions between different visual components.
+Le module Window Manager gère la fenêtre principale de l'application, gérant la disposition, l'état de la fenêtre (plein écran, maximisé) et le placement des différentes vues. Il sert de conteneur pour tous les composants visuels de l'application.
 
-## Module Structure
+## Structure du Module
 
-### Main Class: WindowManager
+### Classes
 
-The `WindowManager` class manages the main application window and organizes the layout of all UI components.
+#### WindowManager
+
+La classe `WindowManager` gère la fenêtre principale et organise les différentes vues.
 
 ```python
 class WindowManager:
-    def __init__(self, root):
-        """
-        Initialize the window manager.
+    def __init__(self, root: tk.Tk, sim_size: int, panel_width: int) -> None:
+        """Initialize the window manager.
         
         Args:
-            root: The root Tkinter window
+            root: Main Tkinter window
+            sim_size (int): Size of simulation area in pixels
+            panel_width (int): Width of control panel in pixels
         """
 ```
 
-Key methods:
+Méthodes principales:
 
-- `create_layout()`: Creates the main application layout
-- `configure_window()`: Sets window properties like size, title, etc.
-- `add_component(component, section)`: Adds a UI component to a specific section
-- `get_section(section_name)`: Returns a reference to a specific layout section
-- `resize_window(width, height)`: Resizes the application window
-- `enter_fullscreen()`: Switches to fullscreen mode
-- `exit_fullscreen()`: Exits fullscreen mode
+- `toggle_fullscreen() -> None`: Bascule le mode plein écran
+- `exit_fullscreen() -> None`: Quitte le mode plein écran
+- `maximize_window() -> None`: Maximise la fenêtre sans mode plein écran
+- `setup_main_layout() -> None`: Configure la disposition principale de la fenêtre
+- `setup_control_panel() -> None`: Configure le panneau de contrôle
+- `place_views(sim_view: Any, us_view: Any, fi_view: Any) -> None`: Place toutes les vues dans l'interface
+- `get_control_frame() -> ttk.Frame`: Renvoie le cadre de contrôle
 
-## Layout Organization
+## Disposition de la Fenêtre
 
-The window manager organizes the application interface into several main sections:
+La fenêtre est organisée en deux sections principales:
 
-### Control Section
+1. **Zone de Simulation**: Une zone extensible qui occupe la majorité de l'espace de la fenêtre, contenant la grille de l'automate cellulaire
+2. **Panneau de Contrôle**: Un panneau de largeur fixe sur le côté droit, contenant tous les contrôles utilisateur
 
-Located on the left side of the window, this section contains:
-- Simulation control buttons (Start/Stop, Reset, etc.)
-- Parameter sliders and input fields
-- Mode selection options
+```
++----------------------------------+-------------+
+|                                  |             |
+|                                  |   Contrôle  |
+|                                  |   de la     |
+|        Zone de Simulation        |   Simulation|
+|                                  |             |
+|                                  |-------------|
+|                                  |   Fonctions |
+|                                  |   d'Influence|
+|                                  |             |
++----------------------------------+-------------+
+```
 
-### Visualization Section
+## Gestion de l'État de la Fenêtre
 
-Located in the center, this section contains:
-- The cellular automaton grid display
-- Status information about the current state
+Le gestionnaire de fenêtre fournit trois modes d'affichage:
 
-### Graph Section
+1. **Normal**: Taille de fenêtre par défaut
+2. **Maximisé**: La fenêtre occupe tout l'espace disponible, mais conserve la barre de titre et les bordures
+3. **Plein écran**: La fenêtre occupe tout l'écran, sans barre de titre ni bordures
 
-Located on the right side, this section contains:
-- Neighborhood function visualization
-- Growth function visualization
-- Any additional graphs or visual aids
+Les raccourcis clavier suivants sont configurés:
 
-## Window Features
+- **F11**: Bascule le mode plein écran
+- **Échap**: Quitte le mode plein écran
 
-The window manager provides several features to enhance the user experience:
+## Intégration des Vues
 
-### Resizing and Fullscreen
+Le gestionnaire de fenêtre est responsable de l'intégration des différentes vues des autres modules:
 
-The application window can be:
-- Resized to fit user needs
-- Switched to fullscreen mode for better visualization
-- Adapted to different screen resolutions
+1. **SimView**: Placée dans la zone de simulation principale
+2. **UsView**: Placée dans la partie supérieure du panneau de contrôle
+3. **FiView**: Placée dans la partie inférieure du panneau de contrôle
 
-### Layout Adaptation
+## Contraintes de Redimensionnement
 
-The interface layout automatically adjusts to:
-- Window size changes
-- Component additions or removals
-- Visibility changes of optional components
+Pour garantir une expérience utilisateur cohérente, le gestionnaire de fenêtre impose des contraintes de redimensionnement:
 
-### Keyboard Shortcuts
+- **Taille minimale**: La fenêtre ne peut pas être redimensionnée en dessous d'une taille minimale (300px pour la simulation + largeur du panneau de contrôle × 400px de hauteur)
+- **Panneau de contrôle**: Maintient une largeur fixe même lorsque la fenêtre est redimensionnée
+- **Zone de simulation**: S'étend pour occuper l'espace supplémentaire lorsque la fenêtre est agrandie
 
-Several keyboard shortcuts are implemented for common actions:
-- F11: Toggle fullscreen mode
-- Escape: Exit fullscreen mode
-- Space: Start/Stop simulation
-- R: Reset simulation
+## Exemples d'Utilisation
 
-## Integration with Other Modules
-
-The Window Manager interacts with:
-
-- **User Interface Module**: Places UI controls in the appropriate sections
-- **Simulation Module**: Allocates space for the grid display
-- **Influence Functions Module**: Organizes function visualizations
-
-## Usage Example
+### Création de l'interface principale
 
 ```python
-import tkinter as tk
-from wm import WindowManager
-from us import UsView
-from sim import SimView
-from fi import FiView
-
-# Create the root window
+# Création de la fenêtre principale
 root = tk.Tk()
+window_manager = WindowManager(root, sim_size=500, panel_width=300)
 
-# Initialize the window manager
-window_manager = WindowManager(root)
+# Initialisation des vues
+sim_view = SimView(root, 500, 500)
+us_view = UsView(window_manager.get_control_frame())
+fi_view = FiView(window_manager.get_control_frame())
 
-# Configure the window
-window_manager.configure_window(
-    title="Game of Life Simulator",
-    width=1200,
-    height=800
-)
+# Placement des vues
+window_manager.place_views(sim_view, us_view, fi_view)
 
-# Create the main layout
-window_manager.create_layout()
+# Démarrage en fenêtre maximisée
+window_manager.maximize_window()
+```
 
-# Create module views
-us_view = UsView(window_manager.get_section("control"))
-sim_view = SimView(window_manager.get_section("visualization"))
-fi_view = FiView(window_manager.get_section("graph"))
+### Gestion du mode plein écran
 
-# Start the application
-root.mainloop()
-``` 
+```python
+# Bascule du mode plein écran
+window_manager.toggle_fullscreen()
+
+# Sortie du mode plein écran
+window_manager.exit_fullscreen()
+```
+
+## Adaptation à Différentes Plateformes
+
+Le module Window Manager est conçu pour s'adapter à différentes plateformes (Windows, Linux, macOS) en utilisant des méthodes spécifiques à la plateforme pour les opérations comme la maximisation de la fenêtre. Cela garantit une expérience utilisateur cohérente sur tous les systèmes d'exploitation. 
