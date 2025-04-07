@@ -1,6 +1,12 @@
+"""Window Manager module (wm).
+
+This module contains the WindowManager class which manages the main application window.
+It handles window layout, window state (fullscreen, maximized), and the placement
+of different views within the application interface.
+"""
+
 import tkinter as tk
 from tkinter import ttk
-import sys
 import platform
 from typing import Any
 

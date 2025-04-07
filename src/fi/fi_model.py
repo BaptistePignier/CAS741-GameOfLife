@@ -1,8 +1,13 @@
+from typing import Optional, Union
 import numpy as np
-from typing import Optional, Union, Tuple
+
 
 class FiModel:
-    def __init__(self, mu: float = 0.5, sigma: float = 0.15, growth_mu: float = 0.15, growth_sigma: float = 0.015) -> None:
+    def __init__(self,  mu: float = 0.5, 
+                        sigma: float = 0.15, 
+                        growth_mu: float = 0.15, 
+                        growth_sigma: float = 0.015) -> None:
+        
         """Initialize the functional input model.
         
         Args:
@@ -15,7 +20,7 @@ class FiModel:
         self.sigma = sigma  # Width of the ring
         self.growth_mu = growth_mu
         self.growth_sigma = growth_sigma
-        self.R = 13        # Kernel radius (in pixels)
+        
         self.con_nhood = None
         
         self.dis_nhood = np.array([ [0, 0, 0, 0, 0],
@@ -23,13 +28,14 @@ class FiModel:
                                     [0, 1, 0, 1, 0],
                                     [0, 1, 1, 1, 0],
                                     [0, 0, 0, 0, 0]], dtype=np.int8)
-
-        self.x = np.linspace(-2, 2, 1000)
-
         self._update_con_nhood()
         
     
-    def _gauss(self, x: Union[float, np.ndarray], mu: float, sigma: float) -> Union[float, np.ndarray]:
+    def _gauss(self, 
+               x: Union[float, np.ndarray], 
+               mu: float, 
+               sigma: float) -> Union[float, np.ndarray]:
+        
         """Compute a Gaussian function.
         
         Calculates the Gaussian function value at point(s) x with given parameters.
@@ -56,10 +62,11 @@ class FiModel:
         Returns:
             float or numpy.ndarray: Growth values ranging from -1 to 1
         """
-        return -1 + 2 * self._gauss(u, self.growth_mu, self.growth_sigma)        # Baseline -1, peak +1
+        # Baseline -1, peak +1
+        return -1 + 2 * self._gauss(u, self.growth_mu, self.growth_sigma)
+        
+    def growth_gol(self,u):
 
-
-    def growth_GoL(self, u: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
         """Compute the Game of Life growth function.
         
         Implements the rules of Conway's Game of Life as a continuous function.
@@ -74,30 +81,27 @@ class FiModel:
                 - Negative values indicate death
                 - Value magnitude indicates the strength of the change
         """
-        # Key values for Game of Life rules
-        SURVIVAL_MIN = 2  # A living cell survives with at least 2 neighbors
-        SURVIVAL_MAX = 3  # A living cell survives with at most 3 neighbors
 
-        BIRTH = 3         # A dead cell is born with exactly 3 neighbors
+        mask_birth = u == 3
+        mask_survive = (u == 2) | (u == 3)
+        mask_death = ~(mask_birth | mask_survive)
 
-        # The interval [1,3] captures cases where u-1 generates the correct change (+0 or +1)
+        # Ici on encode :
+        # - birth → +1
+        # - survive → 0
+        # - death → -1
 
-        mask1 = (u >= 1) & (u <= SURVIVAL_MAX)
- 
-        # The interval ]3,4] captures the special case between 3 and 4 neighbors
+        return 1 * mask_birth + 0 * mask_survive -1 * mask_death
 
-        mask2 = (u > BIRTH) & (u <= 4)
- 
-        return -1 + (u - 1) * mask1 + 8 * (1 - u/4) * mask2
-    
     def _update_con_nhood(self) -> None:
         """Update the continuous neighborhood kernel.
         
         Generates a 2D Gaussian ring pattern based on the current mu and sigma values.
         The kernel is normalized so the sum of all elements equals 1.
         """
-        y, x = np.ogrid[-self.R:self.R, -self.R:self.R]
-        distance = np.sqrt((1+x)**2 + (1+y)**2) / self.R
+        r = 13
+        y, x = np.ogrid[-r:r, -r:r]
+        distance = np.sqrt((1+x)**2 + (1+y)**2) / r
 
         self.con_nhood = self._gauss(distance, self.mu, self.sigma)
         self.con_nhood[distance > 1] = 0               # Cut at d=1
@@ -137,14 +141,20 @@ class FiModel:
             self.sigma = float(sigma)
         self._update_con_nhood()
 
-    def set_growth_params(self, g_mu: Optional[float] = None, g_sigma: Optional[float] = None) -> None:
+    def set_growth_params(self, 
+                          g_mu: Optional[float] = None, 
+                          g_sigma: Optional[float] = None) -> None:
+        
         """Set the parameters for the growth function.
         
         Updates the growth_mu and/or growth_sigma parameters used by the growth functions.
         
         Args:
-            g_mu (float, optional): New center value for growth function. If None, keeps current value.
-            g_sigma (float, optional): New width value for growth function. If None, keeps current value.
+            g_mu (float, optional): New center value for growth function. 
+            If None, keeps current value.
+
+            g_sigma (float, optional): New width value for growth function. 
+            If None, keeps current value.
         """
         if g_mu is not None:
             self.growth_mu = float(g_mu)

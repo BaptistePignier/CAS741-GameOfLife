@@ -52,7 +52,7 @@ class FiController:
         """
         if self.us_controller.is_mode_continuous():
             return self.model.growth_lenia
-        return self.model.growth_GoL
+        return self.model.growth_gol
 
     def get_step(self) -> float:
         """Get the appropriate simulation step value based on current mode.
@@ -110,11 +110,9 @@ class FiController:
             self.view.update_growth_plot(x, y_growth)
             self.view.update_growth_axes(0, 0.3, -1.2, 1.2, continuous=True)
         else:
-            # Utiliser une plage plus précise pour mieux représenter growth_GoL
-            x = np.linspace(0, 8, 100)  # Points plus nombreux et répartis uniformément
-            y_growth = self.model.growth_GoL(x)
+            x = np.linspace(0, 8, 100)
+            y_growth = self.model.growth_gol(x)
             self.view.update_growth_plot(x, y_growth)
-            # Ajuster les limites des axes pour growth_GoL
             self.view.update_growth_axes(0, 8, -1.2, 1.2, continuous=False)
 
     def update_displays(self) -> None:

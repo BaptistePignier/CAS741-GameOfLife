@@ -1,0 +1,12 @@
+[FORMAT]
+
+# Maximum number of characters on a single line.
+max-line-length=100
+
+# String used as indentation unit. This is usually "    " (4 spaces) or "\t" (1 tab).
+indent-string='    '
+
+[MESSAGES CONTROL]
+
+# Enable the check for trailing whitespaces (C0303).
+disable=trailing-whitespace
