@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import sys
 import platform
+from typing import Any
 
 class WindowManager:
     """Window management component.
@@ -10,7 +11,7 @@ class WindowManager:
     window state (fullscreen, maximized), and the placement of different views.
     It serves as the container for all visual components of the application.
     """
-    def __init__(self, root, sim_size, panel_width):
+    def __init__(self, root: tk.Tk, sim_size: int, panel_width: int) -> None:
         """Initialize the window manager.
         
         Args:
@@ -39,17 +40,17 @@ class WindowManager:
         # Configuration of control panel
         self.setup_control_panel()
     
-    def toggle_fullscreen(self):
+    def toggle_fullscreen(self) -> None:
         """Toggle fullscreen mode."""
         self.is_fullscreen = not self.is_fullscreen
         self.root.attributes("-fullscreen", self.is_fullscreen)
     
-    def exit_fullscreen(self):
+    def exit_fullscreen(self) -> None:
         """Exit fullscreen mode."""
         self.is_fullscreen = False
         self.root.attributes("-fullscreen", False)
     
-    def maximize_window(self):
+    def maximize_window(self) -> None:
         """Maximize the window without fullscreen mode.
         
         Uses platform-specific methods to maximize the window.
@@ -65,7 +66,7 @@ class WindowManager:
             screen_height = self.root.winfo_screenheight()
             self.root.geometry(f"{screen_width}x{screen_height}+0+0")
     
-    def setup_main_layout(self):
+    def setup_main_layout(self) -> None:
         """Configure the main layout of the window."""
         # Simulation area (expandable)
         self.root.grid_columnconfigure(0, weight=1)
@@ -79,7 +80,7 @@ class WindowManager:
         min_height = 400  # Reasonable minimum height
         self.root.minsize(min_width, min_height)
     
-    def setup_control_panel(self):
+    def setup_control_panel(self) -> None:
         """Configure the control panel."""
         # Main control frame
         self.control_frame = ttk.Frame(self.root)
@@ -92,7 +93,7 @@ class WindowManager:
         self.control_frame.grid_propagate(False)
         self.control_frame.configure(width=self.panel_width)
     
-    def place_views(self, sim_view, us_view, fi_view):
+    def place_views(self, sim_view: Any, us_view: Any, fi_view: Any) -> None:
         """Place all views in the interface.
         
         Args:
@@ -117,7 +118,7 @@ class WindowManager:
         fi_frame = fi_view.get_frame()
         fi_frame.grid(row=2, column=0, sticky='ew')
     
-    def get_control_frame(self):
+    def get_control_frame(self) -> ttk.Frame:
         """Return the control frame.
         
         Returns:

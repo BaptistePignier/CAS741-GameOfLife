@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 import matplotlib.ticker as ticker
+from typing import Any, Tuple, Optional, Union
 
 class FiView:
     """Function influence view component.
@@ -11,7 +12,7 @@ class FiView:
     This class represents the view component for the function influence module.
     It manages the visualization of neighborhood kernels and growth functions.
     """
-    def __init__(self, master):
+    def __init__(self, master: Any) -> None:
         """Initialize the function influence view.
         
         Creates a frame with two visualization plots:
@@ -73,7 +74,7 @@ class FiView:
         # Initial canvas update
         self.canvas.draw()
 
-    def update_growth_plot(self, x_values, y_values):
+    def update_growth_plot(self, x_values: np.ndarray, y_values: np.ndarray) -> None:
         """Update the growth function graph with new data.
         
         Args:
@@ -84,7 +85,7 @@ class FiView:
         self.growth_line.set_ydata(y_values)
         self.canvas.draw_idle()
     
-    def update_growth_axes(self, xmin, xmax, ymin, ymax, continuous=True):
+    def update_growth_axes(self, xmin: float, xmax: float, ymin: float, ymax: float, continuous: bool = True) -> None:
         """Update the limits and tick marks of the growth function graph axes.
         
         Configures appropriate axis limits and tick marks based on whether
@@ -120,7 +121,7 @@ class FiView:
         
         self.canvas.draw_idle()
         
-    def update_nhood_plot(self, kernel):
+    def update_nhood_plot(self, kernel: np.ndarray) -> None:
         """Update the neighborhood visualization with a new kernel.
         
         This is a compatibility method that updates the continuous neighborhood
@@ -132,7 +133,7 @@ class FiView:
         self.con_nhood_image.set_array(kernel)
         self.canvas.draw_idle()
 
-    def get_frame(self):
+    def get_frame(self) -> ttk.Frame:
         """Get the main frame of the view.
         
         Returns:
@@ -140,7 +141,7 @@ class FiView:
         """
         return self.frame
 
-    def get_canvas(self):
+    def get_canvas(self) -> Tuple[None, Any, Any]:
         """Get the canvas widgets for external access.
         
         Returns:

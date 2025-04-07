@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.signal import convolve2d
+from typing import Callable, Optional, Union
 
 class SimModel:
     """Simulation model component.
@@ -10,7 +11,7 @@ class SimModel:
     # Pre-calculated kernel for neighbor calculation
     
     
-    def __init__(self, width=500, height=500, initial_alive_prob=0.2):
+    def __init__(self, width: int = 500, height: int = 500, initial_alive_prob: float = 0.2) -> None:
         """Initialize the simulation model.
         
         Args:
@@ -22,7 +23,7 @@ class SimModel:
         self.height = height
         self.initial_alive_prob = initial_alive_prob
 
-    def update(self, fct, nhood, dt):
+    def update(self, fct: Callable[[np.ndarray], np.ndarray], nhood: np.ndarray, dt: float) -> None:
         """Update the grid state for one generation.
         
         Applies the cellular automata rules by convolving the neighborhood kernel
@@ -37,7 +38,7 @@ class SimModel:
         self.grid = self.grid + dt * fct(neighbors)
         self.grid = np.clip(self.grid, 0, 1)
     
-    def get_grid(self):
+    def get_grid(self) -> np.ndarray:
         """Return the current grid.
         
         Returns:
@@ -46,7 +47,7 @@ class SimModel:
         return self.grid
 
 
-    def reset_discrete(self, prob=None):
+    def reset_discrete(self, prob: Optional[float] = None) -> None:
         """Reset the grid with a new random configuration.
         
         Args:
@@ -63,7 +64,7 @@ class SimModel:
             p=[1-self.initial_alive_prob, self.initial_alive_prob]
         ).reshape(self.height, self.width).astype(np.int8)
 
-    def reset_continuous(self, num):
+    def reset_continuous(self, num: int) -> None:
         """Reset the grid with a continuous pattern based on the numeric value.
         
         Args:
@@ -80,7 +81,7 @@ class SimModel:
             case _:
                 return
 
-    def stain(self):
+    def stain(self) -> None:
         """Create a centered Gaussian stain pattern.
         
         Initializes the grid with a circular Gaussian pattern centered in the middle.
@@ -94,7 +95,7 @@ class SimModel:
         self.grid = np.exp(-0.5 * (x*x + y*y) / (radius*radius))
 
 
-    def orbium(self):
+    def orbium(self) -> None:
         """Create an Orbium pattern (Lenia spaceship).
         
         Initializes the grid with a pre-defined Orbium pattern, 

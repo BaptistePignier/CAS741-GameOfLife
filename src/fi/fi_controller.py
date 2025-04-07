@@ -1,5 +1,6 @@
 import numpy as np
 from . import FiModel
+from typing import Callable, Any, Optional, Union, Tuple
 
 class FiController:
     """Function influence controller component.
@@ -8,7 +9,7 @@ class FiController:
     It manages updates to neighborhood and growth function parameters and ensures
     the view is synchronized with the model.
     """
-    def __init__(self, view, us_controller):
+    def __init__(self, view: Any, us_controller: Any) -> None:
         """Initialize the function influence controller.
         
         Sets up the model, connects to the view, and registers with the user simulation controller.
@@ -32,7 +33,7 @@ class FiController:
             lambda : self.update_displays()
         )
     
-    def get_nhood(self):
+    def get_nhood(self) -> np.ndarray:
         """Get the appropriate neighborhood kernel based on current mode.
         
         Returns:
@@ -43,7 +44,7 @@ class FiController:
         return self.model.get_dis_nhood()
 
     
-    def get_growth_fct(self):
+    def get_growth_fct(self) -> Callable[[np.ndarray], np.ndarray]:
         """Get the appropriate growth function based on current mode.
         
         Returns:
@@ -53,7 +54,7 @@ class FiController:
             return self.model.growth_lenia
         return self.model.growth_GoL
 
-    def get_step(self):
+    def get_step(self) -> float:
         """Get the appropriate simulation step value based on current mode.
         
         Returns:
@@ -63,7 +64,7 @@ class FiController:
             return 0.1
         return 1
 
-    def update_nhood_params(self, mu=None, sigma=None):
+    def update_nhood_params(self, mu: Optional[float] = None, sigma: Optional[float] = None) -> None:
         """Update neighborhood parameters in the model and refresh display.
         
         Args:
@@ -73,7 +74,7 @@ class FiController:
         self.model.set_nhood_params(mu,sigma)
         self.update_nhood_display()
 
-    def update_growth_params(self, g_mu=None, g_sigma=None):
+    def update_growth_params(self, g_mu: Optional[float] = None, g_sigma: Optional[float] = None) -> None:
         """Update growth function parameters in the model and refresh display.
         
         Args:
@@ -84,7 +85,7 @@ class FiController:
         self.update_growth_display()
 
     
-    def update_nhood_display(self):
+    def update_nhood_display(self) -> None:
         """Update the neighborhood visualization in the view.
         
         Selects the appropriate kernel (continuous or discrete) based on current mode
@@ -96,7 +97,7 @@ class FiController:
         else:
             self.view.update_nhood_plot(self.model.get_dis_nhood())
 
-    def update_growth_display(self):
+    def update_growth_display(self) -> None:
         """Update the growth function visualization in the view.
         
         Generates appropriate data for the current growth function (either Lenia or GoL)
@@ -116,7 +117,7 @@ class FiController:
             # Ajuster les limites des axes pour growth_GoL
             self.view.update_growth_axes(0, 8, -1.2, 1.2, continuous=False)
 
-    def update_displays(self):
+    def update_displays(self) -> None:
         """Update all display elements in the view.
         
         This is a convenience method that updates both neighborhood and growth

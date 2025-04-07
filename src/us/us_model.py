@@ -1,3 +1,5 @@
+from typing import Any, Optional, Union
+
 class UsModel:
     """User simulation model component.
     
@@ -5,7 +7,7 @@ class UsModel:
     It maintains the simulation state, manages running/paused status, continuous mode,
     reset operations, and user-entered numeric values.
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the user simulation model.
         
         Sets up the default state for simulation control:
@@ -23,12 +25,12 @@ class UsModel:
         self.continuous_switch = None
         self.numeric_value = 0  # Numeric value entered by the user
     
-    def set_widgets(self, toggle_button, continuous_switch):
+    def set_widgets(self, toggle_button: Any, continuous_switch: Any) -> None:
         """Store only the reference to the toggle button that needs to be updated."""
         self.toggle_button = toggle_button
         self.continuous_switch = continuous_switch
     
-    def toggle_running_state(self):
+    def toggle_running_state(self) -> bool:
         """Toggle the simulation state.
         
         Returns:
@@ -38,13 +40,13 @@ class UsModel:
         self.toggle_button.config(text="Stop" if self.is_running else "Start")
         return self.is_running
     
-    def reset_state(self):
+    def reset_state(self) -> None:
         """Reset the simulation state."""
         self.is_running = False
         self.needs_reset = True
         self.toggle_button.config(text="Start")
     
-    def acknowledge_reset(self):
+    def acknowledge_reset(self) -> bool:
         """Acknowledge the reset request.
         
         Returns:
@@ -54,7 +56,7 @@ class UsModel:
         self.needs_reset = False
         return was_reset
     
-    def toggle_continuous_mode(self):
+    def toggle_continuous_mode(self) -> bool:
         """Toggle the continuous mode state.
         
         Returns:
@@ -63,7 +65,7 @@ class UsModel:
         self.is_continuous = not self.is_continuous
         return self.is_continuous
     
-    def is_mode_continuous(self):
+    def is_mode_continuous(self) -> bool:
         """Return the continuous mode state.
         
         Returns:
@@ -71,7 +73,7 @@ class UsModel:
         """
         return self.is_continuous
         
-    def set_numeric_value(self, value):
+    def set_numeric_value(self, value: Union[int, str, None]) -> None:
         """Set the numeric value.
         
         Args:
@@ -91,7 +93,7 @@ class UsModel:
             # If conversion fails, keep the current value
             pass
             
-    def get_numeric_value(self):
+    def get_numeric_value(self) -> int:
         """Get the current numeric value.
         
         Returns:

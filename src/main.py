@@ -13,7 +13,7 @@ from fi import FiView, FiController
 from us import UsView, UsController
 from wm import WindowManager
 
-def main():
+def main() -> None:
     """Main entry point of the application."""
     # Configuration of the simulation size
     grid_size = 100  # Grid size in cells
@@ -42,7 +42,7 @@ def main():
     sim_controller.run()
     
     # Configuration for proper application closure
-    def on_closing():
+    def on_closing() -> None:
         root.quit()
         root.destroy()
     

@@ -1,7 +1,8 @@
 import numpy as np
+from typing import Optional, Union, Tuple
 
 class FiModel:
-    def __init__(self, mu=0.5, sigma=0.15, growth_mu=0.15, growth_sigma=0.015):
+    def __init__(self, mu: float = 0.5, sigma: float = 0.15, growth_mu: float = 0.15, growth_sigma: float = 0.015) -> None:
         """Initialize the function influence model.
         
         Args:
@@ -28,7 +29,7 @@ class FiModel:
         self._update_con_nhood()
         
     
-    def _gauss(self, x, mu, sigma):
+    def _gauss(self, x: Union[float, np.ndarray], mu: float, sigma: float) -> Union[float, np.ndarray]:
         """Compute a Gaussian function.
         
         Calculates the Gaussian function value at point(s) x with given parameters.
@@ -43,7 +44,7 @@ class FiModel:
         """
         return np.exp(-0.5 * ((x-mu)/sigma)**2)
 
-    def growth_lenia(self, u):
+    def growth_lenia(self, u: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
         """Compute the Lenia growth function.
         
         The Lenia growth function is a continuous function based on a Gaussian.
@@ -58,7 +59,7 @@ class FiModel:
         return -1 + 2 * self._gauss(u, self.growth_mu, self.growth_sigma)        # Baseline -1, peak +1
 
 
-    def growth_GoL(self, u):
+    def growth_GoL(self, u: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
         """Compute the Game of Life growth function.
         
         Implements the rules of Conway's Game of Life as a continuous function.
@@ -89,7 +90,7 @@ class FiModel:
  
         return -1 + (u - 1) * mask1 + 8 * (1 - u/4) * mask2
     
-    def _update_con_nhood(self):
+    def _update_con_nhood(self) -> None:
         """Update the continuous neighborhood kernel.
         
         Generates a 2D Gaussian ring pattern based on the current mu and sigma values.
@@ -103,7 +104,7 @@ class FiModel:
         self.con_nhood = self.con_nhood / np.sum(self.con_nhood)     # Normalize
 
 
-    def get_con_nhood(self):
+    def get_con_nhood(self) -> np.ndarray:
         """Get the continuous neighborhood kernel.
         
         Returns:
@@ -111,7 +112,7 @@ class FiModel:
         """
         return self.con_nhood
     
-    def get_dis_nhood(self):
+    def get_dis_nhood(self) -> np.ndarray:
         """Get the discrete neighborhood kernel.
         
         Returns:
@@ -119,7 +120,7 @@ class FiModel:
         """
         return self.dis_nhood
 
-    def set_nhood_params(self, mu=None, sigma=None):
+    def set_nhood_params(self, mu: Optional[float] = None, sigma: Optional[float] = None) -> None:
         """Set the parameters for the continuous neighborhood.
         
         Updates the mu and/or sigma parameters and recalculates the continuous
@@ -136,7 +137,7 @@ class FiModel:
             self.sigma = float(sigma)
         self._update_con_nhood()
 
-    def set_growth_params(self, g_mu=None, g_sigma=None):
+    def set_growth_params(self, g_mu: Optional[float] = None, g_sigma: Optional[float] = None) -> None:
         """Set the parameters for the growth function.
         
         Updates the growth_mu and/or growth_sigma parameters used by the growth functions.

@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
+from typing import Any
 
 class SimView:
     """Simulation view component.
@@ -9,7 +10,7 @@ class SimView:
     It manages the visualization of the cellular automaton grid using matplotlib
     and provides methods to update the display when the grid state changes.
     """
-    def __init__(self, master, width, height):
+    def __init__(self, master: Any, width: int, height: int) -> None:
         """Initialize the simulation view.
         
         Args:
@@ -58,7 +59,7 @@ class SimView:
                 self.canvas.mpl_disconnect(callbacks[0])
 
     
-    def update_display(self, grid):
+    def update_display(self, grid: np.ndarray) -> None:
         """Update the grid display.
         
         Args:
@@ -67,7 +68,7 @@ class SimView:
         self.grid_display.set_array(grid)
         self.canvas.draw()
     
-    def get_canvas(self):
+    def get_canvas(self) -> Any:
         """Return the canvas widget.
         
         Returns:
@@ -75,6 +76,6 @@ class SimView:
         """
         return self.canvas_widget
     
-    def __del__(self):
+    def __del__(self) -> None:
         """Clean up matplotlib resources."""
         plt.close(self.fig)

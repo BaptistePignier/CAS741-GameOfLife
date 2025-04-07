@@ -1,5 +1,6 @@
 from . import SimModel
 import numpy as np
+from typing import Any, Optional
 
 class SimController:
     """Simulation controller component.
@@ -8,7 +9,7 @@ class SimController:
     It manages the simulation loop, handles updates at the appropriate speed,
     and responds to user interface events from other controllers.
     """
-    def __init__(self, view, root, us_controller, fi_controller):
+    def __init__(self, view: Any, root: Any, us_controller: Any, fi_controller: Any) -> None:
         """Initialize the simulation controller.
         
         Args:
@@ -25,7 +26,7 @@ class SimController:
         self.min_delay = 16  # ~60 FPS maximum (1000/60 ≈ 16.67ms)
         self.update_timer = None
         
-    def run(self):
+    def run(self) -> None:
         """Start the simulation.
         
         Initializes the grid based on the current mode (continuous or discrete),
@@ -40,7 +41,7 @@ class SimController:
         # Start the update timer
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         """Update the model and view if the simulation is running."""
         # Check if a reset is requested
         if self.us_controller.model.acknowledge_reset():
@@ -63,13 +64,13 @@ class SimController:
         delay = max(self.min_delay, int(1000 / generations_per_second))
         self.update_timer = self.root.after(delay, self.update)
     
-    def stop(self):
+    def stop(self) -> None:
         """Stop the update timer."""
         if self.update_timer:
             self.root.after_cancel(self.update_timer)
             self.update_timer = None
     
-    def reset(self):
+    def reset(self) -> None:
         """Reset the simulation grid.
         
         Resets the grid based on the current mode:

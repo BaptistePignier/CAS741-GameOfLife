@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from typing import Any, Callable
 
 class UsView:
     """User simulation view component.
@@ -8,7 +9,7 @@ class UsView:
     It provides the user interface elements for controlling the simulation,
     including buttons, sliders, and other input controls.
     """
-    def __init__(self, control_frame):
+    def __init__(self, control_frame: Any) -> None:
         """Initialize the user simulation view.
         
         Creates the UI frame and adds all control elements including:
@@ -32,7 +33,7 @@ class UsView:
         self._create_speed_frame()
         self._create_gaussian_frame()
     
-    def _create_control_buttons(self):
+    def _create_control_buttons(self) -> None:
         """Create control buttons."""
         self.toggle_button = ttk.Button(self.frame, text="Start")
         self.toggle_button.grid(row=0, column=0, pady=5)
@@ -78,7 +79,7 @@ class UsView:
         self.continuous_switch = ttk.Checkbutton(cont_switch_frame)
         self.continuous_switch.pack(anchor=tk.CENTER)
     
-    def _create_speed_frame(self):
+    def _create_speed_frame(self) -> None:
         """Create speed control frame."""
         speed_frame = ttk.LabelFrame(self.frame, text="Speed")
         speed_frame.grid_columnconfigure(0, weight=1)
@@ -98,7 +99,7 @@ class UsView:
         )
         self.speed_slider.grid(row=1, column=0, pady=5, padx=10, sticky='ew')
     
-    def _create_gaussian_frame(self):
+    def _create_gaussian_frame(self) -> None:
         """Create gaussian parameters frame."""
         gaussian_frame = ttk.LabelFrame(self.frame, text="Gaussian Function")
         gaussian_frame.grid_columnconfigure(0, weight=1)
@@ -162,7 +163,7 @@ class UsView:
         self.growth_sigma_slider.grid(row=3, column=0, pady=(0,5), padx=10, sticky='ew')
 
     
-    def get_frame(self):
+    def get_frame(self) -> ttk.Frame:
         """Get the main frame of the view.
         
         Returns:
@@ -170,14 +171,14 @@ class UsView:
         """
         return self.frame
     
-    def set_numeric_entry_command(self, command):
+    def set_numeric_entry_command(self, command: Callable[[str], None]) -> None:
         """Configure the command for the numeric text field.
         
         Args:
             command (function): The function to call when the content changes
         """
         # Intermediate function to be called when a change occurs
-        def on_value_change(*args):
+        def on_value_change(*args: Any) -> None:
             command(self.numeric_entry.get())
         
         # Control variable to track changes
