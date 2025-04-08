@@ -35,12 +35,16 @@ class FiController:
         # Initial display
         self.update_displays()
 
-        self.us_controller.set_interface_commands(
+        self.us_controller.set_continuous_switch_callback(self.update_displays)
+
+        self.us_controller.set_nhood_callbacks(
             lambda x: self.update_nhood_params(mu=x),
-            lambda x: self.update_nhood_params(sigma=x),
+            lambda x: self.update_nhood_params(sigma=x)
+        )
+
+        self.us_controller.set_growth_callback(
             lambda x: self.update_growth_params(g_mu=x),
             lambda x: self.update_growth_params(g_sigma=x),
-            self.update_displays()
         )
     
     def get_nhood(self) -> np.ndarray:
