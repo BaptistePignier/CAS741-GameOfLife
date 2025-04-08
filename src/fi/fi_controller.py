@@ -40,7 +40,7 @@ class FiController:
             lambda x: self.update_nhood_params(sigma=x),
             lambda x: self.update_growth_params(g_mu=x),
             lambda x: self.update_growth_params(g_sigma=x),
-            lambda : self.update_displays()
+            self.update_displays()
         )
     
     def get_nhood(self) -> np.ndarray:

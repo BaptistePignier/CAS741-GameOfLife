@@ -185,8 +185,8 @@ class UsView: # pylint: disable=R0902
             command (function): The function to call when the content changes
         """
         # Intermediate function to be called when a change occurs
-        def on_value_change(*args: Any) -> None: # pylint: disable=W0613
-            print(args)
+        def on_value_change(*_: Any) -> None:
+            
             command(self.numeric_entry.get())
         # Control variable to track changes
         self.numeric_var = tk.StringVar()
