@@ -21,3 +21,9 @@ python3 src/main.py
 ```bash
 deactivate
 ```
+
+# Documentation
+
+```bash
+mkdocs serve
+```
