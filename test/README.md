@@ -15,19 +15,19 @@ The tests are organized as follows:
 To run all tests, from the project root:
 
 ```bash
-python -m pytest src/test
+python -m pytest test
 ```
 
 To run a specific test file:
 
 ```bash
-python -m pytest src/test/test_fi_model.py
+python -m pytest test/test_fi_model.py
 ```
 
 To run a specific test:
 
 ```bash
-python -m pytest src/test/test_fi_model.py::TestFiModel::test_growth_lenia
+python -m pytest test/test_fi_model.py::TestFiModel::test_growth_lenia
 ```
 
 ## Test Coverage

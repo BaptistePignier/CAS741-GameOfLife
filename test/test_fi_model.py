@@ -53,13 +53,13 @@ class TestFiModel:
         diff = abs(model.growth_lenia(model.growth_mu - 0.01) - model.growth_lenia(model.growth_mu + 0.01))
         assert diff < 1e-10
     
-    def test_growth_GoL(self, model):
-        """Test the growth_GoL function which implements Game of Life rules."""
+    def test_growth_gol(self, model):
+        """Test the growth_gol function which implements Game of Life rules."""
         # Test for survival and birth rules
         
         # Test values for u (number of neighbors)
-        test_values = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        results = [model.growth_GoL(u) for u in test_values]
+        test_values = np.asarray([0, 1, 2, 3, 4, 5, 6, 7, 8])
+        results = model.growth_gol(test_values)
         
         # Game of Life rules:
         # - A dead cell (0) with exactly 3 neighbors is born (+1)
