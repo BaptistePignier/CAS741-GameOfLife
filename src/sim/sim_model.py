@@ -61,16 +61,35 @@ class SimModel:
         """
         return self.grid
 
+    def reset_discrete(self, num: int) -> None:
+        match num:
+            case 0:
+                self.random()
+            case 1:
+                self.planner()
+            case _:
+                return
 
-    def reset_discrete(self, prob: Optional[float] = None) -> None:
-        """Reset the grid with a new random configuration.
-        
-        Args:
-            prob (float, optional): New probability for live cells.
-                                  If None, uses the initial probability.
-        """
-        if prob is not None and 0 <= prob <= 1:
-            self.initial_alive_prob = prob
+    def planner(self) -> None:
+        glider_gun = np.array(
+            [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+            [0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+            [1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            [1,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])
+
+        self.grid = np.zeros((self.width, self.height))
+        pos_x = self.width//6
+        pos_y = self.height//6
+        self.grid[pos_x:(pos_x + glider_gun.shape[1]), pos_y:(pos_y + glider_gun.shape[0])] = glider_gun.T
+
+
+    def random(self) -> None:
+        """Reset the grid with a new random configuration."""
             
         # Optimized generation of the random grid
         self.grid = np.random.choice(

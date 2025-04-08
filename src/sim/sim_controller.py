@@ -90,4 +90,4 @@ class SimController:
         if self.us_controller.is_mode_continuous():
             self.model.reset_continuous(self.us_controller.get_numeric_value())
         else:
-            self.model.reset_discrete()
+            self.model.reset_discrete(self.us_controller.get_numeric_value())
