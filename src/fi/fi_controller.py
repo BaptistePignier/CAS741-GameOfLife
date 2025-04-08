@@ -8,7 +8,7 @@ to neighborhood and growth function parameters based on user interactions.
 
 from typing import Callable, Any, Optional
 import numpy as np
-from . import FiModel
+from .fi_model import FiModel
 
 
 

@@ -7,7 +7,7 @@ and continuous mode, and configuring parameter sliders for the simulation functi
 """
 
 from typing import Any, Callable
-from . import UsModel
+from .us_model import UsModel
 
 
 class UsController:

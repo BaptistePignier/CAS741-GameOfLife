@@ -8,10 +8,13 @@ Lenia (continuous) cellular automata with a configurable user interface.
 """
 
 import tkinter as tk
-from sim import SimView, SimController
-from fi import FiView, FiController
-from us import UsView, UsController
-from wm import WindowManager
+from sim.sim_view import SimView
+from sim.sim_controller import SimController
+from fi.fi_view import FiView
+from fi.fi_controller import FiController
+from us.us_view import UsView
+from us.us_controller import UsController
+from wm.wm import WindowManager
 
 def main() -> None:
     """Main entry point of the application."""

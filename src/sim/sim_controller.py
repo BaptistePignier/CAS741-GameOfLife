@@ -8,7 +8,7 @@ controllers.
 """
 
 from typing import Any
-from . import SimModel
+from .sim_model import SimModel
 
 
 class SimController:
